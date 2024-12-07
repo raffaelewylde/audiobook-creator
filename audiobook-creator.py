@@ -1,16 +1,14 @@
 #!/usr/bin/env python
 
-# Welcome to a python script designed to create an audiobook from a pdf file
-
 import os
 import argparse
 import asyncio
 import PyPDF2
 from pathlib import Path
 from pydub import AudioSegment
-from openai import OpenAI
+from openai import AsyncOpenAI
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
+AsyncOpenAI.api_key = os.getenv("OPENAI_API_KEY")
 
 
 def extract_text_from_pdf(pdf_path):
@@ -32,13 +30,13 @@ def chunk_text(text, words_per_chunk=1000):
 
 async def text_to_speech_async(text, output_path):
     """Asynchronously convert text to speech with openai"""
-    client - OpenAI()
-    response = await client.audio.speech.create(
+    client = AsyncOpenAI()
+    async with client.audio.speech.with_streaming_response.create(
         model="tts-1",
         voice="shimmer",
         input=text
-    )
-    response.stream_to_file(output_path)
+    ) as response:
+        await response.stream_to_file(output_path)
 
 async def process_chunk(chunk_text, chunk_index, base_name, output_dir):
     """Process a single chunk: save text to file, convert to speech, save to mp3."""
