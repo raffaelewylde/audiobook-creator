@@ -21,12 +21,10 @@ def extract_text_from_pdf(pdf_path):
     return text
 
 
-def chunk_text(text, words_per_chunk=1000):
+def chunk_text(text, chars_per_chunk=4096):
     """split text into chunks of for better uploading speed."""
-    words = text.split()
-    for i in range(0, len(words), words_per_chunk):
-        yield " ".join(words[i : i + words_per_chunk])
-
+    for i in range(0, len(text), chars_per_chunk):
+        yield text[i : i + chars_per_chunk]
 
 async def text_to_speech_async(text, output_path):
     """Asynchronously convert text to speech with openai"""
@@ -66,7 +64,7 @@ async def main():
     parser.add_argument("pdf_path", help="Path to the PDF file")
     args = parser.parse_args()
 
-    pdf_path = Path(args.pdf_file)
+    pdf_path = Path(args.pdf_path)
     if not pdf_path.is_file():
         print("Error: Pdf file not found.")
         return
@@ -78,6 +76,9 @@ async def main():
     # Process text chunks in parallel
     tasks = []
     for i, chunk in enumerate(chunk_text(text)):
+        if len(chunk) > 4096:
+            print(f"Chunk {i + 1} exceeds the character limit!")
+            continue
         tasks.append(process_chunk(chunk, i, base_name, output_dir))
 
     audio_files = await asyncio.gather(*tasks)
