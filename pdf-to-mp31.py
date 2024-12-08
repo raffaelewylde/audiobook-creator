@@ -27,22 +27,23 @@ def split_text_into_files(text, base_filename):
 
 def text_to_speech(file_path):
     """Convert text file to MP3 using OpenAI API."""
-    openai_api_key = 'YOUR_OPENAI_API_KEY'
+    openai_api_key = os.getenv("OPENAI_API_KEY")
     headers = {
         'Authorization': f'Bearer {openai_api_key}',
         'Content-Type': 'application/json'
     }
 
-    with open(file_path, 'r', encoding='utf-8') as f:
-        text = f.read()
+    text = f.read()
 
     data = {
-        "text": text,
-        "voice": "en-US-Wavenet-D",  # Specify the voice you want
-        "output_format": "mp3"
+        "input": text,
+        "model": "tts-1",
+        "voice": "shimmer",  # Specify the voice you want
+        "speed": 1.2,
+        "response_format": "mp3"
     }
 
-    response = requests.post("https://api.openai.com/v1/audio/text-to-speech", headers=headers, json=data)
+    response = requests.post("https://api.openai.com/v1/audio/speech", headers=headers, json=data)
 
     if response.status_code == 200:
         mp3_filename = file_path.replace('.txt', '.mp3')
