@@ -1,7 +1,15 @@
 #!/usr/bin/env python
+# /// script
+# requires-python = ">=3.10"
+# dependencies = [
+#     "openai",
+#     "pydub",
+#     "pypdf2",
+# ]
+# ///
+
 
 import os
-import argparse
 import asyncio
 import PyPDF2
 from pathlib import Path
@@ -42,7 +50,7 @@ async def process_chunk(chunk_text, chunk_index, base_name, output_dir):
     audio_file = output_dir / f"{base_name}_chunk_{chunk_index + 1}.mp3"
 
     # Save chunk to text file
-    with open(chunk_file, "w") as f:
+    with open(chunk_file, "w", encoding="utf-8") as f:
         f.write(chunk_text)
 
     # Generate audio from text
@@ -59,12 +67,18 @@ async def merge_audio_files(audio_files, output_path):
         combined += audio
     combined.export(output_path, format="mp3")
 
-async def main():
-    parser = argparse.ArgumentParser(description="Convert a PDF book into MP3")
-    parser.add_argument("pdf_path", help="Path to the PDF file")
-    args = parser.parse_args()
 
-    pdf_path = Path(args.pdf_path)
+def cleanup():
+    """Remove temporary files."""
+    output_dir = Path(pdf_path).parent / f"{pdf_path.stem}_chunks"
+    output_dir.rmdir()
+async def main():
+    print("Welcome to our Audio Book Creator")
+    print("==================================")
+    user_input = input("Where is the pdf located you'd like to generate an audiobook for? Provide absolute file path")
+
+    pdf_file = Path(user_input)
+    pdf_path = Path(pdf_file).resolve()
     if not pdf_path.is_file():
         print("Error: Pdf file not found.")
         return
@@ -89,3 +103,4 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
