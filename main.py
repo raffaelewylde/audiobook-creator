@@ -2,6 +2,8 @@ import logging
 from logging.handlers import RotatingFileHandler
 import random
 import os
+import sys
+from dotenv import load_dotenv
 import aiofiles
 import asyncio
 from pathlib import Path
@@ -11,6 +13,7 @@ from PyPDF2 import PdfReader
 
 from deepgram import (
     DeepgramClient,
+    ClientOptionsFromEnv,
     SpeakOptions,
 )
 
@@ -76,12 +79,12 @@ async def text_to_speech(
     :param retries: The maximum number of retries.
     :param base_delay: The initial delay for exponential backoff in seconds.
     """
-    dg = DeepgramClient()
+    dg = DeepgramClient(api_key="", config=ClientOptionsFromEnv())
     options = SpeakOptions(model="aura-angus-en")
 
     for attempt in range(retries):
         try:
-            response = await dg.speak.rest.v("1").save(output_path, text, options)
+            response = await dg.speak.asyncrest.v("1").save(output_path, text, options)
             logger.info("Text-to-speech conversion successful.")
             logger.debug(response.to_json(indent=4))
             return
@@ -136,6 +139,8 @@ def cleanup(output_dir):
 
 
 async def main_async(pdf_path):
+    load_dotenv()
+    DEEPGRAM_API_KEY = os.getenv("DEEPGRAM_API_KEY")
     if not os.path.exists(pdf_path):
         print("The specified PDF file does not exist.")
         sys.exit(1)
