@@ -12,7 +12,6 @@ from PyPDF2 import PdfReader
 
 from deepgram import (
     DeepgramClient,
-    DeepgramClientOptions,
     ClientOptionsFromEnv,
     SpeakOptions,
 )
@@ -36,7 +35,7 @@ def setup_logging():
 
     file_handler = RotatingFileHandler(
         "app.log", maxBytes=10000000, backupCount=5
-    )  # noqa: F821
+    )
     file_handler.setLevel(logging.DEBUG)
 
     formatter = logging.Formatter(
