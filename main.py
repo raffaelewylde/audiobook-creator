@@ -2,20 +2,22 @@ import logging
 from logging.handlers import RotatingFileHandler
 import random
 import os
+import sys
 import aiofiles
 import asyncio
 from pathlib import Path
-
+from deepgram.utils import verboselogs
 from pydub import AudioSegment
 from PyPDF2 import PdfReader
 
 from deepgram import (
     DeepgramClient,
+    DeepgramClientOptions,
+    ClientOptionsFromEnv,
     SpeakOptions,
 )
 
-from deepgram.utils import verboselogs
-
+verboselogs.install()
 
 def setup_logging():
     """
@@ -54,15 +56,21 @@ logger = setup_logging()
 def extract_text_from_pdf(pdf_path):
     """Extract text from a PDF file."""
     logger.info("Converting your pdf, %s, to plain text", pdf_path)
+    filetype = type(pdf_path)
+    logger.debug("Type for pdf is %s", filetype)
     with open(pdf_path, "rb") as file:
         reader = PdfReader(file)
+        logger.debug("Opened pdf for reading as type: %s becoming type: %s", type(file), type(reader))
         text = "".join(page.extract_text() for page in reader.pages)
+    logger.debug("Text extracted from pdf: %s", text)
     return text
 
 
 async def chunk_text(text: str, chars_per_chunk: int = 2000) -> list[str]:
     """Split text into manageable chunks."""
-    return [text[i : i + chars_per_chunk] for i in range(0, len(text), chars_per_chunk)]
+    chunked_text = [text[i : i + chars_per_chunk] for i in range(0, len(text), chars_per_chunk)]
+    logger.debug("Chunked text type: %s, chunked text: %s", type(chunked_text), chunked_text)
+    return chunked_text
 
 
 async def text_to_speech(
@@ -76,14 +84,21 @@ async def text_to_speech(
     :param retries: The maximum number of retries.
     :param base_delay: The initial delay for exponential backoff in seconds.
     """
-    dg = DeepgramClient()
-    options = SpeakOptions(model="aura-angus-en")
+    #config: DeepgramClientOptions = DeepgramClientOptions(
+    #        verbose=verboselogs.SPAM,
+    #)
+    config=ClientOptionsFromEnv()
+    logger.debug("DeepgramClientOptions: %s", config)
+    deepgram = DeepgramClient(api_key="", config=config)
+    options = SpeakOptions(
+        model="aura-angus-en",
+    )
 
     for attempt in range(retries):
         try:
-            response = await dg.speak.rest.v("1").save(output_path, text, options)
+            response = await deepgram.speak.asyncrest.v("1").save(output_path, text, options)
             logger.info("Text-to-speech conversion successful.")
-            logger.debug(response.to_json(indent=4))
+            logger.info(response.to_json(indent=4))
             return
         except Exception as e:
             logger.error(f"Attempt {attempt + 1} failed: {e}")
@@ -100,12 +115,18 @@ async def text_to_speech(
 async def process_chunk(chunk_text, chunk_index, base_name, output_dir):
     """Process a single text chunk."""
     logger.info("Processing your chunked text now...")
-    chunk_file = output_dir / f"{base_name}_chunk_{chunk_index + 1}.txt"
+    # chunk_file = output_dir / f"{base_name}_chunk_{chunk_index + 1}.txt"
     audio_file = output_dir / f"{base_name}_chunk_{chunk_index + 1}.mp3"
+    logger.debug("Audio file: %s", audio_file)
+    logger.debug("parameters that were passed to process_chunk: %s, %s, %s, %s", chunk_text, chunk_index, base_name, output_dir)
 
-    async with aiofiles.open(chunk_file, "w", encoding="utf-8") as f:
-        await f.write(chunk_text)
-
+    # async with aiofiles.open(chunk_file, "w", encoding="utf-8") as f:
+    #   logger.debug("writing chunk text to file: %s", chunk_file)
+    #    await f.write(chunk_text)
+    
+    # async with aiofiles.open(chunk_file, "r", encoding="utf-8") as f:
+    #   logger.debug("reading text from file: %s", chunk_file)
+    #    text_to_convert = await f.read(chunk_file)
     await text_to_speech(chunk_text, audio_file)
     return audio_file
 
@@ -136,6 +157,7 @@ def cleanup(output_dir):
 
 
 async def main_async(pdf_path):
+    logger.debug("Running main function with parameter of: %s which is of type: %s", pdf_path, type(pdf_path))
     if not os.path.exists(pdf_path):
         print("The specified PDF file does not exist.")
         sys.exit(1)
@@ -143,6 +165,7 @@ async def main_async(pdf_path):
     logger.info("==================================")
 
     text = extract_text_from_pdf(pdf_path)
+    logger.debug("We've extracted text from your PDF: %s", text, type(text))
     base_name = pdf_path.stem
     output_dir = pdf_path.parent / f"{base_name}_chunks"
     output_dir.mkdir(exist_ok=True)
