@@ -16,7 +16,6 @@ from deepgram import (
     SpeakOptions,
 )
 
-verboselogs.install()
 
 def setup_logging():
     """
@@ -73,7 +72,7 @@ async def chunk_text(text: str, chars_per_chunk: int = 2000) -> list[str]:
 
 
 async def text_to_speech(
-    text: str, output_path: Path, retries: int = 5, base_delay: int = 2
+    text: str, output_path: Path, retries: int = 5, base_delay: int = 30
 ):
     """
     Convert text to speech using Deepgram, with exponential backoff for retries.
@@ -95,7 +94,7 @@ async def text_to_speech(
 
     for attempt in range(retries):
         try:
-            response = await deepgram.speak.asyncrest.v("1").save(output_path, text, options)
+            response = await deepgram.speak.asyncrest.v("1").save(output_path, {"text": text}, options)
             logger.info("Text-to-speech conversion successful.")
             logger.info(response.to_json(indent=4))
             return
@@ -114,19 +113,19 @@ async def text_to_speech(
 async def process_chunk(chunk_text, chunk_index, base_name, output_dir):
     """Process a single text chunk."""
     logger.info("Processing your chunked text now...")
-    # chunk_file = output_dir / f"{base_name}_chunk_{chunk_index + 1}.txt"
+    chunk_file = output_dir / f"{base_name}_chunk_{chunk_index + 1}.txt"
     audio_file = output_dir / f"{base_name}_chunk_{chunk_index + 1}.mp3"
     logger.debug("Audio file: %s", audio_file)
     logger.debug("parameters that were passed to process_chunk: %s, %s, %s, %s", chunk_text, chunk_index, base_name, output_dir)
 
-    # async with aiofiles.open(chunk_file, "w", encoding="utf-8") as f:
-    #   logger.debug("writing chunk text to file: %s", chunk_file)
-    #    await f.write(chunk_text)
+    async with aiofiles.open(chunk_file, "w", encoding="utf-8") as f:
+        logger.debug("writing chunk text to file: %s", chunk_file)
+        await f.write(chunk_text)
     
-    # async with aiofiles.open(chunk_file, "r", encoding="utf-8") as f:
-    #   logger.debug("reading text from file: %s", chunk_file)
-    #    text_to_convert = await f.read(chunk_file)
-    await text_to_speech(chunk_text, audio_file)
+    async with aiofiles.open(chunk_file, "r", encoding="utf-8") as f:
+        logger.debug("reading text from file: %s", chunk_file)
+        text_to_convert = await f.read(chunk_file)
+    await text_to_speech(text_to_convert, audio_file)
     return audio_file
 
 
@@ -155,7 +154,8 @@ def cleanup(output_dir):
         logger.warning(f"Failed to delete directory {output_dir}: {e}")
 
 
-async def main_async(pdf_path):
+async def main_async(pdf_file):
+    pdf_path = Path(pdf_file)
     logger.debug("Running main function with parameter of: %s which is of type: %s", pdf_path, type(pdf_path))
     if not os.path.exists(pdf_path):
         print("The specified PDF file does not exist.")
@@ -163,20 +163,23 @@ async def main_async(pdf_path):
     logger.info("Welcome to our Audio Book Creator")
     logger.info("==================================")
 
-    text = extract_text_from_pdf(pdf_path)
-    logger.debug("We've extracted text from your PDF: %s", text, type(text))
-    base_name = pdf_path.stem
-    output_dir = pdf_path.parent / f"{base_name}_chunks"
-    output_dir.mkdir(exist_ok=True)
+    try:
+        text = extract_text_from_pdf(pdf_path)
+        logger.debug("We've extracted text from your PDF: %s", text, type(text))
+        base_name = pdf_path.stem
+        output_dir = pdf_path.parent / f"{base_name}_chunks"
+        output_dir.mkdir(exist_ok=True)
 
-    chunks = await chunk_text(text)
-    tasks = [
-        process_chunk(chunk, i, base_name, output_dir) for i, chunk in enumerate(chunks)
-    ]
+        chunks = await chunk_text(text)
+        tasks = [
+            process_chunk(chunk, i, base_name, output_dir) for i, chunk in enumerate(chunks)
+        ]
+    except Exception as e:
+        logger.error("An error occurred during processing: %s", e)
 
     try:
         audio_files = await asyncio.gather(*tasks)
-        merged_audio_file = pdf_path.parent / f"{base_name}_merged.mp3"
+        merged_audio_file = output_dir / f"{base_name}_merged.mp3"
         await merge_audio_files(audio_files, merged_audio_file)
         print(f"Audio book created successfully: {merged_audio_file}")
     except Exception as e:

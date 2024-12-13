@@ -9,6 +9,7 @@ dependencies = [
     "asyncio>=3.4.3",
     "audioop-lts>=0.2.1",
     "deepgram-sdk>=3.7.7",
+    "ipython>=8.30.0",
     "pip>=24.3.1",
     "pydub>=0.25.1",
     "pypdf2>=3.0.1",
