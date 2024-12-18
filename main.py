@@ -1,4 +1,5 @@
 import logging
+import re
 from logging.handlers import RotatingFileHandler
 import random
 import os
@@ -14,6 +15,8 @@ from deepgram import (
     ClientOptionsFromEnv,
     SpeakOptions,
 )
+
+CLAUSE_BOUNDARIES = r'\.|\?|!|;|, (and|but|or|nor|for|yet|so)'
 
 
 def setup_logging():
@@ -65,9 +68,23 @@ def extract_text_from_pdf(pdf_path):
 
 async def chunk_text(text: str, chars_per_chunk: int = 2000) -> list[str]:
     """Split text into manageable chunks."""
-    chunked_text = [text[i : i + chars_per_chunk] for i in range(0, len(text), chars_per_chunk)]
-    logger.debug("Chunked text type: %s, chunked text: %s", type(chunked_text), chunked_text)
-    return chunked_text
+    # Find clause boundaries using regular expression
+    clause_boundaries = re.finditer(CLAUSE_BOUNDARIES, text)
+    boundaries_indices = [boundary.start() for boundary in clause_boundaries]
+
+    chunks = []
+    start = 0
+    for boundary_index in boundaries_indices:
+        chunks.append(text[start:boundary_index + 1].strip())
+        start = boundary_index + 1
+    # Append the remaining part of the text
+    chunks.append(text[start:].strip())
+
+    return chunks
+
+    #chunked_text = [text[i : i + chars_per_chunk] for i in range(0, len(text), chars_per_chunk)]
+    #logger.debug("Chunked text type: %s, chunked text: %s", type(chunked_text), chunked_text)
+    #return chunked_text
 
 
 async def text_to_speech(
