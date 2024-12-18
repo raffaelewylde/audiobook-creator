@@ -1,0 +1,31 @@
+gs . Click the Add link for Entries, or click Entries  and then
+choose Add entry . You should see a drop-down list to select the topic
+you’re creating an entry for and a text box for adding an entry . Select Chess
+from the drop-down list, and add an entry . Here’ s the first entry I made:
+The opening is the first part of the game, r oughly the first ten moves
+or so. In the opening, it’ s a good idea to do thr ee things—bring out
+your bishops and knights, try to contr ol the center of the boar d, and
+castle your king.
+Of course, these ar e just guidelines. It will be important to learn when
+to follow these guidelines and when to disr egard these suggestions.
+When you click Save , you’ll be brought back to the main admin page for
+entries. Here, you’ll see the benefit of using text[:50]  as the stringrepresentation for each entry; it’ s much easier to work with multiple entries
+in the admin interface if you see only the first part of an entry , rather than
+the entire text of each entry .
+Make a second entry for Chess and one entry for Rock Climbing so we
+have some initial data. Here’ s a second entry for Chess:
+In the opening phase of the game, it’ s important to bring out your
+bishops and knights. These pieces ar e powerful and maneuverable
+enough to play a significant r ole in the beginning moves of a game.
+And here’ s a first entry for Rock Climbing:
+One of the most important concepts in climbing is to keep your weight
+on your feet as much as possible. Ther e’s a myth that climbers can
+hang all day on their arms. In r eality , good climbers have practiced
+specific ways of keeping their weight over their feet whenever
+possible.
+These three entries will give us something to work with as we continue to
+develop Learning Log.
+The Django Shell
+Now that we’ve entered some data, we can examine it programmatically
+through an interactive terminal session. This interactive environment iscalled the Django shell , and it’ s a great environment for testing and
+troubleshooting you

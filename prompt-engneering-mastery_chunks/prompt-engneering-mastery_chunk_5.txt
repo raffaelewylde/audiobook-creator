@@ -1,0 +1,35 @@
+this book is on prompting techniques
+rather than traditional coding skills. The code can all be found on GitHub ,
+and we will link to the relevant notebooks throughout. It’ s highly
+recommended that you utilize the GitHub repository  and run the provided
+examples while reading the book.
+For non-notebook examples, you can run the script with the format
+python content/chapter_x/script.py  in your terminal, where x
+is the chapter number and script.py  is the name of the script. In some
+instances, API keys need to be set as environment variables, and we will
+make that clear . The packages used update frequently , so install our
+requir ements.txt  in a virtual environment before running code examples.
+The requir ements.txt  file is generated for Python 3.9. If you want to use a
+different version of Python, you can generate a new requir ements.txt  from
+this requir ements.in  file found within the GitHub repository , by running
+these commands:
+`pip install pip-tools`
+`pip-compile requirements.in`
+For Mac users:
+1. Open Terminal: You can find the Terminal application in your
+Applications folder , under Utilities, or use Spotlight to search for it.2. Navigate to your project folder: Use the cd command to change the
+directory to your project folder . For example: cd
+path/to/your/project .
+3. Create the virtual environment: Use the following command to create a
+virtual environment named venv  (you can name it anything):
+python3 -m venv venv .
+4. Activate the virtual environment: Before you install packages, you need
+to activate the virtual environment. Do this with the command source
+venv/bin/activate .
+5. Install packages: Now that your virtual environment is active, you can
+install packages using pip . To install packages from the
+requir ements.txt  file, use pip install -r requirements.txt .
+6. Deactivate virtual environment: When you’re done, you can deactivate
+the virtual environment by typing deactivate .
+For Windows users:
+1. Open Command Prompt: You can search for cmd

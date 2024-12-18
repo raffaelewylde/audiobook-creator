@@ -1,0 +1,39 @@
+ctionary and
+then place the key inside a set of square brackets, as shown here:
+alien.py
+alien_0 = {'color': 'green'}
+print(alien_0['color'])
+This returns the value associated with the key 'color'  from the
+dictionary alien_0 :
+green
+You can have an unlimited number of key-value pairs in a dictionary . For
+example, here’ s the original alien_0  dictionary with two key-value pairs:
+alien_0 = {'color': 'green', 'points': 5}Now you can access either the color or the point value of alien_0 . If a
+player shoots down this alien, you can look up how many points they
+should earn using code like this:
+alien_0 = {'color': 'green', 'points': 5}
+new_points = alien_0['points']
+print(f"You just earned {new_points} points!")
+Once the dictionary has been defined, we pull the value associated with the
+key 'points'  from the dictionary . This value is then assigned to the
+variable new_points . The last line prints a statement about how many
+points the player just earned:
+You just earned 5 points!
+If you run this code every time an alien is shot down, the alien’ s point value
+will be retrieved.
+Adding New Key-V alue Pairs
+Dictionaries are dynamic structures, and you can add new key-value pairs
+to a dictionary at any time. To add a new key-value pair , you would give the
+name of the dictionary followed by the new key in square brackets, along
+with the new value.Let’s add two new pieces of information to the alien_0  dictionary: the
+alien’ s x- and y-coordinates, which will help us display the alien at a
+particular position on the screen. Let’ s place the alien on the left edge of the
+screen, 25 pixels down from the top. Because screen coordinates usually
+start at the upper -left corner of the screen, we’ll place the alien on the left
+edge of the screen by setting the x-coordinate to 0 and 25 pixels from the
+top by setting its y-coordinate to positive 25, as shown here:
+alien.py
+alien_0 = {'color': 'green', 'points': 5}
+print(alien_0)
+alien_0['x_position'] = 0
+alien_0['y_position'] = 25

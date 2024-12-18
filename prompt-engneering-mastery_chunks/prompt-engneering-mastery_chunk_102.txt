@@ -1,0 +1,38 @@
+age for majority vote classification.
+Criteria Evaluation
+In Chapter 1 , a human-based evaluation system was used with a simple
+thumbs-up/thumbs-down rating system to identify how often a response met
+our expectations. Rating manually can be expensive and tedious, requiring a
+qualified human to judge quality or identify errors. While this work can be
+outsourced to low-cost raters on services such as Mechanical Turk,
+designing such a task in a way that gets valid results can itself be time-
+consuming and error prone. One increasingly common approach is to use a
+more sophisticated LLM to evaluate the responses of a smaller model.The evidence is mixed on whether LLMs can act as ef fective evaluators,
+with some studies claiming LLMs are human-level evaluators  and others
+identifying inconsistencies in how LLMs evaluate . In our experience, GPT -
+4 is a useful evaluator with consistent results across a diverse set of tasks. In
+particular , GPT -4 is ef fective and reliable in evaluating the responses from
+smaller , less sophisticated models like GPT -3.5-turbo. In the example that
+follows, we generate concise and verbose examples of answers to a
+question using GPT -3.5-turbo, ready for rating with GPT -4.
+Input:
+from openai import OpenAI
+import os
+client = OpenAI(api_key=os.environ.get("OPENAI_API_KE
+responses  = []
+for i in range(10):
+    # concise if even, verbose if odd
+    style = "concise"  if i % 2 == 0 else "verbose"
+    if style == "concise" :
+        prompt = f"""Return a {style} answer to the
+        following question: What is the meaning of li
+    else:
+        prompt = f"""Return an answer to the followin        question: What is the meaning of life?"""
+    response  = client.chat.completions .create(
+        # using GPT-3.5 Turbo for this example
+        model="gpt-3.5-turbo" ,
+        messages =[{"role": "user",
+            "content" : prompt}])
+    responses .append(
+        response .choices[0].message.content.strip())
+system_prompt  = """You are assessi

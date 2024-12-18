@@ -1,0 +1,30 @@
+takes a long time to find;
+you are absolutely not alone in this experience.TRY IT YOURSELF
+4-1. Pizzas:  Think of at least three kinds of your favorite pizza. Store these pizza names in a list,
+and then use a for  loop to print the name of each pizza.
+Modify your for  loop to print a sentence using the name of the pizza, instead of printing
+just the name of the pizza. For each pizza, you should have one line of output containing a
+simple statement like I like pepper oni pizza .
+Add a line at the end of your program, outside the for  loop, that states how much you like
+pizza. The output should consist of three or more lines about the kinds of pizza you like and
+then an additional sentence, such as I really love pizza!
+4-2. Animals:  Think of at least three dif ferent animals that have a common characteristic. Store
+the names of these animals in a list, and then use a for  loop to print out the name of each
+animal.
+Modify your program to print a statement about each animal, such as A dog would make a
+great pet.
+Add a line at the end of your program, stating what these animals have in common. You
+could print a sentence, such as Any of these animals would make a gr eat pet!
+Making Numerical Lists
+Many reasons exist to store a set of numbers. For example, you’ll need to
+keep track of the positions of each character in a game, and you might want
+to keep track of a player ’s high scores as well. In data visualizations, you’ll
+almost always work with sets of numbers, such as temperatures, distances,population sizes, or latitude and longitude values, among other types of
+numerical sets.
+Lists are ideal for storing sets of numbers, and Python provides a variety of
+tools to help you work ef ficiently with lists of numbers. Once you
+understand how to use these tools ef fectively , your code will work well
+even when your lists contain millions of items.
+Using the range() Function
+Python’ s range()  function makes it easy to generate a series of numbers.
+For example, you can use 

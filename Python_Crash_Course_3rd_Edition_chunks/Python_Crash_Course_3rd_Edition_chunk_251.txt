@@ -1,0 +1,43 @@
+he
+status of the moving_right  flag. The update()  method will change
+the position of the ship if the flag is set to True . We’ll call this method
+once on each pass through the while  loop to update the position of the
+ship.
+Here are the changes to Ship :ship.py
+class Ship:
+    """A class to manage the ship."""
+    def __init__(self, ai_game):
+        --snip--
+        # Start each new ship at the bottom center of
+        self.rect.midbottom = self.screen_rect.midbot
+        # Movement flag; start with a ship that's not
+❶         self.moving_right = False
+❷     def update(self):
+        """Update the ship's position based on the mo
+        if self.moving_right:
+            self.rect.x += 1
+    def blitme(self):
+        --snip--
+We add a self.moving_right  attribute in the __init__()  method
+and set it to False  initially ❶. Then we add update() , which moves
+the ship right if the flag is True  ❷. The update()  method will be called
+from outside the class, so it’ s not considered a helper method.Now we need to modify _check_events()  so that moving_right  is
+set to True  when the right arrow key is pressed and False  when the key
+is released:
+alien_invasion.py
+    def _check_events(self):
+        """Respond to keypresses and mouse events."""
+        for event in pygame.event.get():
+            --snip--
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RIGHT:
+❶                     self.ship.moving_right = True
+❷             elif event.type == pygame.KEYUP:
+                if event.key == pygame.K_RIGHT:
+                    self.ship.moving_right = False
+Here, we modify how the game responds when the player presses the right
+arrow key: instead of changing the ship’ s position directly , we merely set
+moving_right  to True  ❶. Then we add a new elif  block, which
+responds to KEYUP  events ❷. When the player releases the right arrow key
+(K_RIGHT ), we set moving_right  to False .
+Next, we modify the while  loop in run_game()  so it ca

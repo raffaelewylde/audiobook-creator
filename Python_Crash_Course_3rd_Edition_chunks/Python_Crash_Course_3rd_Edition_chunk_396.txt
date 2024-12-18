@@ -1,0 +1,44 @@
+
+--snip--
+❶ def topic(request, topic_id):
+    """Show a single topic and all its entries."""
+❷     topic = Topic.objects.get(id=topic_id)
+❸     entries = topic.entry_set.order_by('-date_added')
+❹     context = {'topic': topic, 'entries': entries}
+❺     return render(request, 'learning_logs/topic.html'
+This is the first view function that requires a parameter other than the
+request  object. The function accepts the value captured by the
+expression /<int:topic_id>/  and assigns it to topic_id  ❶. Then
+we use get()  to retrieve the topic, just as we did in the Django shell ❷.
+Next, we get all of the entries associated with this topic and order them
+according to date_added  ❸. The minus sign in front of date_added
+sorts the results in reverse order , which will display the most recent entries
+first. We store the topic and entries in the context  dictionary ❹ and call
+render()  with the request  object, the topic.html  template, and the
+context  dictionary ❺.NOTE
+The code phrases at ❷ and ❸ are called queries , because they
+query the database for specific information. When you’r e writing
+queries like these in your own pr ojects, it’ s helpful to try them out in
+the Django shell first. Y ou’ll get much quicker feedback in the shell
+than you would by writing a view and template and then checking
+the results in a br owser .
+The Topic Template
+The template needs to display the name of the topic and the entries. We also
+need to inform the user if no entries have been made yet for this topic.
+topic.html
+{% extends 'learning_logs/base.html' %}
+{% block content %}
+❶   <p>Topic: {{ topic.text }}</p>
+  <p>Entries:</p>❷   <ul>
+❸     {% for entry in entries %}
+      <li>
+❹         <p>{{ entry.date_added|date:'M d, Y H:i' }}</
+❺         <p>{{ entry.text|linebreaks }}</p>
+      </li>
+❻     {% empty %}
+      <li>There are no entries for this topic yet.</l
+    {% endfor %}
+  </ul>
+{% endblock content %}
+We extend base.html , as we’ll do for all pages in the project. Next, we show
+the t

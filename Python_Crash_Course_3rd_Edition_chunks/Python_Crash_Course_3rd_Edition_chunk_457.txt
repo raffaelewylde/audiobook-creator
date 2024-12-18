@@ -1,0 +1,30 @@
+nd you want to use it, simply use py anywhere you see the
+python  or python3  command in this book.
+Rerunning the Installer
+The most common reason python  doesn’ t work is that people for get to
+select the Add Python to P ATH option when running the installer; this is an
+easy mistake to make. The PATH  variable is a system setting that tells
+Python where to look for commonly used programs. In this case, Windows
+doesn’ t know how to find the Python interpreter .
+The simplest fix in this situation is to run the installer again. If there’ s a
+newer installer available from https://python.or g, download the new
+installer and run it, making sure to check the Add Python to P ATH box.
+If you already have the latest installer , run it again and select the Modify
+option. You’ll see a list of optional features; keep the default options
+selected on this screen. Then click Next  and check the Add Python to
+Envir onment Variables  box. Finally , click Install . The installer willrecognize that Python is already installed, and it will add the location of the
+Python interpreter to the PATH  variable. Make sure you close any open
+terminals, because they’ll still be using the old PATH  variable. Open a new
+terminal window and issue the command python  again; you should see a
+Python prompt ( >>> ).
+Python on macOS
+The installation instructions in Chapter 1  use the of ficial Python installer at
+https://python.or g. The of ficial installer has been working well for years
+now, but there are a few things that can get you of f track. This section will
+help if anything isn’ t working in a straightforward manner .
+Accidentally Installing Apple’ s Version of Python
+If you run the python3  command and Python is not yet installed on your
+system, you’ll most likely see a message that the command line developer
+tools  need to be installed. The best approach at this point is to close the pop-
+up showing this message, download the Python installer from https://pytho
+n.org, and run the installer .

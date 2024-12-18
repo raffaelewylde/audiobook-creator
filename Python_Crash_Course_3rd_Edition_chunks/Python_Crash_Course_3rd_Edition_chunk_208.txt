@@ -1,0 +1,35 @@
+block that matches that
+error ❶. Python then runs the code in that block when the file can’ t be
+found, and the result is a friendly error message instead of a traceback:
+Sorry, the file alice.txt does not exist.
+The program has nothing more to do if the file doesn’ t exist, so this is all
+the output we see. Let’ s build on this example and see how exception
+handling can help when you’re working with more than one file.Analyzing Text
+You can analyze text files containing entire books. Many classic works of
+literature are available as simple text files because they are in the public
+domain. The texts used in this section come from Project Gutenber g (http
+s://gutenber g.org). Project Gutenber g maintains a collection of literary
+works that are available in the public domain, and it’ s a great resource if
+you’re interested in working with literary texts in your programming
+projects.
+Let’s pull in the text of Alice in W onderland  and try to count the number of
+words in the text. To do this, we’ll use the string method split() , which
+by default splits a string wherever it finds any whitespace:
+from pathlib import Path
+path = Path('alice.txt')
+try:
+    contents = path.read_text(encoding='utf-8')
+except FileNotFoundError:
+    print(f"Sorry, the file {path} does not exist.")
+else:
+    # Count the approximate number of words in the fi
+❶     words = contents.split()❷     num_words = len(words)
+    print(f"The file {path} has about {num_words} wor
+I moved the file alice.txt  to the correct directory , so the try  block will
+work this time. We take the string contents , which now contains the
+entire text of Alice in W onderland  as one long string, and use split()  to
+produce a list of all the words in the book ❶. Using len()  on this list ❷
+gives us a good approximation of the number of words in the original text.
+Lastly , we print a statement that reports how many words were found in the
+file. This code is placed in the else  block because it only works if the
+code in the 

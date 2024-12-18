@@ -1,0 +1,35 @@
+ letter l and the uppercase letter O
+because they could be confused with the numbers 1 and 0.
+It can take some practice to learn how to create good variable names,
+especially as your programs become more interesting and complicated. As
+you write more programs and start to read through other people’ s code,
+you’ll get better at coming up with meaningful names.
+NOTE
+The Python variables you’r e using at this point should be lower case.
+You won’ t get err ors if you use upper case letters, but upper case
+letters in variable names have special meanings that we’ll discuss in
+later chapters.Avoiding Name Err ors When Using Variables
+Every programmer makes mistakes, and most make mistakes every day .
+Although good programmers might create errors, they also know how to
+respond to those errors ef ficiently . Let’ s look at an error you’re likely to
+make early on and learn how to fix it.
+We’ll write some code that generates an error on purpose. Enter the
+following code, including the misspelled word mesage , which is shown in
+bold:
+message = "Hello Python Crash Course reader!"
+print(mesage)
+When an error occurs in your program, the Python interpreter does its best
+to help you figure out where the problem is. The interpreter provides a
+traceback when a program cannot run successfully . A traceback  is a record
+of where the interpreter ran into trouble when trying to execute your code.
+Here’ s an example of the traceback that Python provides after you’ve
+accidentally misspelled a variable’ s name:
+Traceback (most recent call last):
+❶   File "hello_world.py", line 2, in <module>
+❷     print(mesage)          ^^^^^^
+❸ NameError: name 'mesage' is not defined. Did you mean
+The output reports that an error occurs in line 2 of the file hello_world.py
+❶. The interpreter shows this line ❷ to help us spot the error quickly and
+tells us what kind of error it found ❸. In this case it found a name err or and
+reports that the variable being printed, mesage , has not been defined.
+Python can’

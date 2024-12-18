@@ -1,0 +1,42 @@
+ion_regex  = re.compile(r"\* (.+)" )
+subsection_regex  = re.compile(r"\s*([a-z]\..+)" )
+result_dict  = {}
+current_section  = None
+for line in openai_result .split("\n"):
+    section_match  = section_regex .match(line)    subsection_match  = subsection_regex .match(line)
+    if section_match :
+        current_section  = section_match .group(1)
+        result_dict [current_section ] = []
+    elif subsection_match  and current_section  is not 
+        result_dict [current_section ].append(subsectio
+print(result_dict )
+This will output:
+{
+    "Introduction" : [
+        "a. Explanation of data engineering" ,
+        "b. Importance of data engineering in today’s
+    ],
+    "Efficient Data Management" : [
+        "a. Definition of data management" ,
+        "b. How data engineering helps in efficient d
+    ],
+    "Conclusion" : [
+        "a. Importance of data engineering in the mod
+        "b. Future of data engineering and its impact
+    ]
+}The section title regex, r'\* (.+)' , matches an asterisk followed by a
+space and then one or more characters. The parentheses capture the text
+following the asterisk and space to be used later in the code.
+The subsection regex, r'\s*([a-z]\..+)' , starts with \s* , which
+matches zero or more whitespace characters (spaces or tabs). This allows
+the regex to match subsections with or without leading spaces or tabs. The
+following part, ([a-z]\..+) , matches a lowercase letter followed by a
+period and then one or more characters. The parentheses capture the entire
+matched subsection text for later use in the code.
+The for  loop iterates over each line in the input string,
+openai_result . Upon encountering a line that matches the section title
+regex, the loop sets the matched title as the current section and assigns an
+empty list as its value in the result_dict  dictionary . When a line
+matches the subsection regex, the matched subsection text is appended to
+the list corresponding to the current section.
+Consequently , the loop processes t

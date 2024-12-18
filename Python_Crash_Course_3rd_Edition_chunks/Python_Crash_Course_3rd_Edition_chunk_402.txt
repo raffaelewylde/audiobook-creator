@@ -1,0 +1,36 @@
+t the user can fill out.
+If the request method is POST , the else  block runs and processes the data
+submitted in the form. We make an instance of TopicForm  ❸ and pass it
+the data entered by the user , which is assigned to request.POST . The
+form  object that’ s returned contains the information submitted by the user .
+We can’ t save the submitted information in the database until we’ve
+checked that it’ s valid ❹. The is_valid()  method checks that all
+required fields have been filled in (all fields in a form are required by
+default) and that the data entered matches the field types expected—for
+example, that the length of text  is less than 200 characters, as we
+specified in models.py  in Chapter 18 . This automatic validation saves us a
+lot of work. If everything is valid, we can call save()  ❺, which writes the
+data from the form to the database.
+Once we’ve saved the data, we can leave this page. The redirect()
+function takes in the name of a view and redirects the user to the page
+associated with that view . Here we use redirect()  to redirect the user ’s
+browser to the topics  page ❻, where the user should see the topic they
+just entered in the list of topics.
+The context  variable is defined at the end of the view function, and the
+page is rendered using the template new_topic.html , which we’ll createnext. This code is placed outside of any if block; it will run if a blank
+form was created, and it will run if a submitted form is determined to be
+invalid. An invalid form will include some default error messages to help
+the user submit acceptable data.
+The new_topic Template
+Now we’ll make a new template called new_topic.html  to display the form
+we just created:
+new_topic.html
+{% extends "learning_logs/base.html" %}
+{% block content %}
+  <p>Add a new topic:</p>
+❶   <form action="{% url 'learning_logs:new_topic' %}" 
+❷     {% csrf_token %}
+❸     {{ form.as_div }}
+❹     <button name="submit">Add topic</button>
+  </form>
+{% endblock content %}This template exten

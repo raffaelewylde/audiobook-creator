@@ -1,0 +1,36 @@
+rint(f"{magician.title()}, that was a great tric
+The only dif ference in this code is where we compose a message to each
+magician, starting with that magician’ s name. The first time through the
+loop the value of magician  is 'alice' , so Python starts the first
+message with the name 'Alice' . The second time through, the message
+will begin with 'David' , and the third time through, the message will
+begin with 'Carolina' .
+The output shows a personalized message for each magician in the list:Alice, that was a great trick!
+David, that was a great trick!
+Carolina, that was a great trick!
+You can also write as many lines of code as you like in the for  loop.
+Every indented line following the line for magician in magicians
+is considered  inside the loop , and each indented line is executed once for
+each value in the list. Therefore, you can do as much work as you like with
+each value in the list.
+Let’s add a second line to our message, telling each magician that we’re
+looking forward to their next trick:
+magicians = ['alice', 'david', 'carolina']
+for magician in magicians:
+    print(f"{magician.title()}, that was a great tric
+    print(f"I can't wait to see your next trick, {mag
+Because we have indented both calls to print() , each line will be
+executed once for every magician in the list. The newline ( "\n" ) in the
+second print()  call inserts a blank line after each pass through the loop.
+This creates a set of messages that are neatly grouped for each person in the
+list:Alice, that was a great trick!
+I can't wait to see your next trick, Alice.
+David, that was a great trick!
+I can't wait to see your next trick, David.
+Carolina, that was a great trick!
+I can't wait to see your next trick, Carolina.
+You can use as many lines as you like in your for  loops. In practice,
+you’ll often find it useful to do a number of dif ferent operations with each
+item in a list when you use a for  loop.
+Doing Something After  a for  Loop
+What happens once a for  loop has finished executi

@@ -1,0 +1,41 @@
+orn  will handle requests ❹. This command takes
+the place of the python manage.py runserver  command we’ve been
+using locally .
+The locations  section tells Platform.sh where to send incoming requests
+❺. Most requests should be passed through to gunicorn ; our urls.py  files
+will tell gunicorn  exactly how to handle those requests. Requests for
+static files will be handled separately and will be refreshed once an hour .
+The last line shows that we’re requesting 512MB of disk space on one of
+Platform.sh’ s servers ❻.
+The rest of .platform.app.yaml  is as follows:
+--snip--
+disk: 512
+# Set a local read/write mount for logs.
+❶ mounts:
+    "logs":
+        source: local
+        source_path: logs
+# The hooks executed at various points in the lifecyc
+❷ hooks:
+    build: |
+❸         pip install --upgrade pip        pip install -r requirements.txt
+        pip install -r requirements_remote.txt
+        mkdir logs
+❹         python manage.py collectstatic
+        rm -rf logs
+❺     deploy: |
+        python manage.py migrate
+The mounts  section ❶ lets us define directories where we can read and
+write data while the project is running. This section defines a logs/  directory
+for the deployed project.
+The hooks  section ❷ defines actions that are taken at various points
+during the deployment process. In the build  section, we install all the
+packages that are required to serve the project in the live environment ❸.
+We also run collectstatic  ❹, which collects all the static files needed
+for the project into one place so they can be served ef ficiently .
+Finally , in the deploy  section ❺, we specify that migrations should be run
+each time the project is deployed. In a simple project, this will have no
+effect when there have been no changes.
+The other two configuration files are much shorter; let’ s write them now .The r outes.yaml Configuration File
+A route is the path a request takes as it’ s processed by the server . When a
+request is received by Platform.sh, it needs to know wher

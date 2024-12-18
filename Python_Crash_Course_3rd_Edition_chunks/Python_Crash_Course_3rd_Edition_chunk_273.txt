@@ -1,0 +1,43 @@
+e it in the fleet.
+        new_alien = Alien(self)
+        new_alien.x = x_position
+        new_alien.rect.x = x_position
+        new_alien.rect.y = y_position
+        self.aliens.add(new_alien)
+We modify the definition of the method to accept the y-value for the new
+alien, and we set the vertical position of the rect  in the body of the
+method.
+When you run the game now , you should see a full fleet of aliens, as shown
+in Figure 13-4 .Figure 13-4 : The full fleet appears.
+In the next section, we’ll make the fleet move!TRY IT YOURSELF
+13-1. Stars:  Find an image of a star . Make a grid of stars appear on the screen.
+13-2. Better  Stars:  You can make a more realistic star pattern by introducing randomness when
+you place each star . Recall from Chapter 9  that you can get a random number like this:
+from random import randint
+random_number = randint(-10, 10)
+This code returns a random integer between −10 and 10. Using your code in Exercise 13-1,
+adjust each star ’s position by a random amount.
+Making the Fleet Move
+Now let’ s make the fleet of aliens move to the right across the screen until it
+hits the edge, and then make it drop a set amount and move in the other
+direction. We’ll continue this movement until all aliens have been shot
+down, one collides with the ship, or one reaches the bottom of the screen.
+Let’s begin by making the fleet move to the right.
+Moving the Aliens Right
+To move the aliens, we’ll use an update()  method in alien.py , which
+we’ll call for each alien in the group of aliens. First, add a setting to controlthe speed of each alien:
+settings.py
+    def __init__(self):
+        --snip--
+        # Alien settings
+        self.alien_speed = 1.0
+Then use this setting to implement update()  in alien.py :
+alien.py
+    def __init__(self, ai_game):
+        """Initialize the alien and set its starting 
+        super().__init__()
+        self.screen = ai_game.screen
+        self.settings = ai_game.settings
+        --snip--
+    def update(self):
+        """M

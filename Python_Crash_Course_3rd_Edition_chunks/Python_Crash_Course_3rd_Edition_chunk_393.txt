@@ -1,0 +1,45 @@
+
+topics , or the pattern won’ t match. Any request with a URL  that matches
+this pattern will then be passed to the function topics()  in views.py .
+The Topics View
+The topics()  function needs to retrieve some data from the database and
+send it to the template. Add the following to views.py :
+views.py
+from django.shortcuts import render
+❶ from .models import Topic
+def index(request):
+    --snip--
+❷ def topics(request):
+    """Show all topics."""
+❸     topics = Topic.objects.order_by('date_added')
+❹     context = {'topics': topics}
+❺     return render(request, 'learning_logs/topics.htmlWe first import the model associated with the data we need ❶. The
+topics()  function needs one parameter: the request  object Django
+received from the server ❷. We query the database by asking for the
+Topic  objects, sorted by the date_added  attribute ❸. We assign the
+resulting queryset to topics .
+We then define a context that we’ll send to the template ❹. A context  is a
+dictionary in which the keys are names we’ll use in the template to access
+the data we want, and the values are the data we need to send to the
+template. In this case, there’ s one key-value pair , which contains the set of
+topics we’ll display on the page. When building a page that uses data, we
+call render()  with the request  object, the template we want to use,
+and the context  dictionary ❺.
+The Topics Template
+The template for the topics page receives the context  dictionary , so the
+template can use the data that topics()  provides. Make a file called
+topics.html  in the same directory as index.html . Here’ s how we can display
+the topics in the template:
+topics.html
+{% extends 'learning_logs/base.html' %}
+{% block content %}  <p>Topics</p>
+❶   <ul>
+❷     {% for topic in topics %}
+❸       <li>{{ topic.text }}</li>
+❹     {% empty %}
+      <li>No topics have been added yet.</li>
+❺     {% endfor %}
+❻   </ul>
+{% endblock content %}
+We use the {% extends %}  tag to inherit from base.html , just as we did
+on the ho

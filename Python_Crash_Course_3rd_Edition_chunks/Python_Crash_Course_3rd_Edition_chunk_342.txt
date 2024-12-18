@@ -1,0 +1,37 @@
+at clearly show the global distribution of
+earthquakes.
+Downloading Earthquake Data
+Make a folder called eq_data  inside the folder where you’re saving this
+chapter ’s programs. Copy the file eq_1_day_m1.geojson  into this new
+folder . Earthquakes are categorized by their magnitude on the Richter scale.
+This file includes data for all earthquakes with a magnitude M1 or greater
+that took place in the last 24 hours (at the time of this writing). This data
+comes from one of the United States Geological Survey’ s earthquake data
+feeds, at https://earthquake.usgs.gov/earthquakes/feed .
+Examining GeoJSON Data
+When you open eq_1_day_m1.geojson , you’ll see that it’ s very dense and
+hard to read:{"type":"FeatureCollection","metadata":{"generated":1
+{"type":"Feature","properties":{"mag":1.6,"place":"63
+{"type":"Feature","properties":{"mag":2.2,"place":"27
+{"type":"Feature","properties":{"mag":3.7,"place":"10
+{"type":"Feature","properties":{"mag":2.92000008,"pla
+{"type":"Feature","properties":{"mag":1.4,"place":"44
+--snip--
+This file is formatted more for machines than humans. But we can see that
+the file contains some dictionaries, as well as information that we’re
+interested in, such as earthquake magnitudes and locations.
+The json  module provides a variety of tools for exploring and working
+with JSON data. Some of these tools will help us reformat the file so we
+can look at the raw data more easily before we work with it
+programmatically .
+Let’s start by loading the data and displaying it in a format that’ s easier to
+read. This is a long data file, so instead of printing it, we’ll rewrite the data
+to a new file. Then we can open that file and scroll back and forth through
+the data more easily:
+eq_explor e_data.pyfrom pathlib import Path
+import json
+# Read data as a string and convert to a Python objec
+path = Path('eq_data/eq_data_1_day_m1.geojson')
+contents = path.read_text(encoding='utf-8')
+❶ all_eq_data = json.loads(contents)
+# Create a more readable version of the dat

@@ -1,0 +1,47 @@
+.csv , which contains a full year ’s worth of
+weather data for Sitka, to the folder where you’re storing the data for this
+chapter ’s programs.
+Now we can generate a graph for the entire year ’s weather:
+sitka_highs.py--snip--
+path = Path('weather_data/sitka_weather_2021_simple.c
+lines = path.read_text(encoding='utf-8').splitlines()
+--snip--
+# Format plot.
+ax.set_title("Daily High Temperatures, 2021", fontsiz
+ax.set_xlabel('', fontsize=16)
+--snip--
+We modify the filename to use the new data file
+sitka_weather_2021_simple.csv , and we update the title of our plot to
+reflect the change in its content. Figure 16-3  shows the resulting plot.Figure 16-3 : A year ’s worth of data
+Plotting a Second Data Series
+We can make our graph even more useful by including the low
+temperatures. We need to extract the low temperatures from the data file
+and then add them to our graph, as shown here:
+sitka_highs_lows.py
+--snip--
+reader = csv.reader(lines)
+header_row = next(reader)
+# Extract dates, and high and low temperatures.
+❶ dates, highs, lows = [], [], []for row in reader:
+    current_date = datetime.strptime(row[2], '%Y-%m-%
+    high = int(row[4])
+❷     low = int(row[5])
+    dates.append(current_date)
+    highs.append(high)
+    lows.append(low)
+# Plot the high and low temperatures.
+plt.style.use('seaborn-v0_8')
+fig, ax = plt.subplots()
+ax.plot(dates, highs, color='red')
+❸ ax.plot(dates, lows, color='blue')
+# Format plot.
+❹ ax.set_title("Daily High and Low Temperatures, 2021",
+--snip--
+We add the empty list lows  to hold low temperatures ❶, and then we
+extract and store the low temperature for each date from the sixth position
+in each row ( row[5] ) ❷. We add a call to plot()  for the low
+temperatures and color these values blue ❸. Finally , we update the title ❹.
+Figure 16-4  shows the resulting chart.Figure 16-4 : Two data series on the same plot
+Shading an Area in the Chart
+Having added two data series, we can now examine the range of
+temperatures for each day . Let’ s add a fi

@@ -1,0 +1,39 @@
+The sun is shining." - Neutral
+2. "Your support team is fantastic!" - Compliment
+3. "I had a terrible experience with your software." 
+You must follow the following principles:
+- Only return the single classification word. The res
+"Compliment", "Complaint", or "Neutral".
+- Perform the classification on the text enclosed wit
+"""The user interface is intuitive."""
+Classification:
+Compliment
+Several good use cases for LLM classification include:
+Customer r eviews
+Classify user reviews into categories like “Positive,” “Negative,” or
+“Neutral.” Dive deeper by further identifying subthemes such as
+“Usability ,” “Customer Support,” or “Price.”
+Email filteringDetect the intent or purpose of emails and classify them as “Inquiry ,”
+“Complaint,” “Feedback,” or “Spam.” This can help businesses
+prioritize responses and manage communications ef ficiently .
+Social media sentiment analysis
+Monitor brand mentions and sentiment across social media
+platforms. Classify posts or comments as “Praise,” “Critic,” “Query ,”
+or “Neutral.” Gain insights into public perception and adapt
+marketing or PR strategies accordingly .
+News article categorization
+Given the vast amount of news generated daily , LLMs can classify
+articles by themes or topics such as “Politics,” “T echnology ,”
+“Environment,” or “Entertainment.”
+Résumé scr eening
+For HR departments inundated with résumés, classify them based on
+predefined criteria like “Qualified,” “Overqualified,”
+“Underqualified,” or categorize by expertise areas such as “Software
+Development,” “Marketing,” or “Sales.”
+WARNING
+Be aware that exposing emails, résumés, or sensitive data does run the risk of data being leaked into
+OpenAI’ s future models as training data.Majority Vote for Classification
+Utilizing multiple LLM requests can help in reducing the variance of your
+classification labels. This process, known as majority vote , is somewhat like
+choosing the most common fruit out of a bunch. For instance, if you have
+10 pieces of fruit and 6 out of 

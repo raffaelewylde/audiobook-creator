@@ -1,0 +1,34 @@
+essages()  that prints each text message and moves each message to
+a new list called sent_messages  as it’ s printed. After calling the function, print both of your
+lists to make sure the messages were moved correctly .
+8-11. Archived Messages: Start with your work from Exercise 8-10. Call the function
+send_messages()  with a copy of the list of messages. After calling the function, print both
+of your lists to show that the original list has retained its messages.
+Passing an Arbitrary Number of Arguments
+Sometimes you won’ t know ahead of time how many ar guments a function
+needs to accept. Fortunately , Python allows a function to collect an arbitrary
+number of ar guments from the calling statement.
+For example, consider a function that builds a pizza. It needs to accept a
+number of toppings, but you can’ t know ahead of time how many toppings
+a person will want. The function in the following example has one
+parameter , *toppings , but this parameter collects as many ar guments as
+the calling line provides:pizza.py
+def make_pizza(*toppings):
+    """Print the list of toppings that have been requ
+    print(toppings)
+make_pizza('pepperoni')
+make_pizza('mushrooms', 'green peppers', 'extra chees
+The asterisk in the parameter name *toppings  tells Python to make a
+tuple called toppings , containing all the values this function receives.
+The print()  call in the function body produces output showing that
+Python can handle a function call with one value and a call with three
+values. It treats the dif ferent calls similarly . Note that Python packs the
+arguments into a tuple, even if the function receives only one value:
+('pepperoni',)
+('mushrooms', 'green peppers', 'extra cheese')
+Now we can replace the print()  call with a loop that runs through the
+list of toppings and describes the pizza being ordered:
+def make_pizza(*toppings):
+    """Summarize the pizza we are about to make."""    print("\nMaking a pizza with the following toppin
+    for topping in toppings:
+        p

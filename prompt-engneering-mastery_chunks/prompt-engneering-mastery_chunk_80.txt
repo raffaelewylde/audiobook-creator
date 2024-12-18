@@ -1,0 +1,40 @@
+seful for tasks that require
+preserving the context and structure of the original content. By splitting the
+text into sentences, LLMs can better understand and process the
+information for tasks such as summarization, translation, and sentiment
+analysis.
+Splitting by sentence is possible using NLP  libraries such as spaCy . Ensure
+that you have spaCy installed in your Python environment. You can install it
+with pip install spacy . Download the en_core_web_sm  model
+using the command python -m spacy download en_core_web_sm .
+In Example 3-3 , the code demonstrates sentence detection using the spaCy
+library in Python.
+Example 3-3. Sentence detection with spaCy
+import spacynlp = spacy.load("en_core_web_sm" )
+text = "This is a sentence. This is another sentence.
+doc = nlp(text)
+for sent in doc.sents:
+    print(sent.text)
+Output:
+This is a sentence.
+This is another sentence.
+First, you’ll import the spaCy library and load the English model
+(en_core_web_sm)  to initialize an nlp  object. Define an input text
+with two sentences; the text is then processed with doc = nlp(text) ,
+creating a doc  object as a result. Finally , the code iterates through the
+detected sentences using the doc.sents  attribute and prints each
+sentence.
+Building a Simple Chunking Algorithmin Python
+After exploring many chunking strategies, it’ s important to build your
+intuition by writing a simple chunking algorithm from scatch.
+Example 3-4  shows how to chunk text based on the length of characters
+from the blog post “Hubspot - What Is Digital Marketing?” This file can be
+found in the Github repository at content/chapter_3/hubspot_blog_post.txt .
+To correctly read the hubspot_blog_post.txt  file, make sure your current
+working directory is set to the content/chapter_3  GitHub directory . This
+applies for both running the Python code or launching the Jupyter Notebook
+server .
+Example 3-4. Character  chunking
+with open("hubspot_blog_post.txt" , "r") as f:
+    text = f.read()
+chunks = [text[i : i + 200]

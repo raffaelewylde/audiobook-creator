@@ -1,0 +1,36 @@
+d
+embeddings in JSON format. This line extracts the actual numerical
+embedding from the response, by iterating through a list of embeddings
+in response.data .
+After executing this code, the embeddings  variable will hold the
+numerical representation (embedding) of the input text, which can then be
+used in various NLP  tasks or machine learning models. This process of
+retrieving or generating embeddings is sometimes referred to as document
+loading .
+The term loading  in this context refers to the act of computing or retrieving
+the numerical (vector) representations of text from a model and storing
+them in a variable for later use. This is distinct from the concept of
+chunking , which typically refers to breaking down a text into smaller ,
+manageable pieces or chunks to facilitate processing. These two techniquesare regularly used in conjunction with each other , as it’ s often useful to
+break lar ge documents up into pages or paragraphs to facilitate more
+accurate matching and to only pass the most relevant tokens into the
+prompt.
+There is a cost associated with retrieving embeddings from OpenAI, but it
+is relatively inexpensive at $0.0004 per 1,000 tokens at the time of writing.
+For instance, the King James version of the Bible, which comprises around
+800,000 words or approximately 4,000,000 tokens, would cost about $1.60
+to retrieve all the embeddings for the entire document.
+Paying for embeddings from OpenAI is not your only option. There are also
+open-source models you can use, for example, the Sentence Transformers
+library  provided by Hugging Face, which has 384 dimensions.
+Input:
+import requests
+import os
+model_id  = "sentence-transformers/all-MiniLM-L6-v2"
+hf_token  = os.getenv("HF_TOKEN" )
+api_url = "https://api-inference.huggingface.co/"
+api_url += f"pipeline/feature-extraction/ {model_id }"
+headers = {"Authorization" : f"Bearer {hf_token }"}def query(texts):
+    response  = requests .post(api_url, headers=headers
+    json={"inputs" : texts,
+    "options" :

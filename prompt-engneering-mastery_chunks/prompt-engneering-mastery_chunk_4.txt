@@ -1,0 +1,27 @@
+ill be in prompt engineering,” claims Robin Li , the cofounder
+and CEO of Chinese tech giant Baidu. However , we expect prompting to be
+a skill required of many jobs, akin to proficiency in Microsoft Excel, rather
+than a popular job title in itself. This new wave of disruption is changing
+everything we thought we knew about computers. We’re used to writing
+algorithms that return the same result every time—not so for AI, where the
+responses are non-deterministic. Cost and latency are real factors again,after decades of Moore’ s law making us complacent in expecting real-time
+computation at negligible cost. The biggest hurdle is the tendency of these
+models to confidently make things up, dubbed hallucination , causing us to
+rethink the way we evaluate the accuracy of our work.
+We’ve been working with generative AI since the GPT -3 beta in 2020, and
+as we saw the models progress, many early prompting tricks and hacks
+became no longer necessary . Over time a consistent set of principles
+emer ged that were still useful with the newer models, and worked across
+both text and image generation. We have written this book based on these
+timeless principles, helping you learn transferable skills that will continue
+to be useful no matter what happens with AI over the next five years. The
+key to working with AI isn’ t “figuring out how to hack the prompt by
+adding one magic word to the end that changes everything else,” as OpenAI
+cofounder Sam Altman asserts , but what will always matter is the “quality
+of ideas and the understanding of what you want.” While we don’ t know if
+we’ll call it “prompt engineering” in five years, working ef fectively with
+generative AI will only become more important.
+Software Requirements for This Book
+All of the code in this book is in Python and was designed to be run in a
+Jupyter Notebook  or Google Colab notebook . The concepts taught in the
+book are transferable to JavaScript or any other coding language ifpreferred, though the primary focus of 

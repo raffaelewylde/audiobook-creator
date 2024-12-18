@@ -1,0 +1,43 @@
+sts should
+be submitted as POST  requests, so we’ll add a small logout form to
+base.html . When users click the logout button, they’ll go to a page
+confirming that they’ve been logged out.
+Adding a Logout Form to base.html
+We’ll add the form for logging out to base.html  so it’ s available on every
+page. We’ll include it in another if block, so only users who are already
+logged in can see it:base.html
+--snip--
+{% block content %}{% endblock content %}
+{% if user.is_authenticated %}
+❶   <hr />
+❷   <form action="{% url 'accounts:logout' %}" method='
+    {% csrf_token %}
+    <button name='submit'>Log out</button>
+  </form>
+{% endif %}
+The default URL  pattern for logging out is 'accounts/logout/' .
+However , the request has to be sent as a POST  request; otherwise, attackers
+can easily force logout requests. To make the logout request use POST , we
+define a simple form.
+We place the form at the bottom of the page, below a horizontal rule
+element (<hr /> ) ❶. This is an easy way to always keep the logout
+button in a consistent position below any other content on the page. The
+form itself has the logout URL  as its action  argument, and 'post'  as
+the request method ❷. Every form in Django needs to include the {%
+csrf_token %} , even a simple form like this one. This form is empty
+except for the submit button.The LOGOUT_REDIRECT_URL  Setting
+When the user clicks the logout button, Django needs to know where to
+send them. We control this behavior in settings.py :
+settings.py
+--snip--
+# My settings.
+LOGIN_REDIRECT_URL = 'learning_logs:index'
+LOGOUT_REDIRECT_URL = 'learning_logs:index'
+The LOGOUT_REDIRECT_URL  setting shown here tells Django to redirect
+logged-out users back to the home page. This is a simple way to confirm
+that they were logged out, because they should no longer see their username
+after logging out.
+The Registration Page
+Next, we’ll build a page so new users can register . We’ll use Django’ s
+default UserCreationForm , but write our own view function and
+t

@@ -1,0 +1,39 @@
+should become False  and the
+Play button should reappear .
+Resetting the Game
+The Play button code we just wrote works the first time the player clicks
+Play. But it doesn’ t work after the first game ends, because the conditions
+that caused the game to end haven’ t been reset.
+To reset the game each time the player clicks Play , we need to reset the
+game statistics, clear out the old aliens and bullets, build a new fleet, and
+center the ship, as shown here:
+alien_invasion.py
+    def _check_play_button(self, mouse_pos):
+        """Start a new game when the player clicks Pl
+        if self.play_button.rect.collidepoint(mouse_p
+            # Reset the game statistics.
+❶             self.stats.reset_stats()
+            self.game_active = True            # Get rid of any remaining bullets and al
+❷             self.bullets.empty()
+            self.aliens.empty()
+            # Create a new fleet and center the ship.
+❸             self._create_fleet()
+            self.ship.center_ship()
+We reset the game statistics ❶, which gives the player three new ships.
+Then we set game_active  to True  so the game will begin as soon as
+the code in this function finishes running. We empty the aliens  and
+bullets  groups ❷, and then we create a new fleet and center the ship ❸.
+Now the game will reset properly each time you click Play , allowing you to
+play it as many times as you want!
+Deactivating the Play Button
+One issue with our Play button is that the button region on the screen will
+continue to respond to clicks even when the Play button isn’ t visible. If you
+click the Play button area by accident after a game begins, the game will
+restart!
+To fix this, set the game to start only when game_active  is False :alien_invasion.py
+    def _check_play_button(self, mouse_pos):
+        """Start a new game when the player clicks Pl
+❶         button_clicked = self.play_button.rect.collid
+❷         if button_clicked and not self.game_active:
+            # Reset the game statistics.
+          

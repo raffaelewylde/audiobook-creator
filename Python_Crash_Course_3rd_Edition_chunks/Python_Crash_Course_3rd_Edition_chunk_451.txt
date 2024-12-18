@@ -1,0 +1,42 @@
+won’ t show up
+on the live site.
+Open settings.py  in your text editor , and add one line of code to the part that
+modifies settings for Platform.sh:
+settings.py
+--snip--
+if config.is_valid_platform():
+    ALLOWED_HOSTS.append('.platformsh.site')
+    DEBUG = False
+    --snip--
+All the work to set up configuration for the deployed version of the project
+has paid of f. When we want to adjust the live version of the project, we just
+change the relevant part of the configuration we set up earlier .
+Committing and Pushing Changes
+Now we need to commit the changes made to settings.py  and push the
+changes to Platform.sh. Here’ s a terminal session showing the first part of
+this process:❶ (ll_env)learning_log$ git commit -am "Set DEBUG False
+[main d2ad0f7] Set DEBUG False on live site.
+  1 file changed, 1 insertion(+)
+❷ (ll_env)learning_log$ git status
+On branch main
+nothing to commit, working tree clean
+(ll_env)learning_log$
+We issue the git commit  command with a short but descriptive commit
+message ❶. Remember the -am  flag makes sure Git commits all the files
+that have changed and records the log message. Git recognizes that one file
+has changed and commits this change to the repository .
+Running git status  shows that we’re working on the main  branch of
+the repository and that there are now no new changes to commit ❷. It’s
+important to check the status before pushing to a remote server . If you don’ t
+see a clean status, then some changes haven’ t been committed and those
+changes won’ t be pushed to the server . You can try issuing the commit
+command again; if you’re not sure how to resolve the issue, read through
+Appendix D  to better understand how to work with Git.
+Now let’ s push the updated repository to Platform.sh:
+(ll_env)learning_log$ platform push
+Are you sure you want to push to the main (productionPushing HEAD to the existing environment main
+--snip--
+  To git.us-3.platform.sh:wmye2fx7wwqgu.git
+     fce0206..d2ad0f7  HEAD -> main
+(ll_env)learning_log$
+Pla

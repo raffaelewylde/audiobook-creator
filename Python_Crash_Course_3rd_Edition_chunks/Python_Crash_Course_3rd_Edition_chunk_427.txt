@@ -1,0 +1,37 @@
+tml  using the Bootstrap template. We’ll develop
+the new  base.html in sections. This is a lar ge file; you may want to copy
+this file from the online resources, available at https://ehmatthes.github.io/p
+cc_3e . If you do copy the file, you should still read through the following
+section to understand the changes that were made.
+Defining the HTML  Headers
+The first change we’ll make to base.html  defines the HTML  headers in the
+file. We’ll also add some requirements for using Bootstrap in our templates,and give the page a title. Delete everything in base.html  and replace it with
+the following code:
+base.html
+❶ <!doctype html>
+❷ <html lang="en">
+❸ <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, 
+❹   <title>Learning Log</title>
+❺   {% load django_bootstrap5 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+</head>
+We first declare this file as an HTML  document ❶ written in English ❷. An
+HTML  file is divided into two main parts: the head  and the body . The head
+of the file begins with an opening <head>  tag ❸. The head of an HTML
+file doesn’ t hold any of the page’ s content; it just tells the browser what it
+needs to know to display the page correctly . We include a <title>
+element for the page, which will display in the browser ’s title bar whenever
+Learning Log is open ❹.Before closing the head section, we load the collection of template tags
+available in django-bootstrap5 ❺. The template tag {% bootstrap_css
+%} is a custom tag from django-bootstrap5; it loads all of the CSS files
+required to implement Bootstrap styles. The tag that follows enables all the
+interactive behavior you might use on a page, such as collapsible navigation
+bars. The closing </head>  tag appears on the last line.
+All Bootstrap styling options are now available in any template that inherits
+from base.html . If you want to use custom template tags from django-
+bootstrap5, each template will need to include the {% load
+django_bootstrap5 %}  tag.
+De

@@ -1,0 +1,43 @@
+2 ), and
+a mar gin below the bottom border ( mb-4 ).
+Each item in the list needs the list-group-item  class, and we
+customize the default style by removing the border around individual items
+❸. The message that’ s displayed when the list is empty needs these same
+classes ❹.
+When you visit the topics page now , you should see a page with styling that
+matches the home page.
+Styling the Entries on the Topic Page
+On the topic page, we’ll use Bootstrap’ s card component to make each entry
+stand out. A card is a nestable set of divs with flexible, predefined styles
+that are perfect for displaying a topic’ s entries:
+topic.html{% extends 'learning_logs/base.html' %}
+❶ {% block page_header %}
+  <h1>{{ topic.text }}</h1>
+{% endblock page_header %}
+{% block content %}
+  <p>
+    <a href="{% url 'learning_logs:new_entry' topic.i
+  </p>
+  {% for entry in entries %}
+❷     <div class="card mb-3">
+      <!-- Card header with timestamp and edit link -
+❸       <h4 class="card-header">
+        {{ entry.date_added|date:'M d, Y H:i' }}
+❹         <small><a href="{% url 'learning_logs:edit_en
+          edit entry</a></small>
+      </h4>
+      <!-- Card body with entry text -->
+❺       <div class="card-body">{{ entry.text|linebreaks
+    </div>
+  {% empty %}
+❻     <p>There are no entries for this topic yet.</p>
+  {% endfor %}
+{% endblock content %}We first place the topic in the page_header  block ❶. Then we delete the
+unordered list structure previously used in this template. Instead of making
+each entry a list item, we open a div element with the selector card  ❷.
+This card has two nested elements: one to hold the timestamp and the link
+to edit the entry , and another to hold the body of the entry . The card
+selector takes care of most of the styling we need for this div; we customize
+the card by adding a small mar gin to the bottom of each card ( mb-3 ).
+The first element in the card is a header , which is an <h4>  element with
+the selector card-header  ❸. This header contains the date t

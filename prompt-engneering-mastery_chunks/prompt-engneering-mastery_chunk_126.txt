@@ -1,0 +1,30 @@
+s to see the instructions that were
+given for the task.
+5. evaluator.evaluate_string_pairs(... : All that remains is to
+run the evaluator by passing in the prediction  and prediction_b
+(GPT -3.5 and Mistral, respectively), as well as the input  prompt, and
+reference  data, which serves as the ground truth.
+6. Following this code in the notebook , there is an example of looping
+through and running the evaluator on every row in the dataframe and
+then saving the results and reasoning back to the dataframe.
+This example demonstrates how to use a LangChain evaluator , but there are
+many dif ferent kinds of evaluator available. String distance ( Levenshtein )
+or embedding distance  evaluators are often used in scenarios where answers
+are not an exact match for the reference answer , but only need to be close
+enough semantically . Levenshtein distance allows for fuzzy matches based
+on how many single-character edits would be needed to transform the
+predicted text into the reference text, and embedding distance makes use of
+vectors (covered in Chapter 5 ) to calculate similarity between the answer
+and reference.The other kind of evaluator we often use in our work is pairwise
+comparisons, which are useful for comparing two dif ferent prompts or
+models, using a smarter model like GPT -4. This type of comparison is
+helpful because reasoning is provided for each comparison, which can be
+useful in debugging why one approach was favored over another . The
+notebook for this section  shows an example of using a pairwise comparison
+evaluator to check GPT -3.5-turbo’ s accuracy versus Mixtral 8x7b.
+EVALUATE QUALITY
+Without defining an appropriate set of eval metrics to define success, it can be dif ficult to tell if
+changes to the prompt or wider system are improving or harming the quality of responses. If you can
+automate eval metrics using smart models like GPT -4, you can iterate faster to improve results
+without costly or time-consuming manual human review .
+OpenAI Function Calli

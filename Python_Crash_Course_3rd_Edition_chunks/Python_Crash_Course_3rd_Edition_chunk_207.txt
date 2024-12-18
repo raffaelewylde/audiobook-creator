@@ -1,0 +1,36 @@
+doesn’ t match the encoding of the file that’ s
+being read. This is most likely to happen when reading from a file that
+wasn’ t created on your system.
+Python can’ t read from a missing file, so it raises an exception:Traceback (most recent call last):
+❶   File "alice.py", line 4, in <module>
+❷     contents = path.read_text(encoding='utf-8')
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/.../pathlib.py", line 1056, in read_text
+    with self.open(mode='r', encoding=encoding, error
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/.../pathlib.py", line 1042, in open
+    return io.open(self, mode, buffering, encoding, e
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+❸ FileNotFoundError: [Errno 2] No such file or director
+This is a longer traceback than the ones we’ve seen previously , so let’ s look
+at how you can make sense of more complex tracebacks. It’ s often best to
+start at the very end of the traceback. On the last line, we can see that a
+FileNotFoundError  exception was raised ❸. This is important because
+it tells us what kind of exception to use in the except  block that we’ll
+write.
+Looking back near the beginning of the traceback ❶, we can see that the
+error occurred at line 4 in the file alice.py . The next line shows the line of
+code that caused the error ❷. The rest of the traceback shows some code
+from the libraries that are involved in opening and reading from files. You
+don’t usually need to read through or understand all of these lines in a
+traceback.To handle the error that’ s being raised, the try  block will begin with the
+line that was identified as problematic in the traceback. In our example, this
+is the line that contains read_text() :
+from pathlib import Path
+path = Path('alice.txt')
+try:
+    contents = path.read_text(encoding='utf-8')
+❶ except FileNotFoundError:
+    print(f"Sorry, the file {path} does not exist.")
+In this example, the code in the try  block produces a
+FileNotFoundError , so we write an except  

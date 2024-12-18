@@ -1,0 +1,40 @@
+the test case again. If it passes,
+we’ll move on to making sure the function handles middle names properly .
+To make middle names optional, we move the parameter middle  to the
+end of the parameter list in the function definition and give it an empty
+default value. We also add an if test that builds the full name properly ,
+depending on whether a middle name is provided:
+name_function.py
+def get_formatted_name(first, last, middle=''):
+    """Generate a neatly formatted full name."""
+    if middle:
+        full_name = f"{first} {middle} {last}"
+    else:        full_name = f"{first} {last}"
+    return full_name.title()
+In this new version of get_formatted_name() , the middle name is
+optional. If a middle name is passed to the function, the full name will
+contain a first, middle, and last name. Otherwise, the full name will consist
+of just a first and last name. Now the function should work for both kinds of
+names. To find out if the function still works for names like Janis
+Joplin , let’s run the test again:
+$ pytest
+========================= test session starts =======
+--snip--
+test_name_function.py .                              
+========================== 1 passed in 0.00s ========
+The test passes now . This is ideal; it means the function works for names
+like Janis Joplin  again, without us having to test the function
+manually . Fixing our function was easier because the failed test helped us
+identify how the new code broke existing behavior .Adding New Tests
+Now that we know get_formatted_name()  works for simple names
+again, let’ s write a second test for people who include a middle name. We
+do this by adding another test function to the file test_name_function.py :
+test_name_function.py
+from name_function import get_formatted_name
+def test_first_last_name():
+    --snip--
+def test_first_last_middle_name():
+    """Do names like 'Wolfgang Amadeus Mozart' work?"
+❶     formatted_name = get_formatted_name(
+        'wolfgang', 'mozart', 'amadeus')
+❷     assert format

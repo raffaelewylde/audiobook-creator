@@ -1,0 +1,41 @@
+ and scene
+generation, you add more placeholder variables from the previous steps.
+The question remains, how can you guarantee that these extra strings are
+available for your downstream ChatPromptTemplate  variables?itemgetter and Dictionary Key Extraction
+Within LCEL  you can use the itemgetter  function from the
+operator  package to extract keys from the previous step, as long as a
+dictionary was present within the previous step:
+from operator  import itemgetter
+from langchain_core.runnables  import RunnablePassthro
+chain = RunnablePassthrough () | {
+    "genre": itemgetter ("genre"),
+  }
+chain.invoke({"genre": "fantasy" })
+# {'genre': 'fantasy'}
+The RunnablePassThrough  function simply passes any inputs directly
+to the next step. Then a new dictionary is created by using the same key
+within the invoke  function; this key is extracted by using
+itemgetter("genre") .
+It’s essential to use the itemgetter  function throughout parts of your
+LCEL  chains so that any subsequent ChatPromptTemplate  placeholder
+variables will always have valid values.Additionally , you can use lambda  or RunnableLambda  functions
+within an LCEL  chain to manipulate previous dictionary values. A lambda
+is an anonynous function within Python:
+from langchain_core.runnables  import RunnableLambda
+chain = RunnablePassthrough () | {
+    "genre": itemgetter ("genre"),
+    "upper_case_genre" : lambda x: x["genre"].upper(),
+    "lower_case_genre" : RunnableLambda (lambda x: x["g
+}
+chain.invoke({"genre": "fantasy" })
+# {'genre': 'fantasy', 'upper_case_genre': 'FANTASY',
+# 'lower_case_genre': 'fantasy'}
+Now that you’re aware of how to use RunnablePassThrough ,
+itemgetter , and lambda  functions, let’ s introduce one final piece of
+syntax: RunnableParallel :
+from langchain_core.runnables  import RunnableParallel
+master_chain  = RunnablePassthrough () | {
+    "genre": itemgetter ("genre"),
+    "upper_case_genre" : lambda x: x["genre"].upper(),
+    "lower_case_genre" : RunnableLambda (lambda x: x["g
+}ma

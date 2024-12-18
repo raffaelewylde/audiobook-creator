@@ -1,0 +1,36 @@
+ arranged
+in a grid to show the ef fect that dif ferent elements of the prompt can have
+on the final image.
+Input:
+{stock photo, oil painting, illustration} of business
+meeting of {four, eight} people watching on white Mac
+top of glass-top table
+In Midjourney this would be compiled into six dif ferent prompts, one for
+every combination of the three formats (stock photo, oil painting,
+illustration) and two numbers of people (four , eight).
+Input:1. stock photo of business meeting of four people wat
+on white MacBook on top of glass-top table
+2. stock photo of business meeting of eight people wa
+on white MacBook on top of glass-top table
+3. oil painting of business meeting of four people wa
+on white MacBook on top of glass-top table
+4. oil painting of business meeting of eight people w
+on white MacBook on top of glass-top table
+5. illustration of business meeting of four people wa
+on white MacBook on top of glass-top table
+6. illustration of business meeting of eight people w
+on white MacBook on top of glass-top table
+Each prompt generates its own four images as usual, which makes the
+output a little harder to see. We have selected one from each prompt to
+upscale and then put them together in a grid, shown as Figure 1-14 . You’ll
+notice that the model doesn’ t always get the correct number of people
+(generative AI models are surprisingly bad at math), but it has correctly
+inferred the general intention by adding more people to the photos on the
+right than the left.Figure 1-14  shows the output.
+Figure 1-14. Prompt permutations gridWith models that have APIs like Stable Dif fusion, you can more easily
+manipulate the photos and display them in a grid format for easy scanning.
+You can also manipulate the random seed of the image to fix a style in place
+for maximum reproducibility . With image classifiers it may also be possible
+to programmatically rate images based on their safe content, or if they
+contain certain elements associated with success or failure.
+5. Divide Lab

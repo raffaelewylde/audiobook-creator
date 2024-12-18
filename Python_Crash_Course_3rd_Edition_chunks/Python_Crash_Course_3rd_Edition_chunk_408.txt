@@ -1,0 +1,43 @@
+he data=request.POST  arguments ❸. These ar guments tell Djangoto create a form instance based on the information associated with the
+existing entry object, updated with any relevant data from
+request.POST . We then check whether the form is valid; if it is, we call
+save()  with no ar guments because the entry is already associated with
+the correct topic ❹. We then redirect to the topic  page, where the user
+should see the updated version of the entry they edited ❺.
+If we’re showing an initial form for editing the entry or if the submitted
+form is invalid, we create the context  dictionary and render the page
+using the edit_entry .html  template.
+The edit_entry Template
+Next, we create an edit_entry .html template, which is similar to
+new_entry .html :
+edit_entry .html
+{% extends "learning_logs/base.html" %}
+{% block content %}
+  <p><a href="{% url 'learning_logs:topic' topic.id %
+  <p>Edit entry:</p>❶   <form action="{% url 'learning_logs:edit_entry' ent
+    {% csrf_token %}
+    {{ form.as_div }}
+❷     <button name="submit">Save changes</button>
+  </form>
+{% endblock content %}
+The action  argument sends the form back to the edit_entry()
+function for processing ❶. We include the entry.id  as an ar gument in
+the {% url %}  tag, so the view function can modify the correct entry
+object. We label the submit button as Save changes  to remind the user
+they’re saving edits, not creating a new entry ❷.
+Linking to the edit_entry Page
+Now we need to include a link to the edit_entry  page for each entry on
+the topic page:
+topic.html
+--snip--
+    {% for entry in entries %}
+      <li>
+        <p>{{ entry.date_added|date:'M d, Y H:i' }}</
+        <p>{{ entry.text|linebreaks }}</p>        <p>
+          <a href="{% url 'learning_logs:edit_entry' 
+           Edit entry</a></p>
+      </li>
+--snip--
+We include the edit link after each entry’ s date and text has been displayed.
+We use the {% url %}  template tag to determine the URL  for the named
+URL  pattern edit_entry , along with 

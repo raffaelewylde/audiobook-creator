@@ -1,0 +1,41 @@
+r chunks. These chunks can be based on
+various criteria, such as sentence, paragraph, topic, complexity , or length.
+By dividing text into smaller segments, AI models can more ef ficiently
+process, analyze, and generate responses.
+Figure 3-5  illustrates the process of chunking a lar ge piece of text and
+subsequently extracting topics from the individual chunks.
+Figure 3-5. Topic extraction with an LLM after chunking textBenefits of Chunking Text
+There are several advantages to chunking text, which include:
+Fitting within a given context length
+LLMs only have a certain amount of input and output tokens, which
+is called a context length . By reducing the input tokens you can make
+sure the output won’ t be cut of f and the initial request won’ t be
+rejected.
+Reducing cost
+Chunking helps you to only retrieve the most important points from
+documents, which reduces your token usage and API costs.
+Impr oved performance
+Chunking reduces the processing load on LLMs, allowing for faster
+response times and more ef ficient resource utilization.
+Increased flexibility
+Chunking allows developers to tailor AI responses based on the
+specific needs of a given task or application.Scenarios for Chunking Text
+Chunking text can be particularly beneficial in certain scenarios, while in
+others it may not be required. Understanding when to apply this technique
+can help in optimizing the performance and cost ef ficiency of LLMs.
+When to chunk
+Large documents
+When dealing with extensive documents that exceed the maximum
+token limit of the LLM
+Complex analysis
+In scenarios where a detailed analysis is required and the document
+needs to be broken down for better comprehension and processing
+Multitopic documents
+When a document covers multiple topics and it’ s beneficial to handle
+them individually
+When not to chunk
+Short documents
+When the document is short and well within the token limits of the
+LLMSimple analysis
+In cases where the analysis or processing required is straightforward
+and doesn

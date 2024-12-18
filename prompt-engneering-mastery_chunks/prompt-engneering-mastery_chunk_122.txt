@@ -1,0 +1,43 @@
+nsaction_category
+0 cash deposit at local branch Deposit Other
+Other
+1 cash deposit at local branch Deposit Other
+Other
+2 withdrew money for rent payment Withdrawal
+Withdrawal Rent
+3 withdrew cash for weekend expenses Withd
+Withdrawal Other4 purchased books from the bookstore Purch
+Purchase Entertainment
+The code does the following:
+1. from langchain_mistralai.chat_models import
+ChatMistralAI : We import LangChain’ s Mistral implementation.
+2. from langchain.output_parsers import
+PydanticOutputParser : Imports the PydanticOutputParser
+class, which is used for parsing output using Pydantic models. We also
+import a string output parser to handle an interim step where we remove
+backslashes from the JSON key (a common problem with responses
+from Mistral).
+3. mistral_api_key = os.environ["MISTRAL_API_KEY"] :
+Retrieves the Mistral API key from the environment variables. This
+needs to be set prior to running the notebook.
+4. model = ChatMistralAI(model="mistral-small",
+mistral_api_key=mistral_api_key) : Initializes an instance of
+ChatMistralAI  with the specified model and API key . Mistral Small
+is what they call the Mixtral 8x7b model (also available open source) in
+their API.
+5. system_prompt  and user_prompt : These lines define templates
+for the system and user prompts used in the chat to classify the
+transactions.6. class EnrichedTransactionInformation(BaseModel) :
+Defines a Pydantic model EnrichedTransactionInformation
+with two fields: transaction_type  and
+transaction_category , each with specific allowed values and the
+possibility of being None . This is what tells us if the output is in the
+correct format.
+7. def remove_back_slashes(string) : Defines a function to
+remove backslashes from a string.
+8. chain = prompt | model | StrOutputParser() |
+remove_back_slashes | output_parser : Updates the chain to
+include a string output parser and the remove_back_slashes
+function before the original output parser .
+9. transaction = df.iloc[0]["Transaction Description"] :
+Ex

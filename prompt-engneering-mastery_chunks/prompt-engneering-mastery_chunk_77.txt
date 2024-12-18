@@ -1,0 +1,39 @@
+’ t benefit from chunking
+Single-topic documents
+When a document is focused on a single topic and chunking doesn’ t
+add value to the processing
+Poor Chunking Example
+When text is not chunked correctly , it can lead to reduced LLM
+performance. Consider the following paragraph from a news article:
+The local council has decided to increase the budget 
+this year, a move that has been welcomed by parents a
+additional funds will be used to improve school infra
+teachers, and provide better resources for students. 
+argue that the increase is not enough to address the 
+education system.
+When the text is fragmented into isolated words, the resulting list lacks the
+original context:["The", "local", "council", "has", "decided", "to", "
+"budget", ...]
+The main issues with this poor chunking example include:
+Loss of context
+By splitting the text into individual words, the original meaning and
+relationships between the words are lost. This makes it dif ficult for
+AI models to understand and respond ef fectively .
+Increased pr ocessing load
+Processing individual words requires more computational resources,
+making it less ef ficient than processing lar ger chunks of text.
+As a result of the poor chunking in this example, an LLM may face several
+challenges:
+Difficulty understanding the main ideas or themes of the text
+Struggling to generate accurate summaries or translations
+Inability to ef fectively perform tasks such as sentiment analysis or text
+classification
+By understanding the pitfalls of poor chunking, you can apply prompt
+engineering principles to improve the process and achieve better resultswith AI language models.
+Let’s explore an improved chunking example using the same news article
+paragraph from the previous section; you’ll now chunk the text by sentence:
+["""The local council has decided to increase the bud
+by 10% this year, a move that has been welcomed by pa
+""",
+"""The additional funds will be used to improve schoo
+hire more teachers, and provide better resources f

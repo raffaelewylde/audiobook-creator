@@ -1,0 +1,51 @@
+he input string line by line , categorizes
+lines as section titles or subsections, and constructs the intended dictionary
+structure.
+When to Avoid Using RegularExpressions
+As you work to extract more structured data from LLM responses, relying
+solely on regular expressions can make the control flow become
+increasingly complicated.  However , there are other formats that can
+facilitate the parsing of structured data from LLM responses with ease. Two
+common formats are .json  and .yml files.
+Generating JSON
+Let’s start by experimenting with some prompt design that will direct an
+LLM to return a JSON response.
+Input:
+Compose a very detailed article outline on "The benef
+JSON payload structure that highlights key points.
+Only return valid JSON.
+Here is an example of the JSON structure:
+{
+    "Introduction": [
+        "a. Explanation of data engineering",
+        "b. Importance of data engineering in today’s    ...
+    "Conclusion": [
+        "a. Importance of data engineering in the mod
+        "b. Future of data engineering and its impact
+}
+Output:
+{
+    "Introduction": [
+        "a. Overview of coding and programming langua
+        "b. Importance of coding in today's technolog
+    ...
+    "Conclusion": [
+        "a. Recap of the benefits of learning code",
+        "b. The ongoing importance of coding skills i
+}
+GIVE DIRECTION AND PROVIDE EXAMPLES
+Notice that in the preceding prompt, you’ve provided direction on the type of task, the format, and an
+example JSON output.
+Common errors that you’ll encounter when working with JSON involve
+invalid payloads, or the JSON being wrapped within triple backticks (```) ,such as:
+Output:
+Sure here's the JSON:
+```json
+{"Name": "John Smith"} # valid payload
+{"Name": "John Smith", "some_key":} # invalid payload
+```
+Ideally you would like the model to respond like so:
+Output:
+{"Name": "John Smith"}
+This is important because with the first output, you’d have to split after
+json  and then parse the exact part of the string that contained

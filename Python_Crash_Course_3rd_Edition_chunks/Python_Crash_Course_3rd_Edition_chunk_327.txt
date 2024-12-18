@@ -1,0 +1,32 @@
+ 'y': 'Frequency of Result'}
+fig = px.bar(x=poss_results, y=frequencies, title=tit
+fig.show()After creating two instances of Die , we roll the dice and calculate the sum
+of the two dice for each roll ❶. The smallest possible result (2) is the sum
+of the smallest number on each die. The lar gest possible result (12) is the
+sum of the lar gest number on each die, which we assign to max_result
+❷. The variable max_result  makes the code for generating
+poss_results  much easier to read ❸. We could have written
+range(2, 13) , but this would work only for two D6 dice. When
+modeling real-world situations, it’ s best to write code that can easily model
+a variety of situations. This code allows us to simulate rolling a pair of dice
+with any number of sides.
+After running this code, you should see a chart that looks like Figure 15-14 .Figure 15-14 : Simulated r esults of r olling two six-sided dice 1,000 times
+This graph shows the approximate distribution of results you’re likely to get
+when you roll a pair of D6 dice. As you can see, you’re least likely to roll a
+2 or a 12 and most likely to roll a 7. This happens because there are six
+ways to roll a 7: 1 and 6, 2 and 5, 3 and 4, 4 and 3, 5 and 2, and 6 and 1.
+Further  Customizations
+There’ s one issue that we should address with the plot we just generated.
+Now that there are 1 1 bars, the default layout settings for the x-axis leave
+some of the bars unlabeled. While the default settings work well for most
+visualizations, this chart would look better with all of the bars labeled.Plotly has an update_layout()  method that can be used to make a wide
+variety of updates to a figure after it’ s been created. Here’ s how to tell
+Plotly to give each bar its own label:
+dice_visual.py
+--snip--
+fig = px.bar(x=poss_results, y=frequencies, title=tit
+# Further customize chart.
+fig.update_layout(xaxis_dtick=1)
+fig.show()
+The update_layout()  method acts on the fig  object, which
+represents the overall chart. Here we use the xaxis_dtick  ar

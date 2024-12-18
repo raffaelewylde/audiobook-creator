@@ -1,0 +1,31 @@
+e
+for a radically dif ferent ef fect, as in Figure 1-9 .
+Input:
+stock photo of business meeting of 4 people watching 
+white MacBook on top of glass-top table, Panasonic, D
+Figure 1-9  shows the output.Figure 1-9. Stock photo of business meeting of four people
+In this case, by substituting for the image shown in Figure 1-10 , also from
+Unsplash, you can see how the model was pulled in a dif ferent direction and
+incorporates whiteboards and sticky notes now .CAUTION
+These examples demonstrate the capabilities of image generation models, but we would exercise
+caution when uploading base images for use in prompts. Check the licensing of the image you plan to
+upload and use in your prompt as the base image, and avoid using clearly copyrighted images. Doing
+so can land you in legal trouble and is against the terms of service for all the major image generation
+model providers.
+Figure 1-10. Photo by Jason Goodman on Unsplash
+4. Evaluate Quality
+As of yet, there has been no feedback loop to judge the quality of your
+responses, other than the basic trial and error of running the prompt andseeing the results, referred to as blind pr ompting . This is fine when your
+prompts are used temporarily for a single task and rarely revisited.
+However , when you’re reusing the same prompt multiple times or building
+a production application that relies on a prompt, you need to be more
+rigorous with measuring results.
+There are a number of ways performance can be evaluated, and it depends
+largely on what tasks you’re hoping to accomplish. When a new AI model
+is released, the focus tends to be on how well the model did on evals
+(evaluations), a standardized set of questions with predefined answers or
+grading criteria that are used to test performance across models. Dif ferent
+models perform dif ferently across dif ferent types of tasks, and there is no
+guarantee a prompt that worked previously will translate well to a new
+model. OpenAI has made its evals framework  for benchmarking
+performa

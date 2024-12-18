@@ -1,0 +1,36 @@
+ough API
+calls. To see what an API call looks like, enter the following into your
+browser ’s address bar and press ENTER:
+https://api.github.com/search/repositories?q=language
+This call returns the number of Python projects currently hosted on GitHub,
+as well as information about the most popular Python repositories. Let’ s
+examine the call. The first part, https://api.github.com/ , directs
+the request to the part of GitHub that responds to API calls. The next part,
+search/repositories , tells the API to conduct a search through all the
+repositories on GitHub.
+The question mark after repositories  signals that we’re about to pass
+an ar gument. The q stands for query , and the equal sign ( =) lets us begin
+specifying a query ( q=). By using language:python , we indicate that
+we want information only on repositories that have Python as the primary
+language. The final part, +sort:stars , sorts the projects by the number
+of stars they’ve been given.
+The following snippet shows the first few lines of the response:{
+❶   "total_count": 8961993,
+❷   "incomplete_results": true,
+❸   "items": [
+    {
+      "id": 54346799,
+      "node_id": "MDEwOlJlcG9zaXRvcnk1NDM0Njc5OQ==",
+      "name": "public-apis",
+      "full_name": "public-apis/public-apis",
+      --snip--
+You can see from the response that this URL  is not primarily intended to be
+entered by humans, because it’ s in a format that’ s meant to be processed by
+a program. GitHub found just under nine million Python projects as of this
+writing ❶. The value for "incomplete_results"  is true , which tells
+us that GitHub didn’ t fully process the query ❷. GitHub limits how long
+each query can run, in order to keep the API responsive for all users. In this
+case it found some of the most popular Python repositories, but it didn’ t
+have time to find all of them; we’ll fix that in a moment. The "items"
+returned are displayed in the list that follows, which contains details about
+the most popular Python projects on GitHub ❸.Installi

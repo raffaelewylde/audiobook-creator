@@ -1,0 +1,32 @@
+ou become comfortable using terminals.
+Geany has a very minimalist interface, but it’ s powerful enough that a
+significant number of experienced programmers still use it.
+If you find VS Code too distracting and full of too many features, consider
+using Geany instead.
+Sublime Text
+Sublime T ext is another minimalist editor that you should consider using if
+you find VS Code too busy . Sublime Text has a really clean interface and is
+known for working well even on very lar ge files. It’ s an editor that will get
+out of your way and let you focus on the code you’re writing.
+Sublime Text has an unlimited free trial, but it’ s not free or open source. If
+you decide you like it and can af ford to purchase a full license, you should
+do so. The purchase is a one-time fee; it’ s not a software subscription.
+Emacs and Vim
+Emacs  and Vim are two popular editors favored by many experienced
+programmers, because they’re designed so you can use them without your
+hands ever having to leave the keyboard. This makes writing, reading, andmodifying code very ef ficient, once you learn how the editor works. It also
+means both editors have a fairly steep learning curve. Vim is included on
+most Linux and macOS machines, and both Emacs and Vim can be run
+entirely inside a terminal. For this reason, they’re often used to write code
+on servers through remote terminal sessions.
+Programmers will often recommend that you give them a try , but many
+proficient programmers for get how much new programmers are already
+trying to learn. It’ s good to be aware of these editors, but you should hold
+off on using them until you’re comfortable working with code in a more
+user-friendly editor that lets you focus on learning to program, rather than
+learning to use an editor .
+PyCharm
+PyCharm  is a popular IDE among Python programmers because it was built
+to work specifically with Python. The full version requires a paid
+subscription, but a free version called the PyCharm Community Edition is
+also available, 

@@ -1,0 +1,44 @@
+ractical information and tactics in the
+book, allowing you to understand and utilize AI to its full potential.
+—Byron Tassoni-Resch, CEO and cofounder ,
+WeDiscover
+A really inter esting and informative r ead, mixing practical tips and
+tricks with some solid foundational information. The world of GenAI
+is developing at br eakneck speed, and having a toolset  that can
+deliver r esults, r egardless of the foundational model being used,  is
+worth its weight in gold!
+—Riaan Dreyer , chief digital and data of ficer, Bank of
+Iceland
+The authors expertly translate pr ompt engineering intricacies into a
+practical toolkit for text and image generation. This guide, spanning
+standar d practices to cutting-edge techniques,  empowers r eaders with
+practical tips to maximize generative AI model capabilities.
+—Aditya Goel, generative AI consultantPrompt Engineering for Generative AI
+Future-Proof Inputs for Reliable AI Outputs at Scale
+James Phoenix and Mike Taylor
+Prompt Engineering for Generative AI
+by James Phoenix  and Mike Taylor
+Copyright © 2024 Saxifrage, LLC and Just Understanding Data L TD. All
+rights reserved.
+Printed in the United States of America.
+Published by O’Reilly Media, Inc. , 1005 Gravenstein Highway North,
+Sebastopol, CA  95472.
+O’Reilly books may be purchased for educational, business, or sales
+promotional use. Online editions are also available for most titles
+(http://oreilly .com ). For more information, contact our
+corporate/institutional sales department: 800-998-9938 or
+corporate@or eilly.com .
+Acquisitions Editor: Nicole Butterfield
+Development Editor:  Corbin Collins
+Copyeditor:  Piper Editorial Consulting, LLC
+Proofreader:  Kim Wimpsett
+Indexer:  nSight, Inc.
+Interior Designer:  David FutatoCover Designer:  Karen Montgomery
+Illustrator:  Kate Dullea
+May 2024:  First Edition
+Revision History for the First Edition
+2024-05-15:  First Release
+2024-10-18:  Second Release
+See http://oreilly .com/catalog/errata.csp?isbn=9781098153434  for release
+details.
+The 

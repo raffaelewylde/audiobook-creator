@@ -1,0 +1,32 @@
+by
+Hugging Face.
+Anthropic: Claude
+Released on July 1 1, 2023, Claude 2  is setting itself apart from other
+prominent LLMs such as ChatGPT  and LLaMA, with its pioneering
+Constitutional AI approach to AI safety and alignment—training the model
+using a list of rules or values. A notable enhancement in Claude 2 was itsexpanded context window of 100,000 tokens, as well as the ability to
+upload files. In the realm of generative AI, a context window  refers to the
+amount of text or data the model can actively consider or keep in mind
+when generating a response. With a lar ger context window , the model can
+understand and generate based on a broader context.
+This advancement garnered significant enthusiasm from AI engineers, as it
+opened up avenues for new and more intricate use cases. For instance,
+Claude 2’ s augmented ability to process more information at once makes it
+adept at summarizing extensive documents or sustaining in-depth
+conversations. The advantage was short-lived, as OpenAI released their
+128K version of GPT -4 only six months later . However , the fierce
+competition between rivals is pushing the field forward.
+The next generation of Claude included Opus , the first model to rival GPT -
+4 in terms of intelligence, as well as Haiku, a smaller model that is
+lightning-fast with the competitive price of $0.25 per million tokens (half
+the cost of GPT -3.5-turbo at the time).
+GPT-4V(ision)
+In a significant leap forward, on September 23, 2023, OpenAI expanded the
+capabilities of GPT -4 with the introduction of Vision, enabling users to
+instruct GPT -4 to analyze images alongside text. This innovation was alsoreflected in the update to ChatGPT’ s interface, which now supports the
+inclusion of both images and text as user inputs. This development signifies
+a major trend toward multimodal models , which can seamlessly process and
+understand multiple types of data, such as images and text, within a single
+context.
+Model Comparison
+The market for LLMs is dominated by

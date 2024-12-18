@@ -1,0 +1,38 @@
+a']
+for magician in magicians:
+    print(f"{magician.title()}, that was a great tric
+    print(f"I can't wait to see your next trick, {mag❶     print("Thank you everyone, that was a great magic
+Because the last line ❶ is indented, it’ s printed once for each person in the
+list:
+Alice, that was a great trick!
+I can't wait to see your next trick, Alice.
+Thank you everyone, that was a great magic show!
+David, that was a great trick!
+I can't wait to see your next trick, David.
+Thank you everyone, that was a great magic show!
+Carolina, that was a great trick!
+I can't wait to see your next trick, Carolina.
+Thank you everyone, that was a great magic show!
+This is another logical error , similar to the one in “ Forgetting to Indent
+Additional Lines ” on page 54 . Because Python doesn’ t know what you’re
+trying to accomplish with your code, it will run all code that is written in
+valid syntax. If an action is repeated many times when it should be executed
+only once, you probably need to unindent the code for that action.Forgetting the Colon
+The colon at the end of a for  statement tells Python to interpret the next
+line as the start of a loop.
+magicians = ['alice', 'david', 'carolina']
+❶ for magician in magicians
+    print(magician)
+If you accidentally for get the colon ❶, you’ll get a syntax error because
+Python doesn’ t know exactly what you’re trying to do:
+  File "magicians.py", line 2
+    for magician in magicians
+                             ^
+SyntaxError: expected ':'
+Python doesn’ t know if you simply for got the colon, or if you meant to
+write additional code to set up a more complex loop. If the interpreter can
+identify a possible fix it will suggest one, like adding a colon at the end of a
+line, as it does here with the response expected ':' . Some errors have
+easy, obvious fixes, thanks to the suggestions in Python’ s tracebacks. Some
+errors are much harder to resolve, even when the eventual fix only involves
+a single character . Don’ t feel bad when a small fix 

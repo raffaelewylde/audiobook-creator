@@ -1,0 +1,30 @@
+e results considerably . However , the cost of running many
+tests at scale can add up, and the latency or rate limits of GPT -4 can be a
+blocker . If at all possible, a prompt engineer should first test using
+programmatic techniques that don’ t require a call to an LLM, such as
+simply measuring the length of the response, which runs near instantly for
+close to zero cost.Meta Prompting
+Meta pr ompting  is a technique that involves the creation of text prompts
+that, in turn, generate other text prompts. These text prompts are then used
+to generate new assets in many mediums such as images, videos, and more
+text.
+To better understand meta prompting, let’ s take the example of authoring a
+children’ s book with the assistance of GPT -4. First, you direct the LLM to
+generate the text for your children’ s book. Afterward, you invoke meta
+prompting by instructing GPT -4 to produce prompts that are suitable for
+image-generation models. This could mean creating situational descriptions
+or specific scenes based on the storyline of your book, which then can be
+given to AI models like Midjourney or Stable Dif fusion. These image-
+generation models can, therefore, deliver images in harmony with your AI-
+crafted children’ s story .
+Figure 3-8  visually describes the process of meta prompting in the context
+of crafting a children’ s book.Figure 3-8. Utilizing an LLM to generate image prompts for MidJourney’ s image creation in the
+process of crafting a children’ s book
+Meta prompts of fer a multitude of benefits for a variety of applications:
+Image generation fr om pr oduct descriptions
+Meta prompts can be employed to derive an image generation
+prompt for image models like Midjourney , effectively creating a
+visual representation of product descriptions.
+Generating style/featur e prompts
+Let’s consider you are a copywriter needing to develop a unique style
+guide prompt from a couple of blog posts. Given each client has adistinctive tone and style, it’ s beneficial to utilize a meta

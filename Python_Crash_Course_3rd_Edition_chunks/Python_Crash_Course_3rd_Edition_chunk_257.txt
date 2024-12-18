@@ -1,0 +1,37 @@
+ the window .
+Running the Game in Fullscr een Mode
+Pygame has a fullscreen mode that you might like better than running the
+game in a regular window . Some games look better in fullscreen mode, and
+on some systems, the game may perform better overall in fullscreen mode.
+To run the game in fullscreen mode, make the following changes in
+__init__() :
+alien_invasion.py
+    def __init__(self):
+        """Initialize the game, and create game resou
+        pygame.init()
+        self.settings = Settings()
+❶         self.screen = pygame.display.set_mode((0, 0),
+❷         self.settings.screen_width = self.screen.get_        self.settings.screen_height = self.screen.get
+        pygame.display.set_caption("Alien Invasion")
+When creating the screen surface, we pass a size of (0, 0)  and the
+parameter pygame.FULLSCREEN  ❶. This tells Pygame to figure out a
+window size that will fill the screen. Because we don’ t know the width and
+height of the screen ahead of time, we update these settings after the screen
+is created ❷. We use the width  and height  attributes of the screen’ s
+rect to update the settings  object.
+If you like how the game looks or behaves in fullscreen mode, keep these
+settings. If you liked the game better in its own window , you can revert
+back to the original approach where we set a specific screen size for the
+game.
+NOTE
+Make sur e you can quit by pr essing Q befor e running the game in
+fullscr een mode; Pygame offers no default way to quit a game while
+in fullscr een mode.A Quick Recap
+In the next section, we’ll add the ability to shoot bullets, which involves
+adding a new file called bullet.py  and making some modifications to some
+of the files we’re already using. Right now , we have three files containing a
+number of classes and methods. To be clear about how the project is
+organized, let’ s review each of these files before adding more functionality .
+alien_invasion.py
+The main file, alien_invasion.py , contains the AlienInvasion  class.
+This class creat

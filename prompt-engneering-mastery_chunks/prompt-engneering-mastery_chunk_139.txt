@@ -1,0 +1,38 @@
+ means you
+have the flexibility to store dif ferent components such as templates,
+examples, and others in distinct files and reference them as required.
+Let’s learn how to save and load prompts:
+from langchain_core.prompts  import PromptTemplate , lo
+prompt = PromptTemplate (
+    template ='''Translate this sentence from English 
+    \nSentence: {sentence} \nTranslation:''' ,
+    input_variables =["sentence" ],
+)
+prompt.save("translation_prompt.json" )
+# Loading the prompt template:load_prompt ("translation_prompt.json" )
+# Returns PromptTemplate()
+After importing PromptTemplate  and load_prompt  from the
+langchain.prompts  module, you define a PromptTemplate  for
+English-to-Spanish translation tasks and save it as translation_pr ompt.json .
+Finally , you load the saved prompt template using the load_prompt
+function, which returns an instance of PromptTemplate .
+WARNING
+Please be aware that LangChain’ s prompt saving may not work with all types of prompt templates.
+To mitigate this, you can utilize the pickle  library or .txt files to read and write any prompts that
+LangChain does not support.
+You’ve learned how to create few-shot prompt templates using LangChain
+with two techniques: a fixed number of examples and using an example
+selector .
+The former creates a set of few-shot examples and uses a
+ChatPromptTemplate  object to format these into chat messages. This
+forms the basis for creating a FewShotChatMessagePromptTemplate
+object.The latter approach, using an example selector , is handy when user input
+varies significantly in length. In such scenarios, a
+LengthBasedExampleSelector  can be utilized to adjust the number of
+examples based on user input length. This ensures your LLM does not
+exceed its context window limit.
+Moreover , you’ve seen how easy it is to store/load prompts as files,
+enabling enhanced shareability , storage, and versioning.
+Data Connection
+Harnessing an LLM application, coupled with your data, uncovers a
+plethora of opportunities to boost e

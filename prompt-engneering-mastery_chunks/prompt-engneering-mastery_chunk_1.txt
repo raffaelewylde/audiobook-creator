@@ -1,0 +1,34 @@
+Praise for Prompt Engineering for
+Generative AI
+The absolute best book-length r esour ce I’ve r ead on pr ompt
+engineering. Mike and James ar e masters  of their craft.
+—Dan Shipper , cofounder and CEO, Every
+This book is a solid intr oduction to the fundamentals of pr ompt
+engineering and generative AI. The authors cover a wide range of
+useful techniques for all skill levels fr om beginner to advanced in a
+simple, practical, and easy-to-understand way . If you’r e looking to
+improve the accuracy  and r eliability of your AI systems, this book
+should be on your shelf.
+—Mayo Oshin, founder and CEO, Siennai Analytics,
+early LangChain contributorPhoenix and T aylor ’s guide is a lighthouse amidst the vast ocean of
+generative AI. Their book  became a cornerstone for my team at
+Phitur e AI Labs, as we learned to harness LLMs and diffusion models
+for cr eating marketing assets that r esonate with the essence of our
+clients’  apps and games. Thr ough pr ompt engineering, we’ve been
+able to generate bespoke,  on-brand content at scale. This isn’ t just
+theory; it’ s a practical master class in transforming AI’s raw potential
+into tailor ed solutions, making it an essential r ead for developers
+looking to elevate their AI integration to new heights of cr eativity and
+efficiency .
+—Moritz Daan, Founder/Partner , Phiture Mobile
+Growth Consultancy
+Prompt Engineering for Generative AI is pr obably the most futur e-
+proof way of futur e-proofing  your tech car eer. This is without a doubt
+the best r esour ce for anyone working in practical applications of AI.
+The rich, r efined principles in her e will help both new and  seasoned
+AI engineers stay on top of this very competitive game for the
+foreseeable futur e.
+—Ellis Crosby , CTO and cofounder , IncrementoThis is an essential guide for agency and service pr ofessionals.
+Integrating AI with service and client delivery , using automation
+management, and speeding up solutions will set new industry
+standar ds. You’ll find useful, p

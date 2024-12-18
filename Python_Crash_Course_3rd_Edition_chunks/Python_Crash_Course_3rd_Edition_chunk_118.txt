@@ -1,0 +1,40 @@
+tionary inside another dictionary . Nesting is a powerful feature, as the
+following examples will demonstrate.
+A List of Dictionaries
+The alien_0  dictionary contains a variety of information about one alien,
+but it has no room to store information about a second alien, much less a
+screen full of aliens. How can you manage a fleet of aliens? One way is to
+make a list of aliens in which each alien is a dictionary of information about
+that alien. For example, the following code builds a list of three aliens:
+aliens.py
+alien_0 = {'color': 'green', 'points': 5}
+alien_1 = {'color': 'yellow', 'points': 10}
+alien_2 = {'color': 'red', 'points': 15}
+❶ aliens = [alien_0, alien_1, alien_2]
+for alien in aliens:
+    print(alien)
+We first create three dictionaries, each representing a dif ferent alien. We
+store each of these dictionaries in a list called aliens  ❶. Finally , we loop
+through the list and print out each alien:{'color': 'green', 'points': 5}
+{'color': 'yellow', 'points': 10}
+{'color': 'red', 'points': 15}
+A more realistic example would involve more than three aliens with code
+that automatically generates each alien. In the following example, we use
+range()  to create a fleet of 30 aliens:
+# Make an empty list for storing aliens.
+aliens = []
+# Make 30 green aliens.
+❶ for alien_number in range(30):
+❷     new_alien = {'color': 'green', 'points': 5, 'spee
+❸     aliens.append(new_alien)
+# Show the first 5 aliens.
+❹ for alien in aliens[:5]:
+    print(alien)
+print("...")
+# Show how many aliens have been created.
+print(f"Total number of aliens: {len(aliens)}")This example begins with an empty list to hold all of the aliens that will be
+created. The range()  function ❶ returns a series of numbers, which just
+tells Python how many times we want the loop to repeat. Each time the loop
+runs, we create a new alien ❷ and then append each new alien to the list
+aliens  ❸. We use a slice to print the first five aliens ❹, and finally , we
+print the length of the list to prove we’ve ac

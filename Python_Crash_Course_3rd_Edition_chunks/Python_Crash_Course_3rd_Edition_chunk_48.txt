@@ -1,0 +1,34 @@
+ital letters to indicate a variable should be treated
+as a constant and never be changed:
+MAX_CONNECTIONS = 5000When you want to treat a variable as a constant in your code, write the
+name of the variable in all capital letters.
+TRY IT YOURSELF
+2-9. Number  Eight:  Write addition, subtraction, multiplication, and division operations that
+each result in the number 8. Be sure to enclose your operations in print()  calls to see the
+results. You should create four lines that look like this:
+print(5+3)
+Your output should be four lines, with the number 8 appearing once on each line.
+2-10. Favorite Number:  Use a variable to represent your favorite number . Then, using that
+variable, create a message that reveals your favorite number . Print that message.
+Comments
+Comments are an extremely useful feature in most programming languages.
+Everything you’ve written in your programs so far is Python code. As your
+programs become longer and more complicated, you should add notes
+within your programs that describe your overall approach to the problem
+you’re solving. A comment  allows you to write notes in your spoken
+language, within your programs.How Do You Write Comments?
+In Python, the hash mark ( #) indicates a comment. Anything following a
+hash mark in your code is ignored by the Python interpreter . For example:
+comment.py
+# Say hello to everyone.
+print("Hello Python people!")
+Python ignores the first line and executes the second line.
+Hello Python people!
+What Kinds of Comments Should You Write?
+The main reason to write comments is to explain what your code is
+supposed to do and how you are making it work. When you’re in the middle
+of working on a project, you understand how all of the pieces fit together .
+But when you return to a project after some time away , you’ll likely have
+forgotten some of the details. You can always study your code for a while
+and figure out how segments were supposed to work, but writing good
+comments can save you time by summarizing your overall

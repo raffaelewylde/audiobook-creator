@@ -1,0 +1,44 @@
+ctor .
+Installing Plotly
+Install Plotly using pip, just as you did for Matplotlib:
+$ python -m pip install --user plotly$ python -m pip install --user pandas
+Plotly Express depends on pandas , which is a library for working ef ficiently
+with data, so we need to install that as well. If you used python3  or
+something else when installing Matplotlib, make sure you use the same
+command here.
+To see what kind of visualizations are possible with Plotly , visit the gallery
+of chart types at https://plotly .com/python . Each example includes source
+code, so you can see how Plotly generates the visualizations.
+Creating the Die Class
+We’ll create the following Die  class to simulate the roll of one die:
+die.py
+from random import randint
+class Die:
+    """A class representing a single die."""
+❶     def __init__(self, num_sides=6):
+        """Assume a six-sided die."""
+        self.num_sides = num_sides    def roll(self):
+        """"Return a random value between 1 and numbe
+❷         return randint(1, self.num_sides)
+The __init__()  method takes one optional ar gument ❶. With the Die
+class, when an instance of our die is created, the number of sides will be six
+if no ar gument is included. If an ar gument is included, that value will set the
+number of sides on the die. (Dice are named for their number of sides: a
+six-sided die is a D6, an eight-sided die is a D8, and so on.)
+The roll()  method uses the randint()  function to return a random
+number between 1 and the number of sides ❷. This function can return the
+starting value (1), the ending value ( num_sides ), or any integer between
+the two.
+Rolling the Die
+Before creating a visualization based on the Die  class, let’ s roll a D6, print
+the results, and check that the results look reasonable:
+die_visual.py
+from die import Die
+# Create a D6.❶ die = Die()
+# Make some rolls, and store results in a list.
+results = []
+❷ for roll_num in range(100):
+    result = die.roll()
+    results.append(result)
+print(results)
+We create an in

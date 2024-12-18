@@ -1,0 +1,64 @@
+ Blank Lines
+5. Other Style Guidelines
+6. Exercise 4-14: PEP  8
+7. Exercise 4-15: Code Review7. Summary
+5. CHAPTER 5: IF  STATEMENTS
+1. A Simple Example
+2. Conditional Tests
+1. Checking for Equality
+2. Ignoring Case When Checking for Equality
+3. Checking for Inequality
+4. Numerical Comparisons
+5. Checking Multiple Conditions
+6. Checking Whether a Value Is in a List
+7. Checking Whether a Value Is Not in a List
+8. Boolean Expressions
+9. Exercise 5-1: Conditional T ests
+10. Exercise 5-2: Mor e Conditional T ests
+3. if Statements
+1. Simple if Statements
+2. if-else Statements
+3. The if-elif-else Chain
+4. Using Multiple elif Blocks
+5. Omitting the else Block
+6. Testing Multiple Conditions
+7. Exercise 5-3: Alien Colors #1
+8. Exercise 5-4: Alien Colors #2
+9. Exercise 5-5: Alien Colors #310. Exercise 5-6: Stages of Life
+11. Exercise 5-7: Favorite Fruit
+4. Using if Statements with Lists
+1. Checking for Special Items
+2. Checking That a List Is Not Empty
+3. Using Multiple Lists
+4. Exercise 5-8: Hello Admin
+5. Exercise 5-9: No Users
+6. Exercise 5-10: Checking Usernames
+7. Exercise 5-1 1: Or dinal Numbers
+5. Styling Your if Statements
+1. Exercise 5-12: Styling if Statements
+2. Exercise 5-13: Y our Ideas
+6. Summary
+6. CHAPTER 6: DICTIONARIES
+1. A Simple Dictionary
+2. Working with Dictionaries
+1. Accessing Values in a Dictionary
+2. Adding New Key-V alue Pairs
+3. Starting with an Empty Dictionary
+4. Modifying Values in a Dictionary
+5. Removing Key-V alue Pairs
+6. A Dictionary of Similar Objects
+7. Using get() to Access Values8. Exercise 6-1: Person
+9. Exercise 6-2: Favorite Numbers
+10. Exercise 6-3: Glossary
+3. Looping Through a Dictionary
+1. Looping Through All Key-V alue Pairs
+2. Looping Through All the Keys in a Dictionary
+3. Looping Through a Dictionary’ s Keys in a Particular Order
+4. Looping Through All Values in a Dictionary
+5. Exercise 6-4: Glossary 2
+6. Exercise 6-5: Rivers
+7. Exercise 6-6: Polling
+4. Nesting
+1. A List of Dictionaries
+2. A List in a Dictionary
+3. A Dictiona

@@ -1,0 +1,38 @@
+ou
+might want to check whether a submitted location already exists in a list of
+known locations.
+To find out whether a particular value is already in a list, use the keyword
+in. Let’ s consider some code you might write for a pizzeria. We’ll make a
+list of toppings a customer has requested for a pizza and then check whether
+certain toppings are in the list.>>> requested_toppings = ['mushrooms', 'onions', 'pin
+>>> 'mushrooms' in requested_toppings
+True
+>>> 'pepperoni' in requested_toppings
+False
+The keyword in tells Python to check for the existence of 'mushrooms'
+and 'pepperoni'  in the list requested_toppings . This technique is
+quite powerful because you can create a list of essential values, and then
+easily check whether the value you’re testing matches one of the values in
+the list.
+Checking Whether  a Value Is Not in a List
+Other times, it’ s important to know if a value does not appear in a list. You
+can use the keyword not  in this situation. For example, consider a list of
+users who are banned from commenting in a forum. You can check whether
+a user has been banned before allowing that person to submit a comment:
+banned_users.py
+banned_users = ['andrew', 'carolina', 'david']
+user = 'marie'if user not in banned_users:
+    print(f"{user.title()}, you can post a response i
+The if statement here reads quite clearly . If the value of user  is not in
+the list banned_users , Python returns True  and executes the indented
+line.
+The user 'marie'  is not in the list banned_users , so she sees a
+message inviting her to post a response:
+Marie, you can post a response if you wish.
+Boolean Expr essions
+As you learn more about programming, you’ll hear the term Boolean
+expression  at some point. A Boolean expression is just another name for a
+conditional test. A Boolean value  is either True  or False , just like the
+value of a conditional expression after it has been evaluated.
+Boolean values are often used to keep track of certain conditions, such as
+whether a game is run

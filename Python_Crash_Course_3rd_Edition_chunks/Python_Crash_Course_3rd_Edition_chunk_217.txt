@@ -1,0 +1,48 @@
+        contents = path.read_text()
+        username = json.loads(contents)
+        return username
+    else:
+❷         return Nonedef greet_user():
+    """Greet the user by name."""
+    path = Path('username.json')
+    username = get_stored_username(path)
+❸     if username:
+        print(f"Welcome back, {username}!")
+    else:
+        username = input("What is your name? ")
+        contents = json.dumps(username)
+        path.write_text(contents)
+        print(f"We'll remember you when you come back
+greet_user()
+The new function get_stored_username()  ❶ has a clear purpose, as
+stated in the docstring. This function retrieves a stored username and returns
+the username if it finds one. If the path that’ s passed to
+get_stored_username()  doesn’ t exist, the function returns None  ❷.
+This is good practice: a function should either return the value you’re
+expecting, or it should return None . This allows us to perform a simple
+test with the return value of the function. We print a welcome back message
+to the user if the attempt to retrieve a username is successful ❸, and if it
+isn’t, we prompt for a new username.We should factor one more block of code out of greet_user() . If the
+username doesn’ t exist, we should move the code that prompts for a new
+username to a function dedicated to that purpose:
+from pathlib import Path
+import json
+def get_stored_username(path):
+    """Get stored username if available."""
+    --snip--
+def get_new_username(path):
+    """Prompt for a new username."""
+    username = input("What is your name? ")
+    contents = json.dumps(username)
+    path.write_text(contents)
+    return username
+def greet_user():
+    """Greet the user by name."""
+    path = Path('username.json')
+❶     username = get_stored_username(path)
+    if username:
+        print(f"Welcome back, {username}!")
+    else:
+❷         username = get_new_username(path)
+        print(f"We'll remember you when you come backgreet_user()
+Each function in this final version of remember_me.py

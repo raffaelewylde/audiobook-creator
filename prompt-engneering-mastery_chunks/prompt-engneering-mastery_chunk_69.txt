@@ -1,0 +1,42 @@
+ut the importance of asking for context  when
+working with LLMs such as GPT -4. We will start with an example of a
+prompt that doesn’ t provide enough context, resulting in a less useful
+response.
+Then, we will provide a better prompt that encourages the model to ask for
+additional context if needed. Finally , we will use the additional context
+provided to generate a more informed response.
+Input:
+Should I use MongoDB or PostgreSQL for my project?
+Output:
+It's difficult to make a recommendation without knowi
+specific software requirements. Both MongoDB and Post
+advantages, but the best choice depends on the specif
+project.
+In the preceding prompt, the model does not have enough context to make a
+meaningful recommendation. Instead, you can ask ChatGPT  for a list ofrecommended points that would help it to make an ef fective decision.
+Input:
+Should I use MongoDB or PostgreSQL for my project?
+Provide a list of requirements that would help you to
+and high-quality decision about which database soluti
+Output:
+To make an informed decision between MongoDB and Post
+project, consider the following requirements:
+1. Data Structure: Evaluate the structure of your dat
+is highly unstructured or schema-less, MongoDB's flex
+may be more suitable. On the other hand, if your data
+or requires complex relationships, PostgreSQL's relat
+be a better fit.
+...
+10. Cost: Assess the cost implications of each databa
+offers both a community edition (free) and a commerciadditional features and support.PostgreSQL is open-so
+with optional commercial support available from vario
+After prompting ChatGPT  about how to make an informed decision, now
+you’re aware of what to include within your prompt to help the language
+model with deciding.
+Input:
+Should I use MongoDB or PostgreSQL for my project?
+Context:
+- Data Structure: Highly unstructured data with varyi
+and no fixed schema. Scalability: Project requires th
+massive amounts of data and distribute it across mult
+- ACID Compliance: Strong data consist

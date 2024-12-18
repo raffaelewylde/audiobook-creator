@@ -1,0 +1,31 @@
+sing a specific library , such as Pygame, Matplotlib, or Django,
+links to the of ficial documentation for it will often appear in searches. For
+example, https://docs.djangopr oject.com  is very helpful when working with
+Django. If you’re planning to work with any of these libraries, it’ s a good
+idea to become familiar with their of ficial documentation.
+r/learnpython
+Reddit is made up of a number of subforums called subreddits . The
+r/learnpython  subreddit ( https://r eddit.com/r/learnpython ) is very active
+and supportive. You can read others’  questions and post your own as well.
+You will often get multiple perspectives about the questions you raise,
+which can be really helpful in gaining a deeper understanding of the topic
+you’re working on.Blog Posts
+Many programmers maintain blogs and share posts about the parts of the
+language they’re working with. You should look for a date on the blog posts
+you find, to see how applicable the information is likely to be for the
+version of Python you’re using.
+Discord
+Discor d is an online chat environment with a Python community where you
+can ask for help and follow Python-related discussions.
+To check it out, head to https://pythondiscor d.com  and click the Discord
+link at the upper right. If you already have a Discord account, you can log
+in with your existing account. If you don’ t have an account, enter a
+username and follow the prompts to complete your Discord registration.
+If this is your first time visiting the Python Discord, you’ll need to accept
+the rules for the community before participating fully . Once you’ve done
+that, you can join any of the channels that interest you. If you’re looking for
+help, be sure to post in one of the Python Help channels.
+Slack
+Slack  is another online chat environment. It is often used for internal
+company communications, but there are also many public groups you canjoin. If you want to check out Python Slack groups, start with https://pyslac
+kers.com . Click the Slack  link at t

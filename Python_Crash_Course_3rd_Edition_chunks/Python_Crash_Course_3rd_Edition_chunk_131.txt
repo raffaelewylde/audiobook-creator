@@ -1,0 +1,38 @@
+something, and I will repeat it back to you:
+Enter 'quit' to end the program. Hello again.
+Hello again.
+Tell me something, and I will repeat it back to you:
+Enter 'quit' to end the program. quit
+quit
+This program works well, except that it prints the word 'quit'  as if it
+were an actual message. A simple if test fixes this:
+prompt = "\nTell me something, and I will repeat it b
+prompt += "\nEnter 'quit' to end the program. "
+message = ""
+while message != 'quit':
+    message = input(prompt)    if message != 'quit':
+        print(message)
+Now the program makes a quick check before displaying the message and
+only prints the message if it does not match the quit value:
+Tell me something, and I will repeat it back to you:
+Enter 'quit' to end the program. Hello everyone!
+Hello everyone!
+Tell me something, and I will repeat it back to you:
+Enter 'quit' to end the program. Hello again.
+Hello again.
+Tell me something, and I will repeat it back to you:
+Enter 'quit' to end the program. quit
+Using a Flag
+In the previous example, we had the program perform certain tasks while a
+given condition was true. But what about more complicated programs in
+which many dif ferent events could cause the program to stop running?
+For example, in a game, several dif ferent events can end the game. When
+the player runs out of ships, their time runs out, or the cities they weresupposed to protect are all destroyed, the game should end. It needs to end
+if any one of these events happens. If many possible events might occur to
+stop the program, trying to test all these conditions in one while
+statement becomes complicated and dif ficult.
+For a program that should run only as long as many conditions are true, you
+can define one variable that determines whether or not the entire program is
+active. This variable, called a flag, acts as a signal to the program. We can
+write our programs so they run while the flag is set to True  and stop
+running when any of several events sets the value of the flag to F

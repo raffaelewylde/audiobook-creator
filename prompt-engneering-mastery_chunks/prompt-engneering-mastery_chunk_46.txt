@@ -1,0 +1,31 @@
+t are essential for training LLMs.
+The demand for powerful, ef ficient GPUs has skyrocketed as companies
+strive to build ever -larger and more complex models. It’ s not just the raw
+computational power that’ s sought after . GPUs also need to be fine-tuned
+for tasks endemic to machine learning, like tensor operations. Tensors , in a
+machine learning context, are multidimensional arrays of data, and
+operations on them are foundational to neural network computations. This
+emphasis on specialized capabilities has given rise to tailored hardware
+such as NVIDIA ’s H100 Tensor Core GPUs, explicitly crafted to expedite
+machine learning workloads.
+Furthermore, the overwhelming demand often outstrips the supply of these
+top-tier GPUs, sending prices on an upward trajectory . This supply-demand
+interplay has transformed the GPU market into a fiercely competitive and
+profitable arena. Here, an eclectic clientele, ranging from tech behemoths to
+academic researchers, scramble to procure the most advanced hardware.This sur ge in demand has sparked a wave of innovation beyond just GPUs.
+Companies are now focusing on creating dedicated AI hardware, such as
+Google’ s Tensor Processing Units (TPUs), to cater to the growing
+computational needs of AI models.
+This evolving landscape underscores not just the symbiotic ties between
+software and hardware in the AI sphere but also spotlights the ripple ef fect
+of the LLM gold rush . It’s steering innovations and funneling investments
+into various sectors, especially those offering the fundamental components
+for crafting these models.
+OpenAI’s Generative Pretrained
+Transformers
+Founded with a mission to ensure that artificial general intelligence benefits
+all of humanity , OpenAI  has recently been at the forefront of the AI
+revolution. One of their most groundbreaking contributions has been the
+GPT series of models, which have substantially redefined the boundaries of
+what LLMs can achieve.
+The original GPT  model by OpenAI was more than a 

@@ -1,0 +1,64 @@
+. Modifying the Speed Settings
+2. Resetting the Speed
+3. Exercise 14-3: Challenging T arget Practice4. Exercise 14-4: Difficulty Levels
+3. Scoring
+1. Displaying the Score
+2. Making a Scoreboard
+3. Updating the Score as Aliens Are Shot Down
+4. Resetting the Score
+5. Making Sure to Score All Hits
+6. Increasing Point Values
+7. Rounding the Score
+8. High Scores
+9. Displaying the Level
+10. Displaying the Number of Ships
+11. Exercise 14-5: All-T ime High Scor e
+12. Exercise 14-6: Refactoring
+13. Exercise 14-7: Expanding the Game
+14. Exercise 14-8: Sideways Shooter , Final V ersion
+4. Summary
+4. CHAPTER 15: GENERA TING DA TA
+1. Installing Matplotlib
+2. Plotting a Simple Line Graph
+1. Changing the Label Type and Line Thickness
+2. Correcting the Plot
+3. Using Built-in Styles
+4. Plotting and Styling Individual Points with scatter()5. Plotting a Series of Points with scatter()
+6. Calculating Data Automatically
+7. Customizing Tick Labels
+8. Defining Custom Colors
+9. Using a Colormap
+10. Saving Your Plots Automatically
+11. Exercise 15-1: Cubes
+12. Exercise 15-2: Color ed Cubes
+3. Random Walks
+1. Creating the RandomW alk Class
+2. Choosing Directions
+3. Plotting the Random Walk
+4. Generating Multiple Random Walks
+5. Styling the Walk
+6. Exercise 15-3: Molecular Motion
+7. Exercise 15-4: Modified Random W alks
+8. Exercise 15-5: Refactoring
+4. Rolling Dice with Plotly
+1. Installing Plotly
+2. Creating the Die Class
+3. Rolling the Die
+4. Analyzing the Results
+5. Making a Histogram
+6. Customizing the Plot7. Rolling Two Dice
+8. Further Customizations
+9. Rolling Dice of Dif ferent Sizes
+10. Saving Figures
+11. Exercise 15-6: T wo D8s
+12. Exercise 15-7: Thr ee Dice
+13. Exercise 15-8: Multiplication
+14. Exercise 15-9: Die Compr ehensions
+15. Exercise 15-10: Practicing with Both Libraries
+5. Summary
+5. CHAPTER 16: DOWNLOADING DA TA
+1. The CSV  File Format
+1. Parsing the CSV  File Headers
+2. Printing the Headers and Their Positions
+3. Extracting and Reading Data
+4. Plotting Data in a Temperatur

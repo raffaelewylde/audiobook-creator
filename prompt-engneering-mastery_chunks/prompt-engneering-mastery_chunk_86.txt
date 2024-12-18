@@ -1,0 +1,55 @@
+messages :
+        num_tokens  += tokens_per_message
+        for key, value in message.items():
+            num_tokens  += len(encoding .encode(value))
+            if key == "name":
+                num_tokens  += tokens_per_name
+    num_tokens  += 3  # every reply is primed with
+    # <|start|>assistant<|message|>
+    return num_tokens
+Example 3-6  highlights the specific structure required to make a request
+against any of the chat models, which are currently GPT -3x and GPT -4.
+Normally , chat history is structured with a system  message first, and then
+succeeded by alternating exchanges between the user  and the
+assistant .Example 3-6. A payload for  the Chat Completions API on OpenAI
+example_messages  = [
+    {
+        "role": "system" ,
+        "content" : '''You are a helpful, pattern-foll
+        translates corporate jargon into plain Englis
+    },
+    {
+        "role": "system" ,
+        "name": "example_user" ,
+        "content" : "New synergies will help drive top
+    },
+    {
+        "role": "system" ,
+        "name": "example_assistant" ,
+        "content" : "Things working well together will
+    },
+    {
+        "role": "system" ,
+        "name": "example_user" ,
+        "content" : '''Let's circle back when we have 
+        base on opportunities for increased leverage.
+    },
+    {
+        "role": "system" ,
+        "name": "example_assistant" ,
+        "content" : '''Let's talk later when we're les        do better.''' ,
+    },
+    {
+        "role": "user",
+        "content" : '''This late pivot means we don't 
+        time to boil the ocean for the client deliver
+    },
+]
+for model in ["gpt-3.5-turbo-0301" , "gpt-4-0314" ]:
+    print(model)
+    # example token count from the function defined a
+    print(f'''{num_tokens_from_messages (example_messa
+    prompt tokens counted by num_tokens_from_messages
+"role": "system"  describes a system message that’s useful for
+providing pr ompt instructions . It of fers a means to tweak the assistant’ s
+character or

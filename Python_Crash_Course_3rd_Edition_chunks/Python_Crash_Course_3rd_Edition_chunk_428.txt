@@ -1,0 +1,39 @@
+fining the Navigation Bar
+The code that defines the navigation bar at the top of the page is fairly long,
+because it has to work equally well on narrow phone screens and wide
+desktop monitors. We’ll work through the navigation bar in sections.
+Here’ s the first part of the navigation bar:
+base.html
+--snip--
+</head>
+<body>❶   <nav class="navbar navbar-expand-md navbar-light bg
+    <div class="container-fluid">
+❷       <a class="navbar-brand" href="{% url 'learning_
+          Learning Log</a>
+❸       <button class="navbar-toggler" type="button" da
+        data-bs-target="#navbarCollapse" aria-control
+        aria-expanded="false" aria-label="Toggle navi
+        <span class="navbar-toggler-icon"></span>
+      </button>
+❹       <div class="collapse navbar-collapse" id="navba
+❺         <ul class="navbar-nav me-auto mb-2 mb-md-0">
+❻           <li class="nav-item">
+❼             <a class="nav-link" href="{% url 'learnin
+              Topics</a></li>
+        </ul> <!-- End of links on left side of navba
+      </div> <!-- Closes collapsible parts of navbar 
+    </div> <!-- Closes navbar's container -->
+  </nav> <!-- End of navbar -->
+❽ {% block content %}{% endblock content %}
+</body>
+</html>The first new element is the opening <body>  tag. The body  of an HTML
+file contains the content users will see on a page. Next we have a <nav>
+element, which opens the code for the navigation bar at the top of the page
+❶. Everything contained in this element is styled according to the Bootstrap
+style rules defined by the selectors navbar , navbar-expand-md , and
+the rest that you see here. A selector  determines which elements on a page a
+certain style rule applies to. The navbar-light  and bg-light
+selectors style the navigation bar with a light-themed background. The mb
+in mb-4  is short for margin-bottom ; this selector ensures that a little space
+appears between the navigation bar and the rest of the page. The border
+selector provides a thin border around the light background to set

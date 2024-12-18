@@ -1,0 +1,32 @@
+en we implement
+a scoring system in Chapter 14 .)
+Add the following code to the end of _update_bullets()  to check for
+collisions between bullets and aliens:
+alien_invasion.py
+    def _update_bullets(self):
+        """Update position of bullets and get rid of 
+        --snip--
+        # Check for any bullets that have hit aliens.
+        #   If so, get rid of the bullet and the alie
+        collisions = pygame.sprite.groupcollide(
+                self.bullets, self.aliens, True, TrueThe new code we added compares the positions of all the bullets in
+self.bullets  and all the aliens in self.aliens , and identifies any
+that overlap. Whenever the rect s of a bullet and alien overlap,
+groupcollide()  adds a key-value pair to the dictionary it returns. The
+two True  arguments tell Pygame to delete the bullets and aliens that have
+collided. (T o make a high-powered bullet that can travel to the top of the
+screen, destroying every alien in its path, you could set the first Boolean
+argument to False  and keep the second Boolean ar gument set to True .
+The aliens hit would disappear , but all bullets would stay active until they
+disappeared of f the top of the screen.)
+When you run Alien Invasion  now , aliens you hit should disappear . Figure 1
+3-5 shows a fleet that has been partially shot down.Figure 13-5 : We can shoot aliens!
+Making Larger  Bullets for  Testing
+You can test many features of Alien Invasion  simply by running the game,
+but some features are tedious to test in the normal version of the game. For
+example, it’ s a lot of work to shoot down every alien on the screen multiple
+times to test whether your code responds to an empty fleet correctly .
+To test particular features, you can change certain game settings to focus on
+a particular area. For example, you might shrink the screen so there are
+fewer aliens to shoot down or increase the bullet speed and give yourself
+lots of bullets at once.My favorite change for testing Alien Invasion  is to use really wide bul

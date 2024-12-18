@@ -1,0 +1,36 @@
+ent-loading pipeline for NutriFusion Foods’  LLM.
+Starting with data extraction from a PDF , several CSV  files and two . docx
+files, each document was enriched with relevant metadata for better context.
+You now have the ability to seamlessly integrate data from a variety of
+document sources into a cohesive data pipeline.
+Text Splitters
+Balancing the length of each document is also a crucial factor . If a
+document is too lengthy , it may surpass the context length  of the LLM (themaximum number of tokens that an LLM can process within a single
+request). But if the documents are excessively fragmented into smaller
+chunks, there’ s a risk of losing significant contextual information, which is
+equally undesirable.
+You might encounter specific challenges while text splitting, such as:
+Special characters such as hashtags, @ symbols, or links might not split
+as anticipated, af fecting the overall structure of the split documents.
+If your document contains intricate formatting like tables, lists, or
+multilevel headings, the text splitter might find it dif ficult to retain the
+original formatting.
+There are ways to overcome these challenges that we’ll explore later .
+This section introduces you to text splitters in LangChain, tools utilized to
+break down lar ge chunks of text to better adapt to your model’ s context
+window .
+NOTE
+There isn’ t a perfect document size. Start by using good heuristics and then build a training/test set
+that you can use for LLM evaluation.
+LangChain provides a range of text splitters so that you can easily split by
+any of the following:Token count
+Recursively by multiple characters
+Character count
+Code
+Markdown headers
+Let’s explore three popular splitters: CharacterTextSplitter ,
+TokenTextSplitter , and RecursiveCharacterTextSplitter .
+Text Splitting by Length and Token Size
+In Chapter 3 , you learned how to count the number of tokens within a GPT -
+4 call with tiktoken . You can also use tiktoken to split strings into
+appropriately sized chunk

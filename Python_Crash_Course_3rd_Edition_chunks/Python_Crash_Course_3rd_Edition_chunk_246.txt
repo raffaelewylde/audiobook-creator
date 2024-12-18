@@ -1,0 +1,31 @@
+
+class. This will give Ship  access to all the game resources defined in
+AlienInvasion . We then assign the screen to an attribute of Ship  ❶,
+so we can access it easily in all the methods in this class. We access the
+screen’ s rect  attribute using the get_rect()  method and assign it to
+self.screen_rect  ❷. Doing so allows us to place the ship in the
+correct location on the screen.
+To load the image, we call pygame.image.load()  ❸ and give it the
+location of our ship image. This function returns a surface representing the
+ship, which we assign to self.image . When the image is loaded, we call
+get_rect()  to access the ship surface’ s rect  attribute so we can later
+use it to place the ship.
+When you’re working with a rect  object, you can use the x- and y-
+coordinates of the top, bottom, left, and right edges of the rectangle, as well
+as the center , to place the object. You can set any of these values to establish
+the current position of the rect . When you’re centering a game element,
+work with the center , centerx , or centery  attributes of a rect .
+When you’re working at an edge of the screen, work with the top ,
+bottom , left , or right  attributes. There are also attributes that
+combine these properties, such as midbottom , midtop , midleft , and
+midright . When you’re adjusting the horizontal or vertical placement of
+the rect , you can just use the x and y attributes, which are the x- and y-
+coordinates of its top-left corner . These attributes spare you from having todo calculations that game developers formerly had to do manually , and
+you’ll use them often.
+NOTE
+In Pygame, the origin (0, 0) is at the top-left corner of the scr een,
+and coor dinates incr ease as you go down and to the right. On a
+1200×800 scr een, the origin is at the top-left corner , and the
+bottom-right corner has the coor dinates (1200, 800). These
+coordinates r efer to the game window , not the physical scr een.
+We’ll position the ship at the bottom center of the screen. To do so, m

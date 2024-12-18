@@ -1,0 +1,31 @@
+
+        edgecolors='none', s=1)
+    --snip--
+This example creates a random walk with 50,000 points and plots each
+point at size s=1 . The resulting walk is wispy and cloudlike, as shown in F
+igure 15-1 1. We’ve created a piece of art from a simple scatter plot!Experiment with this code to see how much you can increase the number of
+points in a walk before your system starts to slow down significantly or the
+plot loses its visual appeal.
+Figure 15-1 1: A walk with 50,000 points
+Altering the Size to Fill the Scr een
+A visualization is much more ef fective at communicating patterns in data if
+it fits nicely on the screen. To make the plotting window better fit your
+screen, you can adjust the size of Matplotlib’ s output. This is done in the
+subplots()  call:fig, ax = plt.subplots(figsize=(15, 9))
+When creating a plot, you can pass subplots()  a figsize  argument,
+which sets the size of the figure. The figsize  parameter takes a tuple
+that tells Matplotlib the dimensions of the plotting window in inches.
+Matplotlib assumes your screen resolution is 100 pixels per inch; if this
+code doesn’ t give you an accurate plot size, adjust the numbers as
+necessary . Or, if you know your system’ s resolution, you can pass
+subplots()  the resolution using the dpi  parameter:
+fig, ax = plt.subplots(figsize=(10, 6), dpi=128)
+This should help make the most ef ficient use of the space available on your
+screen.TRY IT YOURSELF
+15-3. Molecular  Motion:  Modify rw_visual.py  by replacing ax.scatter()  with
+ax.plot() . To simulate the path of a pollen grain on the surface of a drop of water , pass in
+the rw.x_values  and rw.y_values , and include a linewidth  argument. Use 5,000
+instead of 50,000 points to keep the plot from being too busy .
+15-4. Modified Random Walks:  In the RandomWalk  class, x_step  and y_step  are
+generated from the same set of conditions. The direction is chosen randomly from the list [1,
+-1]  and the distance from the list [0, 1, 2, 3, 4] . Modify the values in thes

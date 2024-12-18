@@ -1,0 +1,37 @@
+e new function test_store_three_responses() . We
+create a survey object just like we did in
+test_store_single_response() . We define a list containing three
+different responses ❶, and then we call store_response()  for each of
+these responses. Once the responses have been stored, we write another
+loop and assert that each response is now in
+language_survey.responses  ❷.
+When we run the test file again, both tests (for a single response and for
+three responses) pass:
+$ pytest test_survey.py
+========================= test session starts =======
+--snip--
+test_survey.py ..                                    
+========================== 2 passed in 0.01s ========This works perfectly . However , these tests are a bit repetitive, so we’ll use
+another feature of pytest  to make them more ef ficient.
+Using Fixtur es
+In test_survey .py, we created a new instance of AnonymousSurvey  in
+each test function. This is fine in the short example we’re working with, but
+in a real-world project with tens or hundreds of tests, this would be
+problematic.
+In testing, a fixtur e helps set up a test environment. Often, this means
+creating a resource that’ s used by more than one test. We create a fixture in
+pytest  by writing a function with the decorator @pytest.fixture . A
+decorator  is a directive placed just before a function definition; Python
+applies this directive to the function before it runs, to alter how the function
+code behaves. Don’ t worry if this sounds complicated; you can start to use
+decorators from third-party packages before learning to write them yourself.
+Let’s use a fixture to create a single survey instance that can be used in both
+test functions in test_survey .py:
+import pytest
+from survey import AnonymousSurvey
+❶ @pytest.fixture
+❷ def language_survey():    """A survey that will be available to all test fu
+    question = "What language did you first learn to 
+    language_survey = AnonymousSurvey(question)
+    return language_survey
+❸ def test_store_single_response

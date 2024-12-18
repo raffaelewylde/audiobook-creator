@@ -1,0 +1,41 @@
+ used to produce steam to drive a turbin
+electricity."}
+Give GPTs “Thinking Time”
+Often, by explicitly guiding an LLM to derive solutions fr om first principles
+before reaching a verdict, you can garner more accurate responses.
+Providing an LLM with thinking time  can often lead to better results.
+Input:
+First, try to solve the problem on your own. Then, se
+matches the proposed solution. Don't judge the given 
+tried solving it yourself.
+Problem:
+Jane has 5 apples, then John takes 2 from Mary. Mary 
+apples. John then gives his apples to Jane.
+How many apples does Jane have?
+Proposed solution:
+1. Janes originally had 5 apples.
+2. John takes 2 apples from Mary, but this doesn't af3. John then gives his apples to Jane.
+So, Jane's final count of apples is her original 5 ap
+that John gave her, for a total of 7 apples.
+Output:
+Let's break down the problem:
+1. Jane originally has 5 apples.
+2. John takes 2 apples from Mary. However, this actio
+impact the number of apples Jane has at this point.
+3. John gives his apples to Jane.
+Following these steps, we need to add the 2 apples Jo
+Jane's original number of apples. Therefore:
+5 apples (Jane's original number) + 2 apples (given b
+So, Jane now has 7 apples. My solution matches the pr
+In some cases, when using GPT -4 or other generative AI models, you may
+not want the model’ s reasoning process to be visible to the user .
+You can achieve this by asking an LLM to generate an inner monologue .
+This is particularly useful in tutoring applications, where revealing themodel’ s reasoning might give away the solution prematurely .
+The Inner Monologue Tactic
+The inner monologue tactic  instructs the model to structure parts of the
+output that should be hidden from the user in a specific format. This makes
+it easy to remove these parts before presenting the final output to the user .
+Here’ s how you can utilize this tactic to answer user queries ef fectively .
+Input:
+Step 1: Solve the Problem
+First, you need to work out your solution to 

@@ -1,0 +1,38 @@
+ow is that any function defined in pizza.py  will now be available in
+making_pizzas.py .
+To call a function from an imported module, enter the name of the module
+you imported, pizza , followed by the name of the function,make_pizza() , separated by a dot ❶. This code produces the same
+output as the original program that didn’ t import a module:
+Making a 16-inch pizza with the following toppings:
+- pepperoni
+Making a 12-inch pizza with the following toppings:
+- mushrooms
+- green peppers
+- extra cheese
+This first approach to importing, in which you simply write import
+followed by the name of the module, makes every function from the module
+available in your program. If you use this kind of import  statement to
+import an entire module named module_name.py , each function in the
+module is available through the following syntax:
+module_name .function_name ()
+Importing Specific Functions
+You can also import a specific function from a module. Here’ s the general
+syntax for this approach:from module_name  import function_name
+You can import as many functions as you want from a module by separating
+each function’ s name with a comma:
+from module_name  import function_0 , function_1 , function_2
+The making_pizzas.py  example would look like this if we want to import
+just the function we’re going to use:
+from pizza import make_pizza
+make_pizza(16, 'pepperoni')
+make_pizza(12, 'mushrooms', 'green peppers', 'extra c
+With this syntax, you don’ t need to use the dot notation when you call a
+function. Because we’ve explicitly imported the function make_pizza()
+in the import  statement, we can call it by name when we use the
+function.
+Using as to Give a Function an Alias
+If the name of a function you’re importing might conflict with an existing
+name in your program, or if the function name is long, you can use a short,unique alias —an alternate name similar to a nickname for the function.
+You’ll give the function this special nickname when you import the
+function.
+Here we give the fu

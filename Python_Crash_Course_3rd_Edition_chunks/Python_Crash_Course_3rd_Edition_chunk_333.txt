@@ -1,0 +1,45 @@
+mns
+2 and 4. To explore this data, we’ll process each row of data in
+sitka_weather_07-2021_simple.csv  and extract the values with the indexes
+2 and 4.
+Extracting and Reading Data
+Now that we know which columns of data we need, let’ s read in some of
+that data. First, we’ll read in the high temperature for each day:
+sitka_highs.py--snip--
+reader = csv.reader(lines)
+header_row = next(reader)
+# Extract high temperatures.
+❶ highs = []
+❷ for row in reader:
+❸     high = int(row[4])
+    highs.append(high)
+print(highs)
+We make an empty list called highs  ❶ and then loop through the
+remaining rows in the file ❷. The reader  object continues from where it
+left of f in the CSV  file and automatically returns each line following its
+current position. Because we’ve already read the header row , the loop will
+begin at the second line where the actual data begins. On each pass through
+the loop we pull the data from index 4, corresponding to the header TMAX ,
+and assign it to the variable high  ❸. We use the int()  function to
+convert the data, which is stored as a string, to a numerical format so we
+can use it. We then append this value to highs .
+The following listing shows the data now stored in highs :
+[61, 60, 66, 60, 65, 59, 58, 58, 57, 60, 60, 60, 57, We’ve extracted the high temperature for each date and stored each value in
+a list. Now let’ s create a visualization of this data.
+Plotting Data in a Temperatur e Chart
+To visualize the temperature data we have, we’ll first create a simple plot of
+the daily highs using Matplotlib, as shown here:
+sitka_highs.py
+from pathlib import Path
+import csv
+import matplotlib.pyplot as plt
+path = Path('weather_data/sitka_weather_07-2021_simpl
+lines = path.read_text(encoding='utf-8').splitlines()
+    --snip--
+# Plot the high temperatures.
+plt.style.use('seaborn-v0_8')
+fig, ax = plt.subplots()
+❶ ax.plot(highs, color='red')
+# Format plot.
+❷ ax.set_title("Daily High Temperatures, July 2021", fo
+❸ ax.set_xlabel('', fontsize=16)ax.set_ylabel("T

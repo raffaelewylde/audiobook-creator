@@ -1,0 +1,43 @@
+ls.py . You should see the
+following code:
+ll_pr oject/urls.py
+❶ from django.contrib import admin
+from django.urls import path
+❷ urlpatterns = [
+❸     path('admin/', admin.site.urls),
+]
+The first two lines import the admin  module and a function to build URL
+paths ❶. The body of the file defines the urlpatterns  variable ❷. In
+this urls.py  file, which defines URLs for the project as a whole, the
+urlpatterns  variable includes sets of URLs from the apps in the
+project. The list includes the module admin.site.urls , which defines
+all the URLs that can be requested from the admin site ❸.
+We need to include the URLs for learning_logs , so add the following:
+from django.contrib import admin
+from django.urls import path, include
+urlpatterns = [
+    path('admin/', admin.site.urls),    path('', include('learning_logs.urls')),
+]
+We’ve imported the include()  function, and we’ve also added a line to
+include the module learning_logs.urls .
+The default urls.py  is in the ll_pr oject folder; now we need to make a
+second urls.py  file in the learning_logs folder . Create a new Python file,
+save it as urls.py  in learning_logs , and enter this code into it:
+learning_logs/urls.py
+❶ """Defines URL patterns for learning_logs."""
+❷ from django.urls import path
+❸ from . import views
+❹ app_name = 'learning_logs'
+❺ urlpatterns = [
+    # Home page
+❻     path('', views.index, name='index'),
+]To make it clear which urls.py  we’re working in, we add a docstring at the
+beginning of the file ❶. We then import the path  function, which is
+needed when mapping URLs to views ❷. We also import the views
+module ❸; the dot tells Python to import the views.py  module from the
+same directory as the current urls.py  module. The variable app_name
+helps Django distinguish this urls.py  file from files of the same name in
+other apps within the project ❹. The variable urlpatterns  in this
+module is a list of individual pages that can be requested from the
+learning_logs  app ❺.
+The actual URL  pattern is a 

@@ -1,0 +1,36 @@
+za. If the list is not empty , we’ll build the
+pizza just as we did in the previous examples:
+requested_toppings = []
+if requested_toppings:
+    for requested_topping in requested_toppings:
+        print(f"Adding {requested_topping}.")
+    print("\nFinished making your pizza!")else:
+    print("Are you sure you want a plain pizza?")
+This time we start out with an empty list of requested toppings. Instead of
+jumping right into a for  loop, we do a quick check first. When the name
+of a list is used in an if statement, Python returns True  if the list
+contains at least one item; an empty list evaluates to False . If
+requested_toppings  passes the conditional test, we run the same for
+loop we used in the previous example. If the conditional test fails, we print
+a message asking the customer if they really want a plain pizza with no
+toppings.
+The list is empty in this case, so the output asks if the user really wants a
+plain pizza:
+Are you sure you want a plain pizza?
+If the list is not empty , the output will show each requested topping being
+added to the pizza.
+Using Multiple Lists
+People will ask for just about anything, especially when it comes to pizza
+toppings. What if a customer actually wants french fries on their pizza? Youcan use lists and if statements to make sure your input makes sense
+before you act on it.
+Let’s watch out for unusual topping requests before we build a pizza. The
+following example defines two lists. The first is a list of available toppings
+at the pizzeria, and the second is the list of toppings that the user has
+requested. This time, each item in requested_toppings  is checked
+against the list of available toppings before it’ s added to the pizza:
+available_toppings = ['mushrooms', 'olives', 'green p
+                      'pepperoni', 'pineapple', 'extr
+❶ requested_toppings = ['mushrooms', 'french fries', 'e
+for requested_topping in requested_toppings:
+❷     if requested_topping in available_toppings:
+        print(f"Adding {requested_toppin

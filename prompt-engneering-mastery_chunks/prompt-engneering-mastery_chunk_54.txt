@@ -1,0 +1,37 @@
+duct description: A shoe that fits any foot size P
+iFit, OneSize, iWalkFree
+Summary
+The journey of LLMs from their inception to their current advanced states
+is a tale of relentless innovation, collaboration, and intense competition. As
+these models continue to evolve, they are likely to become even more
+integral parts of our daily lives, changing the way we interact with
+technology and even with each other .By understanding the historical context and capabilities of these models,
+you can better appreciate the tools at our disposal for various applications,
+from prompt engineering to the development of intelligent virtual agents.
+It’s important to note, however , that while these models of fer expansive
+possibilities, data privacy remains a crucial concern. If these models use
+your data for retraining or fine-tuning, exercise caution and refrain from
+inputting sensitive information.
+In the next chapter , you will learn all the basic prompt engineering
+techniques for working with text LLMs. You’ll learn the essential skills
+needed to get the most out of powerful language models like GPT -4.
+Exciting insights and practical methods await you as you unlock the true
+potential of generative AI.Chapter 3. Standard Practices for Text
+Generation with ChatGPT
+Simple prompting techniques will help you to maximize the output and
+formats from LLMs. You’ll start by tailoring the prompts to explore all of
+the common practices used for text generation.
+Generating Lists
+Automatically generating lists is incredibly powerful and enables you to
+focus on higher -level tasks while GPT  can automatically generate, refine,
+rerank, and de-duplicate lists on your behalf.
+Input:
+Generate a list of Disney characters.
+Output:
+Sure, here is a list of some popular Disney character
+1. Mickey Mouse
+2. Minnie Mouse...
+30. Bagheera (The Jungle Book)
+GPT-4 is perfectly capable of providing a list of characters. However , there
+are some pitfalls with this approach:
+GPT has decided to provide 30 example

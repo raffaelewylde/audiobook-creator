@@ -1,0 +1,50 @@
+ at
+evaluating that task. In the notebook , the same transaction classificationwas run again with the model changed to model =
+ChatOpenAI(model="gpt-3.5-turbo-1106", model_kwargs=
+{"response_format": {"type": "json_object"}},) . Now it’ s
+possible to do pairwise comparison between the Mistral and GPT -3.5
+responses, as shown in the following example. You can see in the output the
+reasoning that is given to justify the score.
+Input:
+# Evaluate answers using LangChain evaluators:
+from langchain.evaluation  import load_evaluator
+evaluator  = load_evaluator ("labeled_pairwise_string" )
+row = df.iloc[0]
+transaction  = row["Transaction Description" ]
+gpt3pt5_category  = row["gpt3.5_transaction_category" ]
+gpt3pt5_type  = row["gpt3.5_transaction_type" ]
+mistral_category  = row["mistral_transaction_category"
+mistral_type  = row["mistral_transaction_type" ]
+reference_category  = row["transaction_category" ]
+reference_type  = row["transaction_type" ]
+# Put the data into JSON format for the evaluator:
+gpt3pt5_data  = f"""{{
+    "transaction_category": " {gpt3pt5_category }",
+    "transaction_type": " {gpt3pt5_type }"
+}}"""mistral_data  = f"""{{
+    "transaction_category": " {mistral_category }",
+    "transaction_type": " {mistral_type }"
+}}"""
+reference_data  = f"""{{
+    "transaction_category": " {reference_category }",
+    "transaction_type": " {reference_type }"
+}}"""
+# Set up the prompt input for context for the evaluat
+input_prompt  = """You are an expert at analyzing bank
+transactions,
+you will be categorizing a single transaction.
+Always return a transaction type and category: do not
+return None.
+Format Instructions:
+{format_instructions}
+Transaction Text:
+{transaction}
+"""
+transaction_types .append(transaction_type_score )
+transaction_categories .append(
+    transaction_category_score )
+accuracy_score  = 0for transaction_type_score , transaction_category_scor
+    in zip(
+        transaction_types , transaction_categories
+    ):
+    accuracy_score  += transaction_type_s

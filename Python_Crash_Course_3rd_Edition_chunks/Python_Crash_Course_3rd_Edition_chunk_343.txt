@@ -1,0 +1,38 @@
+a file.
+❷ path = Path('eq_data/readable_eq_data.geojson')
+❸ readable_contents = json.dumps(all_eq_data, indent=4)
+path.write_text(readable_contents)
+We read the data file as a string, and use json.loads()  to convert the
+string representation of the file to a Python object ❶. This is the same
+approach we used in Chapter 10 . In this case, the entire dataset is converted
+to a single dictionary , which we assign to all_eq_data . We then define a
+new path  where we can write this same data in a more readable format ❷.
+The json.dumps()  function that you saw in Chapter 10  can take an
+optional indent  argument ❸, which tells it how much to indent nested
+elements in the data structure.
+When you look in your eq_data  directory and open the file
+readable_eq_data.json , here’ s the first part of what you’ll see:readable_eq_data.json
+{
+    "type": "FeatureCollection",
+❶     "metadata": {
+        "generated": 1649052296000,
+        "url": "https://earthquake.usgs.gov/earthquak
+        "title": "USGS Magnitude 1.0+ Earthquakes, Pa
+        "status": 200,
+        "api": "1.10.3",
+        "count": 160
+    },
+❷     "features": [
+    --snip--
+The first part of the file includes a section with the key "metadata" ❶.
+This tells us when the data file was generated and where we can find the
+data online. It also gives us a human-readable title and the number of
+earthquakes included in this file. In this 24-hour period, 160  earthquakes
+were recorded.
+This GeoJSON file has a structure that’ s helpful for location-based data.
+The information is stored in a list associated with the key "features"  ❷.
+Because this file contains earthquake data, the data is in list form where
+every item in the list corresponds to a single earthquake. This structuremight look confusing, but it’ s quite powerful. It allows geologists to store as
+much information as they need to in a dictionary about each earthquake,
+and then stuf f all those dictionaries into one big list.
+Let’s look at a dictionary representin

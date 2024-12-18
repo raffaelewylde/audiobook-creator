@@ -1,0 +1,29 @@
+was crucial for
+generating outputs that were not just contextually accurate and fluent, but
+also coherent over longer stretches.According to AI pioneer and educator Andrew Ng , much of the early NLP
+research, including the fundamental work on transformers, received
+significant funding from United States military intelligence agencies. Their
+keen interest in tools like machine translation and speech recognition,
+primarily for intelligence purposes, inadvertently paved the way for
+developments that transcended just translation.
+Training LLMs requires extensive computational resources. These models
+are fed with vast amounts of data, ranging from terabytes to petabytes,
+including internet content, academic papers, books, and more niche datasets
+tailored for specific purposes. It’ s important to note, however , that the data
+used to train LLMs can carry inher ent biases fr om their sour ces. Thus, users
+should exercise caution and ideally employ human oversight when
+leveraging these models, ensuring responsible and ethical AI applications.
+OpenAI’ s GPT -4, for example, boasts an estimated 1.7 trillion parameters ,
+which is equivalent to an Excel spreadsheet that stretches across thirty
+thousand soccer fields. Parameters  in the context of neural networks are the
+weights and biases adjusted throughout the training process, allowing the
+model to represent and generate complex patterns based on the data it’ s
+trained on. The training cost for GPT -4 was estimated to be in the order of
+$63 million , and the training data would fill about 650 kilometers of
+bookshelves full of books .To meet these requirements, major technological companies such as
+Microsoft, Meta, and Google have invested heavily , making LLM
+development a high-stakes endeavor .
+The rise of LLMs has provided an increased demand for the hardware
+industry , particularly companies specializing in graphics processing units
+(GPUs). NVIDIA, for instance, has become almost synonymous with high-
+performance GPUs tha

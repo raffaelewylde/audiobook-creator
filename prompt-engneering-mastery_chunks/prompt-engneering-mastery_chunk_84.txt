@@ -1,0 +1,38 @@
+ktoken supports three encodings
+commonly used by OpenAI models:Encoding name OpenAI models
+cl100k_base GPT-4, GPT -3.5-turbo, text-embedding-ada-002
+p50k_base Codex models, text-davinci-002, text-davinci-003
+r50k_base (or gpt2) GPT-3 models like davinci
+Understanding the Tokenization of Strings
+In English, tokens can vary in length, ranging from a single character like t,
+to an entire word such as great. This is due to the adaptable nature of
+tokenization, which can accommodate even tokens shorter than a character
+in complex script languages or tokens longer than a word in languages
+without spaces or where phrases function as single units.
+It is not uncommon for spaces to be included within tokens, such as "is"
+rather than "is "  or " "+"is" . This practice helps maintain the
+original text formatting and can capture specific linguistic characteristics.
+NOTE
+To easily examine the tokenization of a string, you can use OpenAI Tokenizer .
+You can install tiktoken from PyPI  with pip install  tiktoken . In
+the following example, you’ll see how to easily encode text into tokens anddecode tokens into text:
+# 1. Import the package:
+import tiktoken
+# 2. Load an encoding with tiktoken.get_encoding()
+encoding  = tiktoken .get_encoding ("cl100k_base" )
+# 3. Turn some text into tokens with encoding.encode(
+# while turning tokens into text with encoding.decode
+print(encoding .encode("Learning how to use Tiktoken i
+print(encoding .decode([1061, 15009, 374, 264, 2294, 1
+311, 4048, 922, 15592, 0]))
+# [48567, 1268, 311, 1005, 73842, 5963, 374, 2523, 0]
+# "Data engineering is a great way to learn about AI!
+Additionally let’ s write a function that will tokenize the text and then count
+the number of tokens given a text_string  and encoding_name .
+def count_tokens (text_string : str, encoding_name : str
+    """
+    Returns the number of tokens in a text string usi
+    Args:
+        text: The text string to be tokenized.        encoding_name: The name of the encoding to be
+    Returns:
+ 

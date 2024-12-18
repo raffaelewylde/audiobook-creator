@@ -1,0 +1,51 @@
+essages  = [
+    {
+        "role": "user",
+        "content" : '''Schedule a meeting on 2023-11-0
+        and Bob. Then I want to schedule another meet
+        15:00 with Charlie and Dave.'''
+    }
+]
+Then, adjust the previous code section by incorporating a for  loop.
+Input:
+# Send the conversation and function schema to the mo
+response  = client.chat.completions .create(
+    model="gpt-3.5-turbo-1106" ,    messages =messages ,
+    tools=functions ,
+)
+response  = response .choices[0].message
+# Check if the model wants to call our function:
+if response .tool_calls :
+    for tool_call  in response .tool_calls :
+        # Get the function name and arguments to call
+        function_name  = tool_call .function .name
+        function_args  = json.loads(tool_call .function
+        print("This is the function name: " , function
+        print("These are the function arguments: " , f
+        function  = OPENAI_FUNCTIONS .get(function_name
+        if not function :
+            raise Exception (f"Function {function_name
+        # Call the function:
+        function_response  = function (**function_args )
+        # Share the function's response with the mode
+        messages .append(
+            {
+                "role": "function" ,
+                "name": function_name ,                "content" : json.dumps(function_respon
+            }
+        )
+    # Let the model generate a user-friendly response
+    second_response  = client.chat.completions .create(
+        model="gpt-3.5-turbo-0613" , messages =messages
+    )
+    print(second_response .choices[0].message.content)
+Output:
+This is the function  name:  schedule_meeting
+These are the function  arguments :  {'date': '2023-11-
+'attendees' : ['Alice', 'Bob']}
+This is the function  name:  schedule_meeting
+These are the function  arguments :  {'date': '2023-11-
+'attendees' : ['Charlie' , 'Dave']}
+Two meetings  have been scheduled :
+1. Meeting with Alice and Bob on 2023-11-01 at 14:00.
+2. Meeting with Charlie and Dave on 2023-11

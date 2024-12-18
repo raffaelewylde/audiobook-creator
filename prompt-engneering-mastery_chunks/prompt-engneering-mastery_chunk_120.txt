@@ -1,0 +1,49 @@
+ the correct answer , it’s now possible
+to rate the accuracy of smaller models like GPT -3.5-turbo and Mixtral 8x7b
+(called mistral-small  in the API). If you can achieve good enough
+accuracy with a smaller model, you can save money or decrease latency . In
+addition, if that model is available open source like Mistral’ s model , you
+can migrate that task to run on your own servers, avoiding sending
+potentially sensitive data outside of your or ganization. We recommendtesting with an external API first, before going to the trouble of self-hosting
+an OS model.
+Remember to sign up  and subscribe to obtain an API key; then expose that
+as an environment variable by typing in your terminal:
+export MISTRAL_API_KEY=api-key
+The following script is part of a notebook  that has previously defined a
+dataframe df. For brevity let’ s investigate only the evaluation section of
+the script, assuming a dataframe is already defined.
+Input:
+import os
+from langchain_mistralai.chat_models  import ChatMistr
+from langchain.output_parsers  import PydanticOutputPa
+from langchain_core.prompts  import ChatPromptTemplate
+from pydantic.v1  import BaseModel
+from typing import Literal, Union
+from langchain_core.output_parsers  import StrOutputPa
+# 1. Define the model:
+mistral_api_key  = os.environ["MISTRAL_API_KEY" ]
+model = ChatMistralAI (model="mistral-small" , mistral_# 2. Define the prompt:
+system_prompt  = """You are are an expert at analyzing
+bank transactions, you will be categorizing a single
+transaction.
+Always return a transaction type and category:
+do not return None.
+Format Instructions:
+{format_instructions} """
+user_prompt  = """Transaction Text:
+{transaction} """
+prompt = ChatPromptTemplate .from_messages (
+    [
+        (
+            "system" ,
+            system_prompt ,
+        ),
+        (
+            "user",
+            user_prompt ,
+        ),
+    ]
+)
+# 3. Define the pydantic model:
+class EnrichedTransactionInformation (BaseModel ):
+    transaction_type : Union[        Literal

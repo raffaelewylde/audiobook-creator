@@ -1,0 +1,42 @@
+car.upper())
+    else:
+        print(car.title())
+The loop in this example first checks if the current value of car  is 'bmw'
+❶. If it is, the value is printed in uppercase. If the value of car  is anything
+other than 'bmw' , it’s printed in title case:
+Audi
+BMW
+Subaru
+Toyota
+This example combines a number of the concepts you’ll learn about in this
+chapter . Let’ s begin by looking at the kinds of tests you can use to examinethe conditions in your program.
+Conditional Tests
+At the heart of every if statement is an expression that can be evaluated
+as True  or False  and is called a conditional test . Python uses the values
+True  and False  to decide whether the code in an if statement should
+be executed. If a conditional test evaluates to True , Python executes the
+code following the if statement. If the test evaluates to False , Python
+ignores the code following the if statement.
+Checking for  Equality
+Most conditional tests compare the current value of a variable to a specific
+value of interest. The simplest conditional test checks whether the value of
+a variable is equal to the value of interest:
+>>> car = 'bmw'
+>>> car == 'bmw'
+True
+The first line sets the value of car  to 'bmw'  using a single equal sign, as
+you’ve seen many times already . The next line checks whether the value of
+car  is 'bmw'  by using a double equal sign ( ==). This equality operator
+returns True  if the values on the left and right side of the operator match,and False  if they don’ t match. The values in this example match, so
+Python returns True .
+When the value of car  is anything other than 'bmw' , this test returns
+False :
+>>> car = 'audi'
+>>> car == 'bmw'
+False
+A single equal sign is really a statement; you might read the first line of
+code here as “Set the value of car  equal to 'audi' .” On the other hand,
+a double equal sign asks a question: “Is the value of car  equal to
+'bmw' ?” Most programming languages use equal signs in this way .
+Ignoring Case When Checking for  Equality
+Test

@@ -1,0 +1,28 @@
+ask, and refactor them to
+organize your code and make it ef ficient. For example, move some of the code in
+_check_bullet_alien_collisions() , which starts a new level when the fleet of aliens
+has been destroyed, to a function called start_new_level() . Also, move the four separate
+method calls in the __init__()  method in Scoreboard  to a method called
+prep_images()  to shorten __init__() . The prep_images()  method could also helpsimplify _check_play_button()  or start_game()  if you’ve already refactored
+_check_play_button() .
+NOTE
+Befor e attempting to r efactor the pr oject, see Appendix D  to learn how to r estor e the
+project to a working state if you intr oduce bugs while r efactoring.
+14-7. Expanding the Game:  Think of a way to expand Alien Invasion . For example, you could
+program the aliens to shoot bullets down at your ship. You can also add shields for your ship to
+hide behind, which can be destroyed by bullets from either side. Or you can use something like
+the pygame.mixer  module to add sound ef fects, such as explosions and shooting sounds.
+14-8. Sideways Shooter , Final Version:  Continue developing Sideways Shooter , using
+everything we’ve done in this project. Add a Play button, make the game speed up at
+appropriate points, and develop a scoring system. Be sure to refactor your code as you work,
+and look for opportunities to customize the game beyond what has been shown in this chapter .
+Summary
+In this chapter , you learned how to implement a Play button to start a new
+game. You also learned how to detect mouse events and hide the cursor in
+active games. You can use what you’ve learned to create other buttons, likea Help button to display instructions on how to play your games. You also
+learned how to modify the speed of a game as it progresses, implement a
+progressive scoring system, and display information in textual and
+nontextual ways.15
+GENERATING DATA
+Data visualization  is the use of visual representations to
+explore and present patterns 

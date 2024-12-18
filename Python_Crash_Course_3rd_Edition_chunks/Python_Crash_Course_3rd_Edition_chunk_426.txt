@@ -1,0 +1,42 @@
+g, its appearance is
+critical so people will want to use it.
+In this section, we’ll install the django-bootstrap5 app and add it to the
+project. We’ll then use it to style the individual pages in the project, so all
+the pages have a consistent look and feel.
+The django-bootstrap5 App
+We’ll use django-bootstrap5 to integrate Bootstrap into our project. This
+app downloads the required Bootstrap files, places them in an appropriate
+location in your project, and makes the styling directives available in your
+project’ s templates.
+To install django-bootstrap5, issue the following command in an active
+virtual environment:
+(ll_env)learning_log$ pip install django-bootstrap5
+--snip--Successfully installed beautifulsoup4-4.11.1 django-b
+    soupsieve-2.3.2.post1
+Next, we need to add django-bootstrap5 to INSTALLED_APPS  in
+settings.py :
+settings.py
+--snip--
+INSTALLED_APPS = [
+    # My apps.
+    'learning_logs',
+    'accounts',
+    # Third party apps.
+    'django_bootstrap5',
+    # Default django apps.
+    'django.contrib.admin',
+    --snip--
+Start a new section called Third party apps , for apps created by other
+developers, and add 'django_bootstrap5'  to this section. Make sure
+you place this section after My apps  but before the section containing
+Django’ s default apps.Using Bootstrap to Style Learning Log
+Bootstrap is a lar ge collection of styling tools. It also has a number of
+templates you can apply to your project to create an overall style. It’ s much
+easier to use these templates than to use individual styling tools. To see the
+templates Bootstrap of fers, go to https://getbootstrap.com  and click
+Examples . We’ll use the  Navbar static  template, which provides a simple
+top navigation bar and a container for the page’ s content.
+Figure 20-1  shows what the home page will look like after we apply
+Bootstrap’ s template to base.html  and modify  index.html  slightly .Figure 20-1 : The Learning Log home page using Bootstrap
+Modifying base.html
+We need to rewrite base.h

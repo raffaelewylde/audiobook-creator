@@ -1,0 +1,69 @@
+: Game Character
+6. Piloting the Ship1. Responding to a Keypress
+2. Allowing Continuous Movement
+3. Moving Both Left and Right
+4. Adjusting the Ship’ s Speed
+5. Limiting the Ship’ s Range
+6. Refactoring _check_events()
+7. Pressing Q to Quit
+8. Running the Game in Fullscreen Mode
+7. A Quick Recap
+1. alien_invasion.py
+2. settings.py
+3. ship.py
+4. Exercise 12-3: Pygame Documentation
+5. Exercise 12-4: Rocket
+6. Exercise 12-5: Keys
+8. Shooting Bullets
+1. Adding the Bullet Settings
+2. Creating the Bullet Class
+3. Storing Bullets in a Group
+4. Firing Bullets
+5. Deleting Old Bullets
+6. Limiting the Number of Bullets
+7. Creating the _update_bullets() Method
+8. Exercise 12-6: Sideways Shooter9. Summary
+2. CHAPTER 13: ALIENS!
+1. Reviewing the Project
+2. Creating the First Alien
+1. Creating the Alien Class
+2. Creating an Instance of the Alien
+3. Building the Alien Fleet
+1. Creating a Row of Aliens
+2. Refactoring _create_fleet()
+3. Adding Rows
+4. Exercise 13-1: Stars
+5. Exercise 13-2: Better Stars
+4. Making the Fleet Move
+1. Moving the Aliens Right
+2. Creating Settings for Fleet Direction
+3. Checking Whether an Alien Has Hit the Edge
+4. Dropping the Fleet and Changing Direction
+5. Exercise 13-3: Raindr ops
+6. Exercise 13-4: Steady Rain
+5. Shooting Aliens
+1. Detecting Bullet Collisions
+2. Making Lar ger Bullets for Testing
+3. Repopulating the Fleet
+4. Speeding Up the Bullets5. Refactoring _update_bullets()
+6. Exercise 13-5: Sideways Shooter Part 2
+6. Ending the Game
+1. Detecting Alien-Ship Collisions
+2. Responding to Alien-Ship Collisions
+3. Aliens That Reach the Bottom of the Screen
+4. Game Over!
+5. Identifying When Parts of the Game Should Run
+6. Exercise 13-6: Game Over
+7. Summary
+3. CHAPTER 14: SCORING
+1. Adding the Play Button
+1. Creating a Button Class
+2. Drawing the Button to the Screen
+3. Starting the Game
+4. Resetting the Game
+5. Deactivating the Play Button
+6. Hiding the Mouse Cursor
+7. Exercise 14-1: Pr ess P  to Play
+8. Exercise 14-2: T arget Practice
+2. Leveling Up
+1

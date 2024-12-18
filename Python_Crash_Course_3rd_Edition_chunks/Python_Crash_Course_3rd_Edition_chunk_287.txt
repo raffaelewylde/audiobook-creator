@@ -1,0 +1,39 @@
+ned how to track statistics in a game and use a game_active  flag
+to determine when the game is over .
+In the next and final chapter of this project, we’ll add a Play button so the
+player can choose when to start their first game and whether to play again
+when the game ends. We’ll speed up the game each time the player shoots
+down the entire fleet, and we’ll add a scoring system. The final result will
+be a fully playable game!14
+SCORING
+In this chapter , we’ll finish building Alien Invasion . We’ll
+add a Play button to start the game on demand and to restart
+the game once it ends. We’ll also change the game so it
+speeds up when the player moves up a level, and we’ll
+implement a scoring system. By the end of the chapter ,
+you’ll know enough to start writing games that increase in
+difficulty as a player progresses and that feature complete scoring systems.
+Adding the Play Button
+In this section, we’ll add a Play button that appears before a game begins
+and reappears when the game ends so the player can play again.
+Right now , the game begins as soon as you run alien_invasion.py . Let’ s
+start the game in an inactive state and then prompt the player to click a Play
+button to begin. To do this, modify the __init__()  method of
+AlienInvasion :
+alien_invasion.py    def __init__(self):
+        """Initialize the game, and create game resou
+        pygame.init()
+        --snip--
+        # Start Alien Invasion in an inactive state.
+        self.game_active = False
+Now the game should start in an inactive state, with no way for the player
+to start it until we make a Play button.
+Creating a Button Class
+Because Pygame doesn’ t have a built-in method for making buttons, we’ll
+write a Button  class to create a filled rectangle with a label. You can use
+this code to make any button in a game. Here’ s the first part of the Button
+class; save it as button.py :
+button.py
+import pygame.font
+class Button:
+    """A class to build buttons for the game."""❶     def __init__(self, ai_game,

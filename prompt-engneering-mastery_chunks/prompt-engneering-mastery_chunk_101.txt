@@ -1,0 +1,44 @@
+them are apples, then apples are the majority .
+The same principle goes for choosing the majority vote in classification
+labels.
+By soliciting several classifications and taking the most fr equent
+classification , you’re able to reduce the impact of potential outliers or
+unusual interpretations from a single model inference. However , do bear in
+mind that there can be significant downsides to this approach, including the
+increased time required and cost for multiple API calls.
+Let’s classify the same piece of text three times, and then take the majority
+vote:
+from openai import OpenAI
+import os
+client = OpenAI(api_key=os.environ.get("OPENAI_API_KE
+base_template  = """
+Given the statement, classify it as either "Complimen"Neutral":
+1. "The sun is shining." - Neutral
+2. "Your support team is fantastic!" - Compliment
+3. "I had a terrible experience with your software." 
+You must follow the following principles:
+- Only return the single classification word. The res
+"Compliment", "Complaint", or "Neutral".
+- Perform the classification on the text enclosed wit
+'''{content} '''
+Classification:
+"""
+responses  = []
+for i in range(0, 3):
+    response  = client.chat.completions .create(
+        model="gpt-4",
+        messages =[{"role": "system" ,
+            "content" : base_template .format(content='
+            but I am having a great day, I just don't
+            live, I'm so sad!''' ),}],)
+    responses .append(response .choices[0].message.cont
+def most_frequent_classification (responses ):
+    # Use a dictionary to count occurrences of each c    count_dict  = {}
+    for classification  in responses :
+        count_dict [classification ] = count_dict .get(c
+    # Return the classification with the maximum coun
+    return max(count_dict , key=count_dict .get)
+print(most_frequent_classification (responses ))  # Exp
+Calling the most_frequent_classification(responses)  function
+should pinpoint 'Neutral'  as the dominant sentiment. You’ve now
+learned how to use the OpenAI pack

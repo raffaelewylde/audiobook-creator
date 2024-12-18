@@ -1,0 +1,33 @@
+and many developers find it useful.
+If you try PyCharm, be aware that, by default, it sets up an isolated
+environment for each of your projects. This is usually a good thing, but it
+can lead to unexpected behavior if you don’ t understand what it’ s doing for
+you.Jupyter  Notebooks
+Jupyter Notebook  is a dif ferent kind of tool than traditional text editors or
+IDEs, in that it’ s a web app primarily built of blocks; each block is either a
+code block or a text block. The text blocks are rendered in Markdown, so
+you can include simple formatting in your text blocks.
+Jupyter Notebooks were developed to support the use of Python in scientific
+applications, but they have since expanded to become useful in a wide
+variety of situations. Rather than just writing comments inside a .py file,
+you can write clear text with simple formatting, such as headers, bulleted
+lists, and hyperlinks in between sections of code. Every code block can be
+run independently , allowing you to test small pieces of your program, or
+you can run all the code blocks at once. Each code block has its own output
+area, and you can toggle the output areas on or of f as needed.
+Jupyter Notebooks can be confusing at times because of the interactions
+between dif ferent cells. If you define a function in one cell, that function is
+available to other cells as well. This is beneficial most of the time, but it can
+be confusing in longer notebooks and if you don’ t fully understand how the
+Notebook environment works.
+If you’re doing any scientific or data-focused work in Python, you’ll almost
+certainly see Jupyter Notebooks at some point.C
+GETTI NG HELP
+Everyone gets stuck at some point when they’re learning to
+program. So, one of the most important skills to learn as a
+programmer is how to get unstuck ef ficiently . This appendix
+outlines several ways to help you get going again when
+programming gets confusing.
+First Steps
+When you’re stuck, your first step should be to assess your situation. Before
+you ask for

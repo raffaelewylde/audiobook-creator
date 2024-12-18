@@ -1,0 +1,32 @@
+ ChatGPT  is now a go-to for
+customer service, virtual assistance, and numerous other applications that
+require the finesse of human-like conversation.
+GPT-4
+In 2024, OpenAI released GPT -4, which excels in understanding complex
+queries and generating contextually relevant and coherent text. For
+example, GPT -4 scored in the 90th percentile of the bar exam with a score
+of 298 out of 400. Currently , GPT -3.5-turbo is free to use in ChatGPT , but
+GPT-4 requires a monthly payment .
+GPT-4 uses a mixture-of-experts approach ; it goes beyond relying on a
+single model’ s inference to produce even more accurate and insightful
+results.
+On May 13, 2024, OpenAI introduced GPT-4o, an advanced model capable
+of processing and reasoning across text, audio, and vision inputs in real
+time. This model of fers enhanced performance, particularly in vision and
+audio understanding; it is also faster and more cost-ef fective than its
+predecessors due to its ability to process all three modalities in one neural
+network.Google’s Gemini
+After Google lost search market share due to ChatGPT  usage, it initially
+released Bard on March 21, 2023. Bard was a bit rough around the edges
+and definitely didn’ t initially have the same high-quality LLM responses
+that ChatGPT  offered ( Figure 2-5 ).
+Google has kept adding extra features over time including code generation,
+visual AI, real-time search, and voice into Bard, bringing it closer to
+ChatGPT  in terms of quality .
+On March 14, 2023, Google released PaLM API, allowing developers to
+access it on Google Cloud Platform. In April 2023, Amazon Web Services
+(AWS) released similar services such as Amazon Bedrock  and Amazon’ s
+Titan FMs . Google rebranded Bard to Gemini  for their v1.5 release in
+February 2024 and started to get results similar to GPT -4.Figure 2-5. Bard hallucinating results about the James Webb Space Telescope
+Also, Google released two smaller open source models  based on the same
+architecture as Gemini. OpenAI is finally no longe

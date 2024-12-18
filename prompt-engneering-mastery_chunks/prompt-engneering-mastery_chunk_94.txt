@@ -1,0 +1,42 @@
+ dif ferent
+viewpoints on a topic, role prompting can help by asking the AI
+to assume various roles or personas, allowing for a more
+comprehensive understanding of the subject.
+Enhance user engagement : Role prompting can make interactions
+more engaging and entertaining by enabling an LLM to take on
+characters or personas that resonate with the user .
+If you’re using OpenAI, then the best place to add a role is within the
+System Message  for chat models.GPT Prompting Tactics
+So far you’ve already covered several prompting tactics, including asking
+for context, text style bundling, least to most, and role prompting.
+Let’s cover several more tactics, from managing potential hallucinations
+with appropriate reference text, to providing an LLM with critical thinking
+time, to understanding the concept of task decomposition —we have plenty
+for you to explore.
+These methodologies have been designed to significantly boost the
+precision of your AI’s output and are recommended by OpenAI . Also, each
+tactic utilizes one or more of the prompt engineering principles discussed in
+Chapter 1 .
+Avoiding Hallucinations with Reference
+The first method for avoiding text-based hallucinations is to instruct the
+model to only answer using r eference text.
+By supplying an AI model with accurate and relevant information about a
+given query , the model can be directed to use this information to generate
+its response.
+Input:Refer to the articles enclosed within triple quotes t
+You must follow the following principles:
+- In cases where the answer isn't found within these 
+return "I could not find an answer".
+"""
+B2B clients tend to have longer decision-making proce
+sales funnels. Relationship-building strategies work 
+clients, whereas B2C customers tend to respond better
+and messages.
+"""
+Example responses:
+- I could not find an answer.
+- Yes, B2B clients tend to have longer decision-makin
+longer sales funnels.
+Output:
+Yes, B2B clients tend to have longer decision-making 
+to longer sales cycles

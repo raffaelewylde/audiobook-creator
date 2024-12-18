@@ -1,0 +1,42 @@
+lls the ship’ s
+update()  method on each pass through the loop:alien_invasion.py
+     def run_game(self):
+        """Start the main loop for the game."""
+        while True:
+            self._check_events()
+            self.ship.update()
+            self._update_screen()
+            self.clock.tick(60)
+The ship’ s position will be updated after we’ve checked for keyboard events
+and before we update the screen. This allows the ship’ s position to be
+updated in response to player input and ensures the updated position will be
+used when drawing the ship to the screen.
+When you run alien_invasion.py  and hold down the right arrow key , the
+ship should move continuously to the right until you release the key .
+Moving Both Left and Right
+Now that the ship can move continuously to the right, adding movement to
+the left is straightforward. Again, we’ll modify the Ship  class and the
+_check_events()  method. Here are the relevant changes to
+__init__()  and update()  in Ship :ship.py
+    def __init__(self, ai_game):
+        --snip--
+        # Movement flags; start with a ship that's no
+        self.moving_right = False
+        self.moving_left = False
+    def update(self):
+        """Update the ship's position based on moveme
+        if self.moving_right:
+            self.rect.x += 1
+        if self.moving_left:
+            self.rect.x -= 1
+In __init__() , we add a self.moving_left  flag. In update() ,
+we use two separate if blocks, rather than an elif , to allow the ship’ s
+rect.x  value to be increased and then decreased when both arrow keys
+are held down. This results in the ship standing still. If we used elif  for
+motion to the left, the right arrow key would always have priority . Using
+two if blocks makes the movements more accurate when the player might
+momentarily hold down both keys when changing directions.
+We have to make two additions to _check_events() :alien_invasion.py
+    def _check_events(self):
+        """Respond to keypresses and mouse events."""
+        f

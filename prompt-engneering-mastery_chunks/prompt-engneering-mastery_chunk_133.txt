@@ -1,0 +1,50 @@
+ to play tennis.''' })
+Output:
+[Person(name='Bob', age=25), Person(name='Sarah', age
+The Person  Pydantic model has two properties, name  and age ; by
+calling the create_extraction_chain_pydantic  function with the
+input text, the LLM invokes the same function twice and creates two
+People  objects.Query Planning
+You may experience problems when user queries have multiple intents with
+intricate dependencies. Query planning  is an ef fective way to parse a user ’s
+query into a series of steps that can be executed as a query graph with
+relevant dependencies:
+from langchain_openai.chat_models  import ChatOpenAI
+from langchain.output_parsers.pydantic  import Pydanti
+from langchain_core.prompts.chat  import (
+    ChatPromptTemplate ,
+    SystemMessagePromptTemplate ,
+)
+from pydantic.v1  import BaseModel , Field
+from typing import List
+class Query(BaseModel ):
+    id: int
+    question : str
+    dependencies : List[int] = Field(
+        default_factory =list,
+        description ="""A list of sub-queries that mus
+        this task can be completed.
+        Use a sub query when anything is unknown and 
+        many queries to get an answer.
+        Dependencies must only be other queries."""    )
+class QueryPlan (BaseModel ):
+    query_graph : List[Query]
+Defining QueryPlan  and Query  allows you to first ask an LLM to parse
+a user ’s query into multiple steps. Let’ s investigate how to create the query
+plan.
+Input:
+# Set up a chat model:
+model = ChatOpenAI ()
+# Set up a parser:
+parser = PydanticOutputParser (pydantic_object =QueryPl
+template  = """Generate a query plan. This will be use
+Answer the following query: {query}
+Return the following query graph format:
+{format_instructions}
+"""
+system_message_prompt  = SystemMessagePromptTemplate .f
+chat_prompt  = ChatPromptTemplate .from_messages ([syste# Create the LCEL chain with the prompt, model, and p
+chain = chat_prompt  | model | parser
+result = chain.invoke({
+"query":'''I want to get the results from my database
+out what 

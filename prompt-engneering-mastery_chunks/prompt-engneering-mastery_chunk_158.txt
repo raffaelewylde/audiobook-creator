@@ -1,0 +1,60 @@
+ as the Reduce step). If necessary , to ensure the new documentsseamlessly fit into the context length, an optional compression process is
+used on the mapped documents. If required, this compression happens
+recursively .
+Figure 4-7. Map reduce documents chain
+Map Re-rank
+There is also map re-rank, which operates by executing an initial prompt on
+each document. This not only strives to fulfill a given task but also assigns a
+confidence score reflecting the certainty of its answer . The response with
+the highest confidence score is then selected and returned.
+Table 4-1  demonstrates the advantages and disadvantages for choosing a
+specific document chain strategy .Table 4-1. Overview of document chain strategies
+Appr oach Advantages Disadvantages
+Stuff
+Documents
+ChainSimple to implement.
+Ideal for scenarios with
+small documents and
+few inputs.May not be suitable for
+handling lar ge documents
+or multiple inputs due to
+prompt size limitation.
+Refine
+Documents
+ChainAllows iterative refining
+of the response. More
+control over each step of
+response generation.
+Good for progressive
+extraction tasks.Might not be optimal for
+real-time applications due
+to the loop process.
+Map Reduce
+Documents
+ChainEnables independent
+processing of each
+document. Can handle
+large datasets by
+reducing them into
+manageable chunks.Requires careful
+management of the
+process. Optional
+compression step can add
+complexity and loses
+document order .
+Map Re-rank
+Documents
+ChainProvides a confidence
+score for each answer ,
+allowing for better
+selection of responses.The ranking algorithm can
+be complex to implement
+and manage. May not
+provide the best answer ifAppr oach Advantages Disadvantages
+the scoring mechanism is
+not reliable or well-tuned.
+You can read more about how to implement dif ferent document chains in
+LangChain’ s comprehensive API and here.
+Also, it’ s possible to simply change the chain type within the
+load_summarize_chain  function:
+chain = load_summarize_chain (llm=model, chain_type ='r

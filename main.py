@@ -118,15 +118,19 @@ async def process_chunk(chunk_text, chunk_index, base_name, output_dir):
     logger.debug("Audio file: %s", audio_file)
     logger.debug("parameters that were passed to process_chunk: %s, %s, %s, %s", chunk_text, chunk_index, base_name, output_dir)
 
-    async with aiofiles.open(chunk_file, "w", encoding="utf-8") as f:
-        logger.debug("writing chunk text to file: %s", chunk_file)
-        await f.write(chunk_text)
+    if not os.path.exists(chunk_file):
+        async with aiofiles.open(chunk_file, "w", encoding="utf-8") as f:
+            logger.debug("writing chunk text to file: %s", chunk_file)
+            await f.write(chunk_text)
     
-    async with aiofiles.open(chunk_file, "r", encoding="utf-8") as f:
-        logger.debug("reading text from file: %s", chunk_file)
-        text_to_convert = await f.read()
-    await text_to_speech(text_to_convert, audio_file)
-    return audio_file
+    if not os.path.exists(audio_file):
+        async with aiofiles.open(chunk_file, "r", encoding="utf-8") as f:
+            logger.debug("reading text from file: %s", chunk_file)
+            text_to_convert = await f.read()
+        await text_to_speech(text_to_convert, audio_file)
+        return audio_file
+    else:
+        return
 
 
 async def merge_audio_files(audio_files, output_path):

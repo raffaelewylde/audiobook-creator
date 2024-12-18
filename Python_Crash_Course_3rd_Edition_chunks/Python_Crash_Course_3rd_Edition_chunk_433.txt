@@ -1,0 +1,36 @@
+e shown in Figure 2
+0-1. Try resizing the window so it’ s really narrow; a button should replace
+the navigation bar . Click the button, and all the links should appear in a
+drop-down list.Styling the Home Page Using a Jumbotr on
+To update the home page, we’ll use a Bootstrap element called a jumbotr on,
+a large box that stands out from the rest of the page. Typically , it’s used on
+home pages to hold a brief description of the overall project and a call to
+action that invites the viewer to get involved.
+Here’ s the revised index.html  file:
+index.html
+{% extends "learning_logs/base.html" %}
+❶ {% block page_header %}
+❷   <div class="p-3 mb-4 bg-light border rounded-3">
+    <div class="container-fluid py-4">
+❸       <h1 class="display-3">Track your learning.</h1>
+❹       <p class="lead">Make your own Learning Log, and
+      topics you're learning about. Whenever you lear
+      about a topic, make an entry summarizing what y
+❺       <a class="btn btn-primary btn-lg mt-1"
+        href="{% url 'accounts:register' %}">Register
+    </div>  </div>
+{% endblock page_header %}
+We first tell Django that we’re about to define what goes in the
+page_header  block ❶. A jumbotron is implemented as a pair of div
+elements with a set of styling directives applied to them ❷. The outer div
+has padding and mar gin settings, a light background color , and rounded
+corners. The inner div is a container that changes along with the window
+size and has some padding as well. The py-4  selector adds padding to the
+top and bottom of the div element. Feel free to adjust the numbers in these
+settings and see how the home page changes.
+Inside the jumbotron are three elements. The first is a short message,
+Track your learning , that gives new visitors a sense of what
+Learning Log does ❸. The <h1>  element is a first-level header , and the
+display-3  selector adds a thinner and taller look to this particular
+header . We also include a longer message that provides more information
+about what the user ca

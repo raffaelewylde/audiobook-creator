@@ -1,0 +1,33 @@
+s in navigating the LLM’ s sense of the text’ s framework
+and sentiment. It enhances accuracy in the classification and provides a
+heightened understanding of particular jar gon and expressions.
+Limitations and Challenges in Sentiment Analysis
+Despite the advancements in LLMs and the application of prompt
+engineering techniques, sentiment analysis still faces some limitations and
+challenges:
+Handling sar casm and ir ony
+Detecting sarcasm and irony in text can be dif ficult for LLMs, as it
+often requires understanding the context and subtle cues that humans
+can easily recognize. Misinterpreting sarcastic or ironic statements
+may lead to inaccurate sentiment classification.
+Identifying context-specific sentimentSentiment analysis can be challenging when dealing with context-
+specific sentiments, such as those related to domain-specific jar gon
+or cultural expressions. LLMs may struggle to accurately classify
+sentiments in these cases without proper guidance or domain-specific
+examples.
+Least to Most
+The least to most  technique in prompt engineering is a powerful method for
+sequentially generating or extracting increasingly detailed knowledge on a
+given topic. This method is particularly ef fective when dealing with
+complex subjects or when a high level of detail is necessary .
+Least to most uses a chain  of prompts where each new prompt is based on
+the last answer . This step-by-step approach helps gather more detailed
+information each time, making it easier to dive deeper into any topic.
+This technique can also be applied to code generation, as demonstrated in a
+Flask Hello World  app example.
+Planning the Architecture
+Before diving into the architecture, let’ s briefly understand what Flask is.
+Flask  is a lightweight web application framework in Python, widely used
+for creating web applications quickly and with minimal code. (Flask is onlyused for demonstration purposes here and isn’ t included within the
+requir ements.txt  file for the book.
+Now , let’s ask an LL

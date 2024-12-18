@@ -1,0 +1,37 @@
+well on any modern computer . Early setup issues can be
+frustrating, but they’re well worth sorting out. Once you get hello_world.py
+running, you can start to learn Python, and your programming work will
+become more interesting and satisfying.
+Running Python Programs from a Terminal
+You’ll run most of your programs directly in your text editor . However ,
+sometimes it’ s useful to run programs from a terminal instead. For example,you might want to run an existing program without opening it for editing.
+You can do this on any system with Python installed if you know how to
+access the directory where the program file is stored. To try this, make sure
+you’ve saved the hello_world.py  file in the python_work  folder on your
+desktop.
+On Windows
+You can use the terminal command cd, for change dir ectory , to navigate
+through your filesystem in a command window . The command dir , for
+directory , shows you all the files that exist in the current directory .
+Open a new terminal window and enter the following commands to run
+hello_world.py :
+C:\> cd Desktop\python_work
+C:\Desktop\python_work> dir
+hello_world.py
+C:\Desktop\python_work> python hello_world.py
+Hello Python world!
+First, use the cd command to navigate to the python_work  folder , which is
+in the  Desktop  folder . Next, use the dir  command to make sure
+hello_world.py  is in this folder . Then run the file using the command
+python hello_world.py .Most of your programs will run fine directly from your editor . However , as
+your work becomes more complex, you’ll want to run some of your
+programs from a terminal.
+On macOS and Linux
+Running a Python program from a terminal session is the same on Linux
+and macOS. You can use the terminal command cd, for change dir ectory ,
+to navigate through your filesystem in a terminal session. The command
+ls, for list, shows you all the nonhidden files that exist in the current
+directory .
+Open a new terminal window and enter the following commands to run
+hello_world.py :
+~$ cd De

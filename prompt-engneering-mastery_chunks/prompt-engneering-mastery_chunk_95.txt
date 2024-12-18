@@ -1,0 +1,40 @@
+.
+If you were to ask the same reference text this question:Input:
+...The rest of the prompt...
+Question: Are B2C sales more cost-effective?
+Output:
+I could not find an answer.
+GIVE DIRECTION AND SPECIFY FORMAT
+The preceding prompt is excellent as it both instructs the model on how to find answers and also sets
+a specific response format for any unanswerable questions.
+Considering the constrained context windows of GPT s, a method for
+dynamically retrieving information relevant to the asked query might be
+necessary to utilize this strategy .
+Another approach is to direct the model to incorporate r eferences  from a
+given text in its response. When the input is enhanced with relevant
+information, the model can be guided to include citations in its responses by
+referring to sections of the supplied documents. This approach has the
+added benefit that citations in the output can be authenticated automatically
+by matching strings  within the given documents.Input:
+You will be provided with a document delimited by tri
+question. Your task is to answer the question using o
+document and to cite the passage(s) of the document u
+question. If the document does not contain the inform
+this question then simply write: "Insufficient inform
+to the question is provided, it must be annotated wit
+following format to cite relevant passages ({"citatio
+"""
+A nuclear reactor is a device that initiates, control
+nuclear chain reaction. The nuclear reactor uses the 
+nuclear fission to generate heat, which is then often
+to drive a turbine and produce electricity.
+-Excerpted from https://en.wikipedia.org/wiki/Nuclear
+"""
+Question: What is a nuclear reactor?
+Output:
+A nuclear reactor is a device that initiates, control
+nuclear chain reaction.It uses the energy released by
+generate heat, which is then often used to produce st
+and produce electricity. {"citation": "A nuclear reacinitiates, controls, and maintains a nuclear chain re
+reactor uses the energy released by nuclear fission t
+is then often

@@ -1,0 +1,29 @@
+ll these possibilities so you can
+determine the best ways to or ganize your projects as well as understand
+other people’ s projects.
+When you’re starting out, keep your code structure simple. Try doing
+everything in one file and moving your classes to separate modules once
+everything is working. If you like how modules and files interact, try
+storing your classes in modules when you start a project. Find an approach
+that lets you write code that works, and go from there.TRY IT YOURSELF
+9-10. Imported Restaurant:  Using your latest Restaurant  class, store it in a module. Make
+a separate file that imports Restaurant . Make a Restaurant  instance, and call one of
+Restaurant ’s methods to show that the import  statement is working properly .
+9-11. Imported Admin:  Start with your work from Exercise 9-8 ( page 173 ). Store the classes
+User , Privileges , and Admin  in one module. Create a separate file, make an Admin
+instance, and call show_privileges()  to show that everything is working correctly .
+9-12. Multiple Modules:  Store the User  class in one module, and store the Privileges
+and Admin  classes in a separate module. In a separate file, create an Admin  instance and call
+show_privileges()  to show that everything is still working correctly .
+The Python Standard Library
+The Python standar d library  is a set of modules included with every Python
+installation. Now that you have a basic understanding of how functions and
+classes work, you can start to use modules like these that other
+programmers have written. You can use any function or class in the
+standard library by including a simple import  statement at the top of your
+file. Let’ s look at one module, random , which can be useful in modeling
+many real-world situations.
+One interesting function from the random module is randint() . This
+function takes two integer ar guments and returns a randomly selectedinteger between (and including) those numbers.
+Here’ s how to generate a random number between 1 and 6:
+>>

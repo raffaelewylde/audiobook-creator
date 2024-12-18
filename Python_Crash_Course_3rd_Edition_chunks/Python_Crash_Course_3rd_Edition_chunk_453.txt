@@ -1,0 +1,39 @@
+},
+]
+--snip--
+This change tells Django to look in the root template directory for the error
+page templates and any other templates that aren’ t associated with a
+particular app.Pushing the Changes to Platform.sh
+Now we need to commit the changes we just made and push them to
+Platform.sh:
+❶ (ll_env)learning_log$ git add .
+❷ (ll_env)learning_log$ git commit -am "Added custom 40
+ 3 files changed, 11 insertions(+), 1 deletion(-)
+ create mode 100644 templates/404.html
+ create mode 100644 templates/500.html
+❸ (ll_env)learning_log$ platform push
+--snip--
+  To git.us-3.platform.sh:wmye2fx7wwqgu.git
+     d2ad0f7..9f042ef  HEAD -> main
+(ll_env)learning_log$
+We issue the git add .  command ❶ because we created some new files
+in the project. Then we commit the changes ❷ and push the updated project
+to Platform.sh ❸.
+Now when an error page appears, it should have the same styling as the rest
+of the site, making for a smoother user experience when errors arise.Ongoing Development
+You might want to further develop Learning Log after your initial push to a
+live server , or you might want to develop your own projects to deploy .
+When doing so, there’ s a fairly consistent process for updating your
+projects.
+First, you’ll make the necessary changes to your local project. If your
+changes result in any new files, add those files to the Git repository using
+the command git add .  (making sure to include the dot at the end of the
+command). Any change that requires a database migration will need this
+command, because each migration generates a new migration file.
+Second, commit the changes to your repository using git commit -am
+"commit message ". Then push your changes to Platform.sh, using the
+command platform push . Visit your live project and make sure the
+changes you expect to see have taken ef fect.
+It’s easy to make mistakes during this process, so don’ t be surprised when
+something goes wrong. If the code doesn’ t work, review what you’ve done
+and try to spot the mistake. If you c

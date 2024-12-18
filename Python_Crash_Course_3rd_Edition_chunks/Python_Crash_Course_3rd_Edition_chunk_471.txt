@@ -1,0 +1,31 @@
+briefly , so you’ll know
+how helpful they’re likely to be.Stack Overflow
+Stack Overflow  (https://stackoverflow .com ) is one of the most popular
+question-and-answer sites for programmers, and it will often appear in the
+first page of results on Python-related searches. Members post questions
+when they’re stuck, and other members try to give helpful responses. Users
+can vote for the responses they find most helpful, so the best answers are
+usually the first ones you’ll find.
+Many basic Python questions have very clear answers on Stack Overflow ,
+because the community has refined them over time. Users are encouraged
+to post updates, too, so responses tend to stay relatively current. At the time
+of this writing, almost two million Python-related questions have been
+answered on Stack Overflow .
+There’ s one expectation you should be aware of before posting on Stack
+Overflow . Questions are meant to be the shortest example of the kind of
+issue you’re facing. If you post 5–20 lines of code that generate the error
+you’re facing, and if you address the questions mentioned in “ First Steps ”
+on page 477  earlier in this appendix, someone will probably help you. If
+you share a link to a project with multiple lar ge files, people will be very
+unlikely to help. There’ s a great guide to writing up a good question at http
+s://stackoverflow .com/help/how-to-ask . The suggestions in this guide are
+applicable to getting help in any community of programmers.The Official Python Documentation
+The of ficial Python documentation ( https://docs.python.or g) is a bit more
+hit-or -miss for beginners, because its purpose is more to document the
+language than to provide explanations. The examples in the of ficial
+documentation should work, but you might not understand everything
+shown. Still, it’ s a good resource to check when it comes up in your
+searches, and it will become more useful to you as you continue building
+your understanding of Python.
+Official Library Documentation
+If you’re u

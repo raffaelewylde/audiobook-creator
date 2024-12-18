@@ -1,0 +1,47 @@
+ster_chain_two  = RunnablePassthrough () | RunnablePa
+        genre=itemgetter ("genre"),
+        upper_case_genre =lambda x: x["genre"].upper()
+        lower_case_genre =RunnableLambda (lambda x: x["
+)
+story_result  = master_chain .invoke({"genre": "Fantasy
+print(story_result )
+story_result  = master_chain_two .invoke({"genre": "Fan
+print(story_result )
+# master chain: {'genre': 'Fantasy', 'upper_case_genr
+# 'lower_case_genre': 'fantasy'}
+# master chain two: {'genre': 'Fantasy', 'upper_case_
+# 'lower_case_genre': 'fantasy'}
+First, you import RunnableParallel  and create two LCEL  chains called
+master_chain  and master_chain_two . These are then invoked with
+exactly the same ar guments; the RunnablePassthrough  then passes the
+dictionary into the second part of the chain.
+The second part of master_chain  and master_chain_two  will return
+exactly the same r esult.So rather than directly using a dictionary , you can choose to use a
+RunnableParallel  function instead. These two chain outputs are
+interchangeable , so choose whichever syntax you find more comfortable.
+Let’s create three LCEL  chains using the prompt templates:
+from langchain_openai.chat_models  import ChatOpenAI
+from langchain_core.output_parsers  import StrOutputPa
+# Create the chat model:
+model = ChatOpenAI ()
+# Create the subchains:
+character_generation_chain  = ( character_generation_p
+| model
+| StrOutputParser () )
+plot_generation_chain  = ( plot_generation_prompt
+| model
+| StrOutputParser () )
+scene_generation_plot_chain  = ( scene_generation_plot
+| model
+| StrOutputParser ()  )After creating all the chains, you can then attach them to a master LCEL
+chain.
+Input:
+from langchain_core.runnables  import RunnableParallel
+from operator  import itemgetter
+from langchain_core.runnables  import RunnablePassthro
+master_chain  = (
+    {"characters" : character_generation_chain , "genre
+    RunnablePassthrough ()}
+    | RunnableParallel (
+        characters =itemgetter ("characters" ),
+        genre=itemgette

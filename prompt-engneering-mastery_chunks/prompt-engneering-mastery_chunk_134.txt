@@ -1,0 +1,36 @@
+the average age of my top 10 customers is. O
+age, I want to send an email to John. Also I just gen
+welcome introduction email to Sarah, regardless of th
+"format_instructions" :parser.get_format_instructions (
+print(result.query_graph )
+Output:
+[Query(id=1, question ='Get top 10 customers' , depende
+Query(id=2, question ='Calculate average age of custom
+Query(id=3, question ='Send email to John' , dependenci
+Query(id=4, question ='Send welcome email to Sarah' , d
+Initiate a ChatOpenAI  instance and create a PydanticOutputParser
+for the QueryPlan  structure. Then the LLM response is called and
+parsed, producing a structured query_graph  for your tasks with their
+unique dependencies.Creating Few-Shot Prompt Templates
+Working with the generative capabilities of LLMs often involves making a
+choice between zero-shot  and few-shot learning (k-shot) . While zero-shot
+learning requires no explicit examples and adapts to tasks based solely on
+the prompt, its dependence on the pretraining phase means it may not
+always yield precise results.
+On the other hand, with few-shot learning, which involves providing a few
+examples of the desired task performance in the prompt, you have the
+opportunity to optimize the model’ s behavior , leading to more desirable
+outputs.
+Due to the token LLM context length, you will often finding yourself
+competing between adding lots of high-quality k-shot examples into your
+prompts while still aiming to generate an ef fective and deterministic LLM
+output.
+NOTE
+Even as the token context window limit within LLMs continues to increase, providing a specific
+number of k-shot examples helps you minimize API costs.
+Let’s explore two methods for adding k-shot examples into your prompts
+with few-shot pr ompt templates : using fixed examples  and using an exampleselector .
+Fixed-Length Few-Shot Examples
+First, let’ s look at how to create a few-shot prompt template using a fixed
+number of examples. The foundation of this method lies in creating a robust
+set of

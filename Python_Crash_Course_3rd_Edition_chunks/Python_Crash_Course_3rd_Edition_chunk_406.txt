@@ -1,0 +1,46 @@
+pic_id .
+This view then renders the topic page that the user made an entry for , and
+they should see their new entry in the list of entries.
+At the end of the function, we create a context  dictionary and render the
+page using the new_entry .html  template. This code will execute for a blank
+form, or for a form that’ s been submitted but turns out to be invalid.
+The new_entry Template
+As you can see in the following code, the template for new_entry  is
+similar to the template for new_topic :
+new_entry .html
+{% extends "learning_logs/base.html" %}
+{% block content %}
+❶   <p><a href="{% url 'learning_logs:topic' topic.id %  <p>Add a new entry:</p>
+❷   <form action="{% url 'learning_logs:new_entry' topi
+    {% csrf_token %}
+    {{ form.as_div }}
+    <button name='submit'>Add entry</button>
+  </form>
+{% endblock content %}
+We show the topic at the top of the page ❶, so the user can see which topic
+they’re adding an entry to. The topic also acts as a link back to the main
+page for that topic.
+The form’ s action  argument includes the topic.id  value in the URL,
+so the view function can associate the new entry with the correct topic ❷.
+Other than that, this template looks just like new_topic.html .
+Linking to the new_entry Page
+Next, we need to include a link to the new_entry  page from each topic
+page, in the topic template:
+topic.html
+{% extends "learning_logs/base.html" %}{% block content %}
+  <p>Topic: {{ topic }}</p>
+  <p>Entries:</p>
+  <p>
+    <a href="{% url 'learning_logs:new_entry' topic.i
+  </p>
+  <ul>
+  --snip--
+  </ul>
+{% endblock content %}
+We place the link to add entries just before showing the entries, because
+adding a new entry will be the most common action on this page. Figure 19-
+2 shows the new_entry  page. Now users can add new topics and as many
+entries as they want for each topic. Try out the new_entry  page by
+adding a few entries to some of the topics you’ve created.Figure 19-2 : The new_entry  page
+Editing Entries
+Now we’ll make a page so users 

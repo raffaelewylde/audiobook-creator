@@ -1,0 +1,44 @@
+ pr ompt  that
+encapsulates all the varied features, rather than producing a single
+prompt output.
+Optimizing pr ompts to achieve specific goals
+A common approach is to ask ChatGPT  or another language model
+to refine or improve Prompt A  in order to attain Goal 1 , given
+Prompt A  and Goal 1 . This method aids in identifying any
+missed input features, that by adding could assist the language model
+in generating a more detailed and desirable response.
+Let’s experiment with creating a meta prompt for the copywriting example.
+Input:
+Act as a GPT Prompt Engineer, you are solely responsi
+highly effective large language model text prompts gi
+You must follow the following principles:
+- Return only a single prompt, never return the outpu
+- You must follow the task properly.
+- You must either refine the prompt or create a new p
+the Task.
+- Bullet point out any important features so that ano
+can easily copy inputs into the prompt.
+Task: You must create a copywriting guide ChatGPT sevInclude relevant features within the ChatGPT prompt t
+to imitate the writer. You must decide what the most 
+to mimic the writer's style etc. You will only be app
+new blog posts.
+Blog post text: You need a variety of soft skills in 
+skills to succeed in the technology sector. Soft skil
+software professionals to collaborate with their peer
+Output:
+Prompt:
+Based on the extensive text provided, your task is to
+blog posts following the same style and structure of 
+you should follow these features:
+1. Clear, direct language: Your writing should be in 
+language, breaking down complex subjects into easily 
+concepts.
+2. Use of subheadings: To provide structure to your b
+up with relevant subheadings. This helps to guide the
+text more readable.
+...
+9. Inclusion of technical terminology: When discussin
+use appropriate technical language to ensure accuracyHowever, be sure to provide explanations or definitio
+terms.
+As previously mentioned, it can be beneficial to critique the model’ s output
+and to ask for a 

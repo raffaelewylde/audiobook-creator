@@ -1,0 +1,47 @@
+ude the word Marketing in the fi
+csv_files  = [f for f in csv_files  if "Marketing"  in f
+# For each .csv file:
+for csv_file  in csv_files :
+    loader = CSVLoader (file_path =csv_file )
+    data = loader.load()
+    # Saving the data to the all_documents list:
+    all_documents .extend(data)
+text_splitter  = CharacterTextSplitter .from_tiktoken_e
+    chunk_size =200, chunk_overlap =0
+)
+urls = [
+    '''https://storage.googleapis.com/oreilly-content
+    0Marketing%20Plan%202022.docx''' ,
+    '''https://storage.googleapis.com/oreilly-content
+    0Marketing%20Plan%202023.docx''' ,
+]docs = []
+for url in urls:
+    loader = Docx2txtLoader (url.replace('\n', ''))
+    pages = loader.load()
+    chunks = text_splitter .split_documents (pages)
+    # Adding the metadata to each chunk:
+    for chunk in chunks:
+        chunk.metadata ["source" ] = "NutriFusion Foods
+    docs.extend(chunks)
+# Saving the marketing book pages:
+all_documents .extend(docs)
+Output:
+page_content='Principles of Mark eting'
+metadata={'source': 'data/principles_of_marketing_boo
+{'source': 'data/principles_of_marketing_book.pdf', '
+'description': 'Principles of Marketing Book'}
+{'source': 'data/principles_of_marketing_book.pdf', '
+'description': 'Principles of Marketing Book'}
+Then using PyPDFLoader , you can import a .pdf file and split it into
+multiple pages using the .load_and_split()  function.Additionally , it’s possible to add extra metadata to each page because the
+metadata is a Python dictionary on each Document  object. Also, notice in
+the preceding output for Document  objects the metadata source  is
+attached to.
+Using the package glob , you can easily find all of the .csv files and
+individually load these into LangChain Document  objects with a
+CSVLoader .
+Finally , the two marketing reports are loaded from a public Google Cloud
+Storage bucket and are then split into 200 token-chunk sizes using a
+text_splitter .
+This section equipped you with the necessary knowledge to create a
+comprehensive docum

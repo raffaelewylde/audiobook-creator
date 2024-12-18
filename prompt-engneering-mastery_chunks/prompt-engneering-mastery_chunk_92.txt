@@ -1,0 +1,45 @@
+ing outputs, it is imperative to
+ensure that the quality and responses of previous prompts provide
+ample information for the next step.EVALUATE QUALITY
+In the process of designing prompts, make sure to evaluate the quality of each prior LLM response.
+The performance of the next task depends upon the quality of information provided by the preceding
+one.
+Role Prompting
+Role pr ompting  is a technique in which the AI is given a specific role or
+character to assume while generating a response. This helps guide the AI’s
+response style and content to better align with the user ’s needs or desired
+outcome.
+NOTE
+Awesome ChatGPT  prompts  provides an extensive list of role prompts that you can use.
+Let’s ask ChatGPT  to take on the role of a tech reviewer for MongoDB.
+Input:
+I want you to act as a tech reviewer. I will give you
+of technology and you will provide me with an in-dept
+pros, cons, features, and comparisons to other techno
+My first suggestion request is: MongoDB.Output:
+MongoDB is a popular NoSQL, document-oriented databas
+designed to handle high-volume data storage and retri
+Features:
+1. Document-Oriented Storage: MongoDB stores data in 
+format called BSON, making it easy to store complex d
+arrays and nested objects.
+...
+Pros:
+1. High Performance: MongoDB's indexing and caching c
+fast read and write operations.
+...
+Cons:
+1. Limited Support for Transactions: While MongoDB su
+ACID transactions, it may not be the best choice for 
+require complex transactional operations.
+...
+Comparisons to other technologies:
+1. Couchbase, another popular NoSQL database, offers 
+MongoDB, including flexible schema and JSON-based sto
+Couchbase is more focused on distributed caching and suitable for applications requiring low-latency data 
+Conclusion:
+MongoDB is a powerful and versatile NoSQL database so
+various applications, particularly those requiring hi
+scalability. Its flexible data model, rich query lang
+consistency make it a popular choice among developers
+The prompt is an excel

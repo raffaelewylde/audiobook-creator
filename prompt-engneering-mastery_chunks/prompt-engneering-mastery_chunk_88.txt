@@ -1,0 +1,44 @@
+ sentiments
+The prompt does not specify how to handle cases where the text
+contains a mix of positive and negative sentiments.Input:
+Using the following examples as a guide:
+positive: 'I absolutely love the design of this phone
+negative: 'The battery life is quite disappointing.'
+neutral: 'I liked the product, but it has short batte
+Only return either a single word of:
+- positive
+- negative
+- neutral
+Please classify the sentiment of the following text a
+or neutral: I absolutely love the design of this phon
+life is quite disappointing.
+Output:
+neutral
+This prompt is much better because it:
+Provides clear instructions
+The prompt clearly states the task, which is to classify the sentiment
+of the given text into one of three categories: positive, negative, orneutral.
+Offers examples
+The prompt provides examples for each of the sentiment categories,
+which helps in understanding the context and desired output.
+Defines the output format
+The prompt specifies that the output should be a single word,
+ensuring that the response is concise and easy to understand.
+Techniques for Improving Sentiment Analysis
+To enhance sentiment analysis accuracy , preprocessing the input text is a
+vital step. This involves the following:
+Special characters r emoval
+Exceptional characters such as emojis, hashtags, and punctuation
+may skew the rule-based sentiment algorithm’ s judgment. Besides,
+these characters might not be recognized by machine learning and
+deep learning models, resulting in misclassification.
+Lower case conversion
+Converting all the characters to lowercase aids in creating
+uniformity . For instance, words like Happy  and happy  are treated asdifferent words by models, which can cause duplication and
+inaccuracies.
+Spelling corr ection
+Spelling errors can cause misinterpretation and misclassification.
+Creating a spell-check pipeline can significantly reduce such errors
+and improve results.
+For industry- or domain-specific text, embedding domain-specific content
+in the prompt help

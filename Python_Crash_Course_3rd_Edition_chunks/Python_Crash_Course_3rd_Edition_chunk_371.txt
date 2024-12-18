@@ -1,0 +1,41 @@
+ou’r e using PowerShell, you
+might need to capitalize Activate .
+To stop using a virtual environment, enter deactivate :
+(ll_env)learning_log$ deactivate
+learning_log$
+The environment will also become inactive when you close the terminal it’ s
+running in.
+Installing Django
+With the virtual environment activated, enter the following to update pip
+and install Django:
+(ll_env)learning_log$ pip install --upgrade pip
+(ll_env)learning_log$ pip install django
+Collecting django--snip--
+Installing collected packages: sqlparse, asgiref, dja
+Successfully installed asgiref-3.5.2 django-4.1 sqlpa
+(ll_env)learning_log$
+Because it downloads resources from a variety of sources, pip is upgraded
+fairly often. It’ s a good idea to upgrade pip whenever you make a new
+virtual environment.
+We’re working in a virtual environment now , so the command to install
+Django is the same on all systems. There’ s no need to use longer
+commands, such as python -m pip install package_name , or to
+include the --user  flag. Keep in mind that Django will be available only
+when the ll_env  environment is active.NOTE
+Django r eleases a new version about every eight months, so you
+may see a newer version when you install Django. This pr oject will
+most likely work as it’ s written her e, even on newer versions of
+Django. If you want to make sur e to use the same version of Django
+you see her e, use the command pip install django==4.1.* .
+This will install the latest r elease of Django 4.1. If you have any
+issues r elated to the version you’r e using, see the online r esour ces
+for this book at https://ehmatthes.github.io/pcc_3e .
+Creating a Pr oject in Django
+Without leaving the active virtual environment (remember to look for ll_env
+in parentheses in the terminal prompt), enter the following commands to
+create a new project:
+❶ (ll_env)learning_log$ django-admin startproject ll_pr
+❷ (ll_env)learning_log$ ls
+ll_env ll_project manage.py
+❸ (ll_env)learning_log$ ls ll_project
+__init__.py asgi.py settings.py ur

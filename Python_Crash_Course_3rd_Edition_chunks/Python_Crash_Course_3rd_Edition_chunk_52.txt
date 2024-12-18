@@ -1,0 +1,35 @@
+ist are separated by commas. Here’ s a simple example of a list that
+contains a few kinds of bicycles:bicycles.py
+bicycles = ['trek', 'cannondale', 'redline', 'special
+print(bicycles)
+If you ask Python to print a list, Python returns its representation of the list,
+including the square brackets:
+['trek', 'cannondale', 'redline', 'specialized']
+Because this isn’ t the output you want your users to see, let’ s learn how to
+access the individual items in a list.
+Accessing Elements in a List
+Lists are ordered collections, so you can access any element in a list by
+telling Python the position, or  index , of the item desired. To access an
+element in a list, write the name of the list followed by the index of the item
+enclosed in square brackets.
+For example, let’ s pull out the first bicycle in the list bicycles :
+bicycles = ['trek', 'cannondale', 'redline', 'specialprint(bicycles[0])
+When we ask for a single item from a list, Python returns just that element
+without square brackets:
+trek
+This is the result you want your users to see: clean, neatly formatted output.
+You can also use the string methods from Chapter 2  on any element in this
+list. For example, you can format the element 'trek'  to look more
+presentable by using the title()  method:
+bicycles = ['trek', 'cannondale', 'redline', 'special
+print(bicycles[0].title())
+This example produces the same output as the preceding example, except
+'Trek'  is capitalized.
+Index Positions Start at 0, Not 1
+Python considers the first item in a list to be at position 0, not position 1.
+This is true of most programming languages, and the reason has to do with
+how the list operations are implemented at a lower level. If you’re receivingunexpected results, ask yourself if you’re making a simple but common of f-
+by-one error .
+The second item in a list has an index of 1. Using this counting system, you
+can get any element you want from a list by subtracting one from its
+position in the list. For instance, to access the fourth item

@@ -1,0 +1,51 @@
+print(f"Owner: {repo_dict['owner']['login']}")
+    print(f"Stars: {repo_dict['stargazers_count']}")
+    print(f"Repository: {repo_dict['html_url']}")
+    print(f"Description: {repo_dict['description']}")
+We first print an introductory message ❶. Then we loop through all the
+dictionaries in repo_dicts  ❷. Inside the loop, we print the name of each
+project, its owner , how many stars it has, its URL  on GitHub, and the
+project’ s description:
+Status code: 200
+Total repositories: 248Complete results: True
+Repositories returned: 30
+Selected information about each repository:
+Name: public-apis
+Owner: public-apis
+Stars: 191494
+Repository: https://github.com/public-apis/public-api
+Description: A collective list of free APIs
+Name: system-design-primer
+Owner: donnemartin
+Stars: 179952
+Repository: https://github.com/donnemartin/system-des
+Description: Learn how to design large-scale systems.
+  design interview.  Includes Anki flashcards.
+--snip--
+Name: PayloadsAllTheThings
+Owner: swisskyrepo
+Stars: 37227
+Repository: https://github.com/swisskyrepo/PayloadsAl
+Description: A list of useful payloads and bypass for
+  and Pentest/CTFSome interesting projects appear in these results, and it might be worth
+looking at a few . But don’ t spend too much time here, because we’re about
+to create a visualization that will make the results much easier to read.
+Monitoring API Rate Limits
+Most APIs have rate limits , which means there’ s a limit to how many
+requests you can make in a certain amount of time. To see if you’re
+approaching GitHub’ s limits, enter https://api.github.com/rate_limit into a
+web browser . You should see a response that begins like this:
+{
+  "resources": {
+    --snip--
+❶     "search": {
+❷       "limit": 10,
+❸       "remaining": 9,
+❹       "reset": 1652338832,
+      "used": 1,
+      "resource": "search"
+    },
+    --snip--
+The information we’re interested in is the rate limit for the search API ❶.
+We see that the limit is 10 requests per minute ❷ and that we have 9
+requ

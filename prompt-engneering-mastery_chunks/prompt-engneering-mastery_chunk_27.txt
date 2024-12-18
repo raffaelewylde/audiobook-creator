@@ -1,0 +1,34 @@
+words, and potential product names, but prompt_B
+provides two examples.
+2. Import statements are called for the Pandas library , OpenAI library , and
+os library .
+3. The get_response  function takes a prompt as input and returns a
+response from the gpt-3.5-turbo  model. The prompt is passed as a
+user message to the model, along with a system message to set the
+model’ s behavior .
+4. Two prompt variants are stored in the test_prompts  list.
+5. An empty list responses  is created to store the generated responses,
+and the variable num_tests  is set to 5.
+6. A nested loop is used to generate responses. The outer loop iterates over
+each prompt, and the inner loop generates num_tests  (five in this
+case) number of responses per prompt.a. The enumerate  function is used to get the index and value of each
+prompt in test_prompts . This index is then converted to a
+corresponding uppercase letter (e.g., 0 becomes A, 1 becomes B) to be
+used as a variant name.
+b. For each iteration, the get_response  function is called with the
+current prompt to generate a response from the model.
+c. A dictionary is created with the variant name, the prompt, and the
+model’ s response, and this dictionary is appended to the responses
+list.
+7. Once all responses have been generated, the responses  list (which is
+now a list of dictionaries) is converted into a Pandas DataFrame.
+8. This dataframe is then saved to a CSV  file with the Pandas built-in
+to_csv  function, making the file responses.csv  with index=False
+so as to not write row indices.
+9. Finally , the dataframe is printed to the console.
+Having these responses in a spreadsheet is already useful, because you can
+see right away even in the printed response that prompt_A  (zero-shot) in
+the first five rows is giving us a numbered list, whereas prompt_B  (few-
+shot) in the last five rows tends to output the desired format of a comma-
+separated inline list. The next step is to give a rating on each of the
+responses, which is best done blind an

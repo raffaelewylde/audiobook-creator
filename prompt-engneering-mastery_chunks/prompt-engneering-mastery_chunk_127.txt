@@ -1,0 +1,44 @@
+ng
+Function calling  provides an alternative method to output parsers,
+leveraging fine-tuned OpenAI models. These models identify when a
+function should be executed and generate a JSON response with the name
+and ar guments  for a predefined function. Several use cases include:
+Designing sophisticated chat bots
+Capable of or ganizing and managing schedules. For example, you
+can define a function to schedule a meeting:schedule_meeting(date: str, time: str, attendees:
+List[str]) .
+Convert natural language into actionable API calls
+A command like “T urn on the hallway lights” can be converted to
+control_device(device: str, action: 'on' | 'off')
+for interacting with your home automation API.
+Extracting structur ed data
+This could be done by defining a function such as
+extract_contextual_data(context: str, data_points:
+List[str])  or search_database(query: str) .
+Each function that you use within function calling will require an
+appropriate JSON schema . Let’ s explore an example with the OpenAI
+package:
+from openai import OpenAI
+import json
+from os import getenv
+def schedule_meeting (date, time, attendees ):
+    # Connect to calendar service:
+    return { "event_id" : "1234", "status" : "Meeting s
+            "date": date, "time": time, "attendees" : OPENAI_FUNCTIONS  = {
+    "schedule_meeting" : schedule_meeting
+}
+After importing OpenAI  and json , you’ll create a function named
+schedule_meeting . This function is a mock-up, simulating the process
+of scheduling a meeting, and returns details such as event_id , date ,
+time , and attendees . Following that, make an OPENAI_FUNCTIONS
+dictionary to map the function name to the actual function for ease of
+reference.
+Next, define a functions  list that provides the function’ s JSON schema.
+This schema includes its name, a brief description, and the parameters it
+requires, guiding the LLM on how to interact with it:
+# Our predefined function JSON schema:
+functions  = [
+    {
+        "type": "function" ,
+        "function" : {
+ 

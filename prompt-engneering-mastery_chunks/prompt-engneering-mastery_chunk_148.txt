@@ -1,0 +1,34 @@
+y by an LLM, providing a comprehensive
+solution when combined.
+Content generation
+For generating long-form content such as articles or blogs, the task
+can be decomposed into generating an outline, writing individual
+sections, and then compiling and refining the final draft. Each step
+can be individually managed by GPT -4 for better results.
+Large document summary
+Summarizing lengthy documents such as research papers or reports
+can be done more ef fectively by decomposing the task into several
+smaller tasks, like understanding individual sections, summarizing
+them independently , and then compiling a final summary .
+Interactive conversational agents
+For creating advanced chatbots, task decomposition can help manage
+different aspects of conversation such as understanding user input,maintaining context, generating relevant responses, and managing
+dialogue flow .
+Learning and tutoring systems
+In digital tutoring systems, decomposing the task of teaching a
+concept into understanding the learner ’s current knowledge,
+identifying gaps, suggesting learning materials, and evaluating
+progress can make the system more ef fective. Each subtask can
+leverage GPT -4’s generative abilities.Figure 4-3. Task decomposition with LLMsDIVIDE LABOR
+Task decomposition is a crucial strategy for you to tap into the full potential of LLMs. By dissecting
+complex problems into simpler , manageable tasks, you can leverage the problem-solving abilities of
+these models more ef fectively and ef ficiently .
+In the sections ahead, you’ll learn how to create and integrate multiple LLM
+chains to orchestrate more complicated workflows.
+Prompt Chaining
+Often you’ll find that attempting to do a single task within one prompt is
+impossible. You can utilize a mixture of prompt chaining , which involves
+combining multiple prompt inputs/outputs with specifically tailored LLM
+prompts to build up an idea.
+Let’s imagine an example with a film company that would like to partially
+automate their film creation. This

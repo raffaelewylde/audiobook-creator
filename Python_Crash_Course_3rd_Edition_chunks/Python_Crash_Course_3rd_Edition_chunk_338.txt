@@ -1,0 +1,48 @@
+valley_highs_lows.py
+from pathlib import Path
+import csv
+path = Path('weather_data/death_valley_2021_simple.cs
+lines = path.read_text(encoding='utf-8').splitlines()
+reader = csv.reader(lines)
+header_row = next(reader)
+for index, column_header in enumerate(header_row):
+    print(index, column_header)
+Here’ s the output:
+0 STATION
+1 NAME
+2 DATE
+3 TMAX4 TMIN
+5 TOBS
+The date is in the same position, at index 2. But the high and low
+temperatures are at indexes 3 and 4, so we’ll need to change the indexes in
+our code to reflect these new positions. Instead of including an average
+temperature reading for the day , this station includes TOBS , a reading for a
+specific observation time.
+Change sitka_highs_lows.py  to generate a graph for Death Valley using the
+indexes we just noted, and see what happens:
+death_valley_highs_lows.py
+--snip--
+path = Path('weather_data/death_valley_2021_simple.cs
+lines = path.read_text(encoding='utf-8').splitlines()
+    --snip--
+# Extract dates, and high and low temperatures.
+dates, highs, lows = [], [], []
+for row in reader:
+    current_date = datetime.strptime(row[2], '%Y-%m-%
+    high = int(row[3])
+    low = int(row[4])    dates.append(current_date)
+--snip--
+We update the program to read from the Death Valley data file, and we
+change the indexes to correspond to this file’ s TMAX  and TMIN  positions.
+When we run the program, we get an error:
+Traceback (most recent call last):
+  File "death_valley_highs_lows.py", line 17, in <mod
+    high = int(row[3])
+❶ ValueError: invalid literal for int() with base 10: '
+The traceback tells us that Python can’ t process the high temperature for
+one of the dates because it can’ t turn an empty string ( '') into an integer
+❶. Rather than looking through the data to find out which reading is
+missing, we’ll just handle cases of missing data directly .
+We’ll run error -checking code when the values are being read from the CSV
+file to handle exceptions that might arise. Here’ s how to do this:
+death_valley_highs

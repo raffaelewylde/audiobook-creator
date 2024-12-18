@@ -1,0 +1,57 @@
+ey value:
+export OPENAI_API_KEY ="api_key"
+Or on Windows:
+set OPENAI_API_KEY =api_key
+Alternatively , if you’d prefer not to preset an API key , then you can
+manually set the key while initializing the model, or load it from an .env file
+using python-dotenv . First, install the library with pip install
+python-dotenv , and then load the environment variables with the
+following code at the top of your script or notebook:from dotenv import load_dotenv
+load_dotenv ()  # take environment variables from .env
+The first step is getting responses for multiple runs of each prompt and
+storing them in a spreadsheet.
+Input:
+# Define two variants of the prompt to test zero-shot
+# vs few-shot
+prompt_A  = """Product description: A pair of shoes th
+fit any foot size.
+Seed words: adaptable, fit, omni-fit.
+Product names:"""
+prompt_B  = """Product description: A home milkshake m
+Seed words: fast, healthy, compact.
+Product names: HomeShaker, Fit Shaker, QuickShake, Sh
+Maker
+Product description: A watch that can tell accurate t
+space.
+Seed words: astronaut, space-hardened, eliptical orbi
+Product names: AstroTime, SpaceGuard, Orbit-Accurate,
+EliptoTime.Product description: A pair of shoes that can fit any
+size.
+Seed words: adaptable, fit, omni-fit.
+Product names:"""
+test_prompts  = [prompt_A , prompt_B ]
+import pandas as pd
+from openai import OpenAI
+import os
+# Set your OpenAI key as an environment variable
+# https://platform.openai.com/api-keys
+client = OpenAI(
+  api_key=os.environ['OPENAI_API_KEY' ],  # Default
+)
+def get_response (prompt):
+    response  = client.chat.completions .create(
+        model="gpt-3.5-turbo" ,
+        messages =[
+            {
+                "role": "system" ,
+                "content" : "You are a helpful assista
+            },
+            {
+                "role": "user",                "content" : prompt
+            }
+        ]
+    )
+    return response .choices[0].message.content
+# Iterate through the prompts and get responses
+responses  = []
+num_tests  = 

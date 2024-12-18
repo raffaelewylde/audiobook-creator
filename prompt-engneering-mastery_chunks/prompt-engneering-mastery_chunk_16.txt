@@ -1,0 +1,47 @@
+l r etrieval , and it is simple but ef fective ( Liu et al., 2021 ). Starting
+the conversation asking for best practice advice, then asking it to follow its
+own advice, can help a lot. In ef fect, you are using it to generate its own
+direction.
+Input:
+Please give me 5 tips for naming products based on ex
+industry advice.
+Output:
+Certainly! Naming a product is crucial as it often gi
+first impression to potential customers. Here are fiv
+tips to guide you in naming products:
+1. **Simplicity & Memorability**: Opt for names that 
+short, easy to spell, and memorable. Long, complicate
+can be difficult for customers to recall. Remember, t
+easier the name is to remember, the more likely it is
+consumers will think of your product when making a pu
+decision.
+...5. **Positive Connotations**: Names that evoke positi
+emotions or imagery can create a favorable perception
+your product. Avoid names that have negative or
+controversial associations in any of the primary lang
+or cultures where you intend to do business. It's oft
+worthwhile to conduct linguistic checks and market te
+to ensure there aren't unintended meanings.
+Lastly, once you've shortlisted a few names, it's a g
+idea to run them by diverse focus groups or conduct s
+to gauge reactions. Also, ensure that the name you ch
+available for trademarking and doesn't infringe on ex
+trademarks.
+Then within the same chat window , where the model has the context of the
+past advice it gave, you ask your initial prompt for the task you wanted to
+complete.
+Input:
+Using this advice, can I have a list of product names
+pair of shoes that can fit any foot size?
+Output:Certainly! Based on the criteria given:
+1. **Simplicity & Memorability**
+2. **Relevance & Descriptiveness**
+3. **Differentiation & Uniqueness**
+4. **Adaptable & Scalable**
+5. **Positive Connotations**
+Here's a list of potential product names for shoes th
+fit any foot size:
+1. **FitAll Walkers**: A simple and memorable name th
+instantly suggests a universal fit.
+...
+10. **TrueFi

@@ -1,0 +1,60 @@
+ few-shot examples:
+from langchain_openai.chat_models  import ChatOpenAI
+from langchain_core.prompts  import (
+    FewShotChatMessagePromptTemplate ,
+    ChatPromptTemplate ,
+)
+examples  = [
+    {
+        "question" : "What is the capital of France?" ,
+        "answer" : "Paris",
+    },
+    {
+        "question" : "What is the capital of Spain?" ,
+        "answer" : "Madrid" ,
+    } # ...more examples...
+]Each example is a dictionary containing a question  and answer  key
+that will be used to create pairs of HumanMessage  and AIMessage
+messages.
+Formatting the Examples
+Next, you’ll configure a ChatPromptTemplate  for formatting the
+individual examples, which will then be inserted into a
+FewShotChatMessagePromptTemplate .
+Input:
+example_prompt  = ChatPromptTemplate .from_messages (
+    [
+        ("human", "{question} "),
+        ("ai", "{answer} "),
+    ]
+)
+few_shot_prompt  = FewShotChatMessagePromptTemplate (
+    example_prompt =example_prompt ,
+    examples =examples ,
+)
+print(few_shot_prompt .format())Output:
+Human: What is the capital of France?
+AI: Paris
+Human: What is the capital of Spain?
+AI: Madrid
+...more examples ...
+Notice how example_prompt  will create HumanMessage  and
+AIMessage  pairs with the prompt inputs of {question}  and
+{answer} .
+After running few_shot_prompt.format() , the few-shot examples are
+printed as a string. As you’d like to use these within a ChatOpenAI()
+LLM request, let’ s create a new ChatPromptTemplate .
+Input:
+from langchain_core.output_parsers  import StrOutputPa
+final_prompt  = ChatPromptTemplate .from_messages (
+    [("system" ,'''You are responsible for answering
+    questions about countries. Only return the countr
+    name.''' ),
+    few_shot_prompt ,("human", "{question} "),]
+)model = ChatOpenAI ()
+# Creating the LCEL chain with the prompt, model, and
+chain = final_prompt  | model | StrOutputParser ()
+result = chain.invoke({"question" : "What is the capit
+print(result)
+Output:
+Washington , D.C.
+After invoking the LCEL  chain 

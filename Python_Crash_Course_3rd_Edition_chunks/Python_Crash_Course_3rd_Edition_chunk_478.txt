@@ -1,0 +1,41 @@
+atus, we see that we once again have a clean
+working tree ❷. Finally , we see the two commits in the log ❸.Abandoning Changes
+Now let’ s look at how to abandon a change and go back to the previous
+working state. First, add a new line to hello_git.py :
+hello_git.py
+print("Hello Git world!")
+print("Hello everyone.")
+print("Oh no, I broke the project!")
+Save and run this file.
+We check the status and see that Git notices this change:
+git_practice$ git status
+On branch main
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be com
+  (use "git restore <file>..." to discard changes in 
+❶     modified:   hello_git.pyno changes added to commit (use "git add" and/or "git
+git_practice$
+Git sees that we modified hello_git.py  ❶, and we can commit the change if
+we want to. But this time, instead of committing the change, we’ll go back
+to the last commit when we knew our project was working. We won’ t do
+anything to hello_git.py : we won’ t delete the line or use the Undo feature in
+the text editor . Instead, enter the following commands in your terminal
+session:
+git_practice$ git restore .
+git_practice$ git status
+On branch main
+nothing to commit, working tree clean
+git_practice$
+The command git restore filename  allows you to abandon all
+changes since the last commit in a specific file. The command git
+restore .  abandons all changes made in all files since the last commit;
+this action restores the project to the last committed state.
+When you return to your text editor , you’ll see that hello_git.py  has changed
+back to this:print("Hello Git world!")
+print("Hello everyone.")
+Although going back to a previous state might seem trivial in this simple
+project, if we were working on a lar ge project with dozens of modified files,
+all the files that had changed since the last commit would be restored. This
+feature is incredibly useful: you can make as many changes as you want
+when implementing a new feature, and if they don’ t work, you can discard
+them w

@@ -1,0 +1,52 @@
+item: Bananas
+  quantity: 3
+  unit: pieces
+Output:
+# Updated yaml list
+- item: Apple Slices
+  quantity: 5
+  unit: pieces
+In the preceding example, you’ve successfully filtered the user ’s payload
+against a set criteria and have used the language model as a reasoning
+engine .
+By providing the LLM with a set of instructions within the prompt, the
+response is closely related to what a human might do if they were manually
+cleaning the data.
+The input prompt facilitates the delegation of more control flow tasks to a
+language learning model (LLM), tasks that would typically require coding
+in a programming language like Python or JavaScript.Figure 3-1  provides a detailed overview of the logic applied when
+processing user queries by an LLM.
+Figure 3-1. Using an LLM to determine the control flow of an application instead of code
+Handling Invalid Payloads in YAML
+A completely invalid payload might look like this:
+Input:
+# User Query:
+- item: Bananas  quantity: 3
+  unit: pieces
+Output:
+No Items
+As expected, the LLM returned No Items  as none of the User Query
+items matched against the previously defined schema .
+Let’s create a Python script that gracefully accommodates for the various
+types of LLM results returned. The core parts of the script will focus on:
+Creating custom exceptions for each type of error that might occur due
+to the three LLM response scenarios
+Parsing the proposed schema
+Running a serious of custom checks against the response so you can be
+sure that the YML  response can be safely passed to downstream software
+applications/microservices
+You could define six specific errors that would handle for all of the edge
+cases:
+class InvalidResponse (Exception ):
+    passclass InvalidItemType (Exception ):
+    pass
+class InvalidItemKeys (Exception ):
+    pass
+class InvalidItemName (Exception ):
+    pass
+class InvalidItemQuantity (Exception ):
+    pass
+class InvalidItemUnit (Exception ):
+    pass
+Then provide the previously proposed YML schema  as a string:
+# Provided

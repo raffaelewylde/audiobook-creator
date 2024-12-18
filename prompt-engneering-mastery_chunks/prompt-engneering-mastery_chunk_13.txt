@@ -1,0 +1,34 @@
+ired structure of the
+response
+Provide Examples
+Insert a diverse set of test cases where the task was done correctly
+Evaluate Quality
+Identify errors and rate responses, testing what drives performance.
+Divide Labor
+Split tasks into multiple steps, chained together for complex goals
+These principles are not short-lived tips or hacks  but are generally accepted
+conventions that are useful for working with any level of intelligence,
+biological or artificial. These principles are model-agnostic and should
+work to improve your prompt no matter which generative text or image
+model you’re using. We first published these principles in July 2022 in the
+blog post “Prompt Engineering: From Words to Art and Copy” , and they
+have stood the test of time, including mapping quite closely to OpenAI’ s
+own Prompt Engineering Guide , which came a year later . Anyone whoworks closely with generative AI models is likely to conver ge on a similar
+set of strategies for solving common issues, and throughout this book you’ll
+see hundreds of demonstrative examples of how they can be useful for
+improving your prompts.
+We have provided downloadable one-pagers for text and image generation
+you can use as a checklist when applying these principles. These were
+created for our popular Udemy course The Complete Prompt Engineering
+for AI Bootcamp  (70,000+ students), which was based on the same
+principles but with dif ferent material to this book.
+Text Generation One-Pager
+Image Generation One-Pager
+To show these principles apply equally well to prompting image models,
+let’s use the following example, and explain how to apply each of the Five
+Principles of Prompting to this specific scenario. Copy and paste the entire
+input prompt into the Midjourney Bot in Discord, including the link to the
+image at the beginning, after typing /imagine  to trigger the prompt box
+to appear (requires a free Discord  account, and a paid Midjourney  account).
+Input:
+https://s.mj.run/TKAsyhNiKmc stock photo of business

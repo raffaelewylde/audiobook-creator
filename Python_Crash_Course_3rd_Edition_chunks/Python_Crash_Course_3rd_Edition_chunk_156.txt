@@ -1,0 +1,30 @@
+which makes the main part of the
+program easier to understand. Look at the body of the program and notice
+how easily you can follow what’ s happening:unprinted_designs = ['phone case', 'robot pendant', '
+completed_models = []
+print_models(unprinted_designs, completed_models)
+show_completed_models(completed_models)
+We set up a list of unprinted designs and an empty list that will hold the
+completed models. Then, because we’ve already defined our two functions,
+all we have to do is call them and pass them the right ar guments. We call
+print_models()  and pass it the two lists it needs; as expected,
+print_models()  simulates printing the designs. Then we call
+show_completed_models()  and pass it the list of completed models so
+it can report the models that have been printed. The descriptive function
+names allow others to read this code and understand it, even without
+comments.
+This program is easier to extend and maintain than the version without
+functions. If we need to print more designs later on, we can simply call
+print_models() again. If we realize the printing code needs to be modified,
+we can change the code once, and our changes will take place everywhere
+the function is called. This technique is more ef ficient than having to update
+code separately in several places in the program.This example also demonstrates the idea that every function should have
+one specific job. The first function prints each design, and the second
+displays the completed models. This is more beneficial than using one
+function to do both jobs. If you’re writing a function and notice the function
+is doing too many dif ferent tasks, try to split the code into two functions.
+Remember that you can always call a function from another function, which
+can be helpful when splitting a complex task into a series of steps.
+Preventing a Function fr om Modifying a List
+Sometimes you’ll want to prevent a function from modifying a list. For
+example, say that you start with a list of unprinted designs a

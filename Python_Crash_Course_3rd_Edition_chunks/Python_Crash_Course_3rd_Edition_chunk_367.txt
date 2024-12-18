@@ -1,0 +1,37 @@
+ for sorting the list. We
+sort the list in reverse order , to place the most-commented stories first.Once the list is sorted, we loop through the list ❽ and print out three pieces
+of information about each of the top submissions: the title, a link to the
+discussion page, and the number of comments the submission currently has:
+Status code: 200
+id: 31390506    status: 200
+id: 31389893    status: 200
+id: 31390742    status: 200
+--snip--
+Title: Fly.io: The reclaimer of Heroku's magic
+Discussion link: https://news.ycombinator.com/item?id
+Comments: 134
+Title: The weird Hewlett Packard FreeDOS option
+Discussion link: https://news.ycombinator.com/item?id
+Comments: 64
+Title: Modern JavaScript Tutorial
+Discussion link: https://news.ycombinator.com/item?id
+Comments: 20
+--snip--
+You would use a similar process to access and analyze information with any
+API. With this data, you could make a visualization showing which
+submissions have inspired the most active recent discussions. This is alsothe basis for apps that provide a customized reading experience for sites
+like Hacker News. To learn more about what kind of information you can
+access through the Hacker News API, visit the documentation page at http
+s://github.com/HackerNews/API .
+NOTE
+Hacker News sometimes allows companies it supports to make
+special hiring posts, and comments ar e disabled on these posts. If
+you run this pr ogram while one of these posts is pr esent, you’ll get a
+KeyError . If this causes an issue, you can wrap the code that
+builds submission_dict  in a try-except  block and skip
+over these posts.TRY IT YOURSELF
+17-1. Other  Languages:  Modify the API call in python_r epos.py  so it generates a chart
+showing the most popular projects in other languages. Try languages such as JavaScript , Ruby ,
+C, Java , Perl, Haskell , and Go.
+17-2. Active Discussions:  Using the data from hn_submissions.py , make a bar chart showing
+the most active discussions currently happening on Hacker News. The height of each bar 

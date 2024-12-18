@@ -1,0 +1,48 @@
+           "type": "object" ,
+            "name": "schedule_meeting" ,
+            "description" : '''Set a meeting at a spec
+            designated attendees''' ,
+            "parameters" : {
+                "type": "object" ,                "properties" : {
+                    "date": {"type": "string" , "forma
+                    "time": {"type": "string" , "forma
+                    "attendees" : {"type": "array", "i
+                },
+                "required" : ["date", "time", "attende
+            },
+        },
+    }
+]
+SPECIFY FORMAT
+When using function calling with your OpenAI models, always ensure to define a detailed JSON
+schema (including the name and description). This acts as a blueprint for the function, guiding the
+model to understand when and how to properly invoke it.
+After defining the functions, let’ s make an OpenAI API request. Set up a
+messages  list with the user query . Then, using an OpenAI client
+object, you’ll send this message and the function schema to the model. The
+LLM analyzes the conversation, discerns a need to trigger a function, and
+provides the function name and ar guments. The function  and
+function_args  are parsed from the LLM response. Then the function is
+executed, and its results are added back into the conversation. Then you call
+the model again for a user -friendly summary of the entire process.Input:
+client = OpenAI(api_key=getenv("OPENAI_API_KEY" ))
+# Start the conversation:
+messages  = [
+    {
+        "role": "user",
+        "content" : '''Schedule a meeting on 2023-11-0
+        with Alice and Bob.''' ,
+    }
+]
+# Send the conversation and function schema to the mo
+response  = client.chat.completions .create(
+    model="gpt-3.5-turbo-1106" ,
+    messages =messages ,
+    tools=functions ,
+)
+response  = response .choices[0].message
+# Check if the model wants to call our function:
+if response .tool_calls :
+    # Get the first function call:
+    first_tool_call  = response .tool_calls [0]
+    # Find the function name and f

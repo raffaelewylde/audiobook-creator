@@ -1,0 +1,50 @@
+s as a numbered list, separated
+by \n characters. However , if your downstream Python code was
+expecting to split on bullet points, then you’ll likely end up with
+undesirable results or a runtime error .
+GPT has provided preceding commentary; removing any
+preceding/succeeding commentary would make parsing the output easier .
+The list size wasn’ t controlled and was left to the language model.
+Some of the characters have the name of their corresponding film within
+brackets—for  example, Bagheera (The Jungle Book) —and others don’ t.
+This makes names harder to extract because you would need to remove
+the movie titles.
+No filtering or selection has been applied to the LLM generation based
+on our desired result.
+Following you’ll find an optimized prompt.
+Input:Generate a bullet-point list of 5 male Disney charact
+Only include the name of the character for each line.
+Never include the film for each Disney character.
+Only return the Disney characters, never include any 
+Below is an example list:
+* Aladdin
+* Simba
+* Beast
+* Hercules
+* Tarzan
+Output:
+* Woody
+* Buzz Lightyear
+* Stitch
+* Jack Sparrow
+* Prince Charming
+PROVIDE EXAMPLES
+Simply rephrasing your prompt to include examples (few-shot pr ompting)  can greatly impact the
+desired output.By optimizing the prompt, you’ve achieved the following:
+Restricted the list to a fixed size of five
+Generated only male characters
+Correctly formatted the list with bullet points
+Removed any preceding commentary
+Simple lists are fine for most tasks; however , they are less structured, and
+for some tasks it’ s beneficial to obtain nested data structures from a GPT -4
+output.
+Three typical data structures include:
+Nested text data (hierarchical lists)
+JSON
+YAML
+Hierarchical List Generation
+Hierarchical lists are useful for when your desired output is nested. A good
+example of this would be a detailed article structure.
+Input:
+Generate a hierarchical and incredibly detailed articWhat are the benefits of data engineering.
+See an example of

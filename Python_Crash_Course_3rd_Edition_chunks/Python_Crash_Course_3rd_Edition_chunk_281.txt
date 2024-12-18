@@ -1,0 +1,33 @@
+de that makes the aliens disappear when they’re hit.
+Ending the Game
+What’ s the fun and challenge in playing a game you can’ t lose? If the player
+doesn’ t shoot down the fleet quickly enough, we’ll have the aliens destroy
+the ship when they make contact. At the same time, we’ll limit the number
+of ships a player can use, and we’ll destroy the ship when an alien reachesthe bottom of the screen. The game will end when the player has used up all
+their ships.
+Detecting Alien-Ship Collisions
+We’ll start by checking for collisions between aliens and the ship so we can
+respond appropriately when an alien hits it. We’ll check for alien-ship
+collisions immediately after updating the position of each alien in
+AlienInvasion :
+alien_invasion.py
+    def _update_aliens(self):
+        --snip--
+        self.aliens.update()
+        # Look for alien-ship collisions.
+❶         if pygame.sprite.spritecollideany(self.ship, 
+❷             print("Ship hit!!!")
+The spritecollideany()  function takes two ar guments: a sprite and a
+group. The function looks for any member of the group that has collided
+with the sprite and stops looping through the group as soon as it finds one
+member that has collided with the sprite. Here, it loops through the group
+aliens  and returns the first alien it finds that has collided with ship .If no collisions occur , spritecollideany()  returns None  and the if
+block won’ t execute ❶. If it finds an alien that has collided with the ship, it
+returns that alien and the if block executes: it prints Ship hit!!!  ❷.
+When an alien hits the ship, we’ll need to do a number of tasks: delete all
+remaining aliens and bullets, recenter the ship, and create a new fleet.
+Before we write code to do all this, we want to know that our approach to
+detecting alien-ship collisions works correctly . Writing a print()  call is a
+simple way to ensure we’re detecting these collisions properly .
+Now when you run Alien Invasion,  the message Ship hit!!!  should appear in
+the terminal 

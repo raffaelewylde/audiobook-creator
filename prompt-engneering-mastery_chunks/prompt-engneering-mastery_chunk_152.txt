@@ -1,0 +1,47 @@
+r ("genre"),
+        plot=plot_generation_chain ,
+    )
+    | RunnableParallel (
+        characters =itemgetter ("characters" ),
+        genre=itemgetter ("genre"),
+        plot=itemgetter ("plot"),
+        scenes=scene_generation_plot_chain ,
+    )
+)
+story_result  = master_chain .invoke({"genre": "FantasyThe output is truncated when you see ...  to save space. However , in total
+there were five characters and nine scenes generated.
+Output:
+{'characters' : '''Name: Lyra, Biography: Lyra is a yo
+..\n\nName: Orion, Biography: Orion is a ..''' , 'genr
+'Fantasy' } 'plot': '''In the enchanted forests of a m
+darkness looms, threatening to engulf the land and it
+the young elf with a deep connection to nature, ...''
+1: Lyra senses the impending danger in the forest ...
+his mission to investigate the disturbances in the fo
+After the battle, Lyra, Orion, Seraphina, Finnegan...
+The scenes are split into separate items within a Python list. Then two new
+prompts are created to generate both a character script and a summarization
+prompt:
+# Extracting the scenes using .split('\n') and removi
+scenes = [scene for scene in story_result ["scenes" ].s
+generated_scenes  = []
+previous_scene_summary  = ""
+character_script_prompt  = ChatPromptTemplate .from_tem
+    template ="""Given the following characters: {char
+    {genre}, create an effective character script for    You must follow the following principles:
+    - Use the Previous Scene Summary: {previous_scene
+    repeating yourself.
+    - Use the Plot: {plot} to create an effective sce
+    - Currently you are generating the character dial
+    following scene: {scene}
+    ---
+    Here is an example response:
+    SCENE 1: ANNA'S APARTMENT
+    (ANNA is sorting through old books when there is 
+    She opens it to reveal JOHN.)
+    ANNA: Can I help you, sir?
+    JOHN: Perhaps, I think it's me who can help you. 
+    researching time travel.
+    (Anna looks intrigued but also cautious.)
+    ANNA: That's right, but how do you know?
+    JOHN:

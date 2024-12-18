@@ -1,0 +1,34 @@
+rtunity for a full rewrite. That said, any inaccuracies that
+remain are completely my own.
+I’d also like to express my appreciation to all the readers who have shared
+their experience of working through Python Crash Course . Learning the
+basics of programming can change your perspective on the world, and
+sometimes this has a profound impact on people. It’ s deeply humbling to
+hear these stories, and I appreciate everyone who has shared their
+experiences so openly .
+I’d like to thank my father for introducing me to programming at a young
+age and for not being afraid that I’d break his equipment. I’d like to thank
+my wife, Erin, for supporting and encouraging me through the writing of
+this book, and through all the work that goes into maintaining it through
+multiple editions. I’d also like to thank my son, Ever , whose curiosity
+continues to inspire me.INTRODUCTION
+Every programmer has a story about how they learned to
+write their first program. I started programming as a child,
+when my father was working for Digital Equipment
+Corporation, one of the pioneering companies of the modern
+computing era. I wrote my first program on a kit computer
+that my dad had assembled in our basement. The computer
+consisted of nothing more than a bare motherboard connected to a keyboard
+without a case, and its monitor was a bare cathode ray tube. My initial
+program was a simple number guessing game, which looked something like
+this:
+I'm thinking of a number! Try to guess the number I'm
+Too low! Guess again: 50
+Too high! Guess again: 42
+That's it! Would you like to play again? (yes/no) no
+Thanks for playing!
+I’ll always remember how satisfied I felt, watching my family play a game
+that I created and that worked as I intended it to.
+That early experience had a lasting impact. There’ s real satisfaction in
+building something with a purpose, that solves a problem. The software Iwrite now meets more significant needs than my childhood ef forts did, but
+the sense of satisfaction I get from c

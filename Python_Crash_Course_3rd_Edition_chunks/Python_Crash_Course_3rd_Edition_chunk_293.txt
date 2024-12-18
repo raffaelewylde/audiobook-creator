@@ -1,0 +1,38 @@
+_button()  to a _start_game()  method that
+can be called from _check_play_button()  and _check_keydown_events() .
+14-2. Target Practice:  Create a rectangle at the right edge of the screen that moves up and
+down at a steady rate. Then on the left side of the screen, create a ship that the player can move
+up and down while firing bullets at the rectangular tar get. Add a Play button that starts the game,
+and when the player misses the tar get three times, end the game and make the Play button
+reappear . Let the player restart the game with this Play button.
+Leveling Up
+In our current game, once a player shoots down the entire alien fleet, the
+player reaches a new level, but the game dif ficulty doesn’ t change. Let’ s
+liven things up a bit and make the game more challenging by increasing the
+game’ s speed each time a player clears the screen.Modifying the Speed Settings
+We’ll first reor ganize the Settings  class to group the game settings into
+static and dynamic ones. We’ll also make sure any settings that change
+during the game reset when we start a new game. Here’ s the __init__()
+method for settings.py :
+settings.py
+    def __init__(self):
+        """Initialize the game's static settings."""
+        # Screen settings
+        self.screen_width = 1200
+        self.screen_height = 800
+        self.bg_color = (230, 230, 230)
+        # Ship settings
+        self.ship_limit = 3
+        # Bullet settings
+        self.bullet_width = 3
+        self.bullet_height = 15
+        self.bullet_color = 60, 60, 60
+        self.bullets_allowed = 3
+        # Alien settings
+        self.fleet_drop_speed = 10        # How quickly the game speeds up
+❶         self.speedup_scale = 1.1
+❷         self.initialize_dynamic_settings()
+We continue to initialize settings that stay constant in the __init__()
+method. We add a speedup_scale  setting ❶ to control how quickly the
+game speeds up: a value of 2 will double the game speed every time the
+player reaches a new level; a value of 1 will keep

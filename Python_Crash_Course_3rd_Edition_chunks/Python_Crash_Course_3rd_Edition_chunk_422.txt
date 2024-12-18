@@ -1,0 +1,38 @@
+rieve
+topic pages that happen to match.
+Try it yourself. While logged in as the user that owns all topics, copy the
+URL  or note the ID in the URL  of a topic, and then log out and log back in
+as a dif ferent user . Enter that topic’ s URL. You should be able to read the
+entries, even though you’re logged in as a dif ferent user .
+We’ll fix this now by performing a check before retrieving the requested
+entries in the topic()  view function:
+learning_logs/views.py
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_requ
+❶ from django.http import Http404
+--snip--@login_required
+def topic(request, topic_id):
+    """Show a single topic and all its entries."""
+    topic = Topic.objects.get(id=topic_id)
+    # Make sure the topic belongs to the current user
+❷     if topic.owner != request.user:
+        raise Http404
+    entries = topic.entry_set.order_by('-date_added')
+    context = {'topic': topic, 'entries': entries}
+    return render(request, 'learning_logs/topic.html'
+--snip--
+A 404 response is a standard error response that’ s returned when a
+requested resource doesn’ t exist on a server . Here we import the Http404
+exception ❶, which we’ll raise if the user requests a topic they shouldn’ t
+have access to. After receiving a topic request, we make sure the topic’ s
+user matches the currently logged-in user before rendering the page. If the
+requested topic’ s owner is not the same as the current user , we raise the
+Http404  exception ❷, and Django returns a 404-error page.
+Now if you try to view another user ’s topic entries, you’ll see a “Page Not
+Found” message from Django. In Chapter 20 , we’ll configure the project so
+users will see a proper error page instead of a debugging page.Protecting the edit_entry Page
+The edit_entry  pages have URLs of the form
+http://localhost:8000/edit_entry/entry_id/ , where the entry_id  is a number .
+Let’s protect this page so no one can use the URL  to gain access to someone
+else’s entries:
+l

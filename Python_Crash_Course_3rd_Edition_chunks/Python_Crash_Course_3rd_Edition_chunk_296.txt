@@ -1,0 +1,40 @@
+ef reset_stats(self):
+        """Initialize statistics that can change duri        self.ships_left = self.ai_settings.ship_limit
+        self.score = 0
+To reset the score each time a new game starts, we initialize score  in
+reset_stats()  rather than __init__() .
+Displaying the Scor e
+To display the score on the screen, we first create a new class,
+Scoreboard . For now , this class will just display the current score.
+Eventually , we’ll use it to report the high score, level, and number of ships
+remaining as well. Here’ s the first part of the class; save it as scoreboar d.py:
+scoreboard.py
+import pygame.font
+class Scoreboard:
+    """A class to report scoring information."""
+❶     def __init__(self, ai_game):
+        """Initialize scorekeeping attributes."""
+        self.screen = ai_game.screen
+        self.screen_rect = self.screen.get_rect()
+        self.settings = ai_game.settings
+        self.stats = ai_game.stats        # Font settings for scoring information.
+❷         self.text_color = (30, 30, 30)
+❸         self.font = pygame.font.SysFont(None, 48)
+        # Prepare the initial score image.
+❹         self.prep_score()
+Because Scoreboard  writes text to the screen, we begin by importing the
+pygame.font  module. Next, we give __init__()  the ai_game
+parameter so it can access the settings , screen , and stats  objects,
+which it will need to report the values we’re tracking ❶. Then we set a text
+color ❷ and instantiate a font object ❸.
+To turn the text to be displayed into an image, we call prep_score()  ❹,
+which we define here:
+scoreboard.py
+    def prep_score(self):
+        """Turn the score into a rendered image."""
+❶         score_str = str(self.stats.score)
+❷         self.score_image = self.font.render(score_str
+                self.text_color, self.settings.bg_col
+        # Display the score at the top right of the ❸         self.score_rect = self.score_image.get_rect(
+❹         self.score_rect.right = self.screen_rect.rig
+❺         self.score_rect.top = 

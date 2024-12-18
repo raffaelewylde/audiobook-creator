@@ -1,0 +1,48 @@
+oject will be hosted
+  --snip--
+  [us-3.platform.sh] Moses Lake, United States (AZURE❷ > us-3.platform.sh
+* Plan (--plan)
+Default: development
+Enter a number to choose:
+  [0] development
+  --snip--
+❸ > 0
+* Environments (--environments)
+The number of environments
+Default: 3
+❹ > 3
+* Storage (--storage)
+The amount of storage per environment, in GiB
+Default: 5
+❺ > 5
+The first prompt asks for a name for the project ❶, so we use the name
+ll_project . The next prompt asks which region we’d like the server to
+be in ❷. Choose the server closest to you; for me, that’ s us-
+3.platform.sh . For the rest of the prompts, you can accept the defaults:
+a server on the lowest development plan ❸, three environments for the
+project ❹, and 5GB of storage for the overall project ❺.
+There are three more prompts to respond to:Default branch (--default-branch)
+The default Git branch name for the project (the prod
+Default: main
+❶ > main
+Git repository detected: /Users/eric/.../learning_log
+❷ Set the new project ll_project as the remote for this
+The estimated monthly cost of this project is: $10 US
+❸ Are you sure you want to continue? [Y/n] Y
+The Platform.sh Bot is activating your project
+      ▀▄   ▄▀
+    █▄█▀███▀█▄█
+    ▀█████████▀
+     ▄▀     ▀▄
+The project is now ready!
+A Git repository can have multiple branches; Platform.sh is asking us if the
+default branch for the project should be main  ❶. It then asks if we want to
+connect the local project’ s repository to the remote repository ❷. Finally ,
+we’re informed that this project will cost about $10 per month if we keep it
+running beyond the free trial period ❸. If you haven’ t entered a credit card
+yet, you shouldn’ t have to worry about this cost. Platform.sh will simplysuspend your project if you exceed the free trial’ s limits without adding a
+credit card.
+Pushing to Platform.sh
+The last step before seeing the live version of the project is to push our code
+to the remote server . To do that, issue the following command:
+(ll_env)learni

@@ -1,0 +1,36 @@
+f ficiency while refining your decision-
+making processes.
+Your or ganization’ s data may manifest in various forms:
+Unstructur ed data
+This could include Google Docs, threads from communication
+platforms such as Slack or Microsoft Teams, web pages, internal
+documentation, or code repositories on GitHub.
+Structur ed data
+Data neatly housed within SQL, NoSQL, or Graph databases.To query your unstructured data, a process of loading, transforming,
+embedding, and subsequently storing it within a vector database is
+necessary . A vector database  is a specialized type of database designed to
+efficiently store and query data in the form of vectors, which represent
+complex data like text or images in a format suitable for machine learning
+and similarity search.
+As for structured data, given its already indexed and stored state, you can
+utilize a LangChain agent to conduct an intermediate query on your
+database. This allows for the extraction of specific features, which can then
+be used within your LLM prompts.
+There are multiple Python packages that can help with your data ingestion,
+including Unstructured , LlamaIndex , and LangChain .
+Figure 4-2  illustrates a standardized approach to data ingestion. It begins
+with the data sources, which are then loaded into documents. These
+documents are then chunked and stored within a vector database for later
+retrieval.Figure 4-2. A data connection to retrieval pipeline
+In particular LangChain equips you with essential components to load,
+modify , store, and retrieve your data:
+Document loaders
+These facilitate uploading informational resources, or documents ,
+from a diverse range of sources such as Word documents, PDF files,
+text files, or even web pages.
+Document transformers
+These tools allow the segmentation of documents, conversion into a
+Q&A  layout, elimination of superfluous documents, and much more.
+Text embedding models
+These can transform unstructured text into a sequence of floating-
+point numbers used for similarity sear

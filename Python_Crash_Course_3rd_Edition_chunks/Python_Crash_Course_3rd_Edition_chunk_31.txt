@@ -1,0 +1,32 @@
+cause Python uses these
+naming conventions. You can make this folder somewhere other than the
+desktop, but it will be easier to follow some later steps if you save the
+python_work  folder directly on your desktop.
+Open VS Code, and close the Get Started  tab if it’ s still open. Make a new
+file by clicking File ▶New File  or pressing CTRL-N ( ⌘ -N on macOS).
+Save the file as hello_world.py  in your python_work  folder . The extension
+.py tells VS Code that your file is written in Python, and tells it how to run
+the program and highlight the text in a helpful way .
+After you’ve saved your file, enter the following line in the editor:hello_world.py
+print("Hello Python world!")
+To run your program, select Run ▶Run Without Debugging  or press
+CTRL-F5. A terminal screen should appear at the bottom of the VS Code
+window , showing your program’ s output:
+Hello Python world!
+You’ll likely see some additional output showing the Python interpreter that
+was used to run your program. If you want to simplify the information
+that’s displayed so you only see your program’ s output, see Appendix B .
+You can also find helpful suggestions about how to use VS Code more
+efficiently in Appendix B .
+If you don’ t see this output, something might have gone wrong in the
+program. Check every character on the line you entered. Did you
+accidentally capitalize print ? Did you for get one or both of the quotation
+marks or parentheses? Programming languages expect very specific syntax,
+and if you don’ t provide that, you’ll get errors. If you can’ t get the program
+to run, see the suggestions in the next section.Troubleshooting
+If you can’ t get hello_world.py  to run, here are a few remedies you can try
+that are also good general solutions for any programming problem:
+When a program contains a significant error , Python displays a
+traceback , which is an error report. Python looks through the file and
+tries to identify the problem. Check the traceback; it might give you a
+clue as to what issue 

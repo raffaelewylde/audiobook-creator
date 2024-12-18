@@ -1,0 +1,36 @@
+ics, printing each topic and the user it belongs to.
+You can see that each topic now belongs to the user ll_admin . (If you get
+an error when you run this code, try exiting the shell and starting a new
+shell.)
+NOTE
+You can simply r eset the database instead of migrating, but that will
+lose all existing data. It’ s good practice to learn how to migrate a
+database while maintaining the integrity of users’  data. If you do
+want to start with a fr esh database, issue the command python
+manage.py flush  to rebuild the database structur e. You’ll have
+to create a new superuser , and all of your data will be gone.Restricting Topics Access to Appr opriate Users
+Currently , if you’re logged in, you’ll be able to see all the topics, no matter
+which user you’re logged in as. We’ll change that by showing users only the
+topics that belong to them.
+Make the following change to the topics()  function in views.py :
+learning_logs/views.py
+--snip--
+@login_required
+def topics(request):
+    """Show all topics."""
+    topics = Topic.objects.filter(owner=request.user)
+    context = {'topics': topics}
+    return render(request, 'learning_logs/topics.html
+--snip--
+When a user is logged in, the request  object has a request.user
+attribute set, which contains information about the user . The query
+Topic.objects.filter(owner=request.user)  tells Django to
+retrieve only the Topic  objects from the database whose owner  attribute
+matches the current user . Because we’re not changing how the topics are
+displayed, we don’ t need to change the template for the topics page at all.To see if this works, log in as the user you connected all existing topics to,
+and go to the topics page. You should see all the topics. Now log out and
+log back in as a dif ferent user . You should see the message “No topics have
+been added yet.”
+Protecting a User ’s Topics
+We haven’ t restricted access to the topic pages yet, so any registered user
+could try a bunch of URLs (like http://localhost:8000/topics/1/ ) and ret

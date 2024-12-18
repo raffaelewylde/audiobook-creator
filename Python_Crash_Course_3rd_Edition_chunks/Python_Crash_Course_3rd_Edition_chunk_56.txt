@@ -1,0 +1,39 @@
+t position 0 and stores the value
+'ducati'  at that location:
+['ducati', 'honda', 'yamaha', 'suzuki']
+This operation shifts every other value in the list one position to the right.Removing Elements fr om a List
+Often, you’ll want to remove an item or a set of items from a list. For
+example, when a player shoots down an alien from the sky , you’ll most
+likely want to remove it from the list of active aliens. Or when a user
+decides to cancel their account on a web application you created, you’ll
+want to remove that user from the list of active users. You can remove an
+item according to its position in the list or according to its value.
+Removing an Item Using the del Statement
+If you know the position of the item you want to remove from a list, you
+can use the del  statement:
+motorcycles = ['honda', 'yamaha', 'suzuki']
+print(motorcycles)
+del motorcycles[0]
+print(motorcycles)
+Here we use the del  statement to remove the first item, 'honda' , from
+the list of motorcycles:
+['honda', 'yamaha', 'suzuki']
+['yamaha', 'suzuki']You can remove an item from any position in a list using the del
+statement if you know its index. For example, here’ s how to remove the
+second item, 'yamaha' , from the list:
+motorcycles = ['honda', 'yamaha', 'suzuki']
+print(motorcycles)
+del motorcycles[1]
+print(motorcycles)
+The second motorcycle is deleted from the list:
+['honda', 'yamaha', 'suzuki']
+['honda', 'suzuki']
+In both examples, you can no longer access the value that was removed
+from the list after the del  statement is used.
+Removing an Item Using the pop() Method
+Sometimes you’ll want to use the value of an item after you remove it from
+a list. For example, you might want to get the x and y position of an alien
+that was just shot down, so you can draw an explosion at that position. In a
+web application, you might want to remove a user from a list of active
+members and then add that user to a list of inactive members.The pop()  method removes the last item in a list, but it lets you work
+wi

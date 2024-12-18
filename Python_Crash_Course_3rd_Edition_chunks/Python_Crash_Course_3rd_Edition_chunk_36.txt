@@ -1,0 +1,35 @@
+
+the value is the "Hello Python world!"  text.
+Adding a variable makes a little more work for the Python interpreter .
+When it processes the first line, it associates the variable message  with
+the "Hello Python world!"  text. When it reaches the second line, it
+prints the value associated with message  to the screen.
+Let’s expand on this program by modifying hello_world.py  to print a
+second message. Add a blank line to hello_world.py , and then add two new
+lines of code:
+message = "Hello Python world!"
+print(message)message = "Hello Python Crash Course world!"
+print(message)
+Now when you run hello_world.py , you should see two lines of output:
+Hello Python world!
+Hello Python Crash Course world!
+You can change the value of a variable in your program at any time, and
+Python will always keep track of its current value.
+Naming and Using Variables
+When you’re using variables in Python, you need to adhere to a few rules
+and guidelines. Breaking some of these rules will cause errors; other
+guidelines just help you write code that’ s easier to read and understand. Be
+sure to keep the following rules in mind when working with variables:
+Variable names can contain only letters, numbers, and underscores. They
+can start with a letter or an underscore, but not with a number . For
+instance, you can call a variable message_1  but not 1_message .
+Spaces are not allowed in variable names, but underscores can be used to
+separate words in variable names. For example, greeting_message
+works but greeting message  will cause errors.Avoid using Python keywords and function names as variable names.
+For example, do not use the word print  as a variable name; Python
+has reserved it for a particular programmatic purpose. (See “Python
+Keywords and Built-in Functions” on page 466 .)
+Variable names should be short but descriptive. For example, name  is
+better than n, student_name  is better than s_n , and
+name_length  is better than length_of_persons_name .
+Be careful when using the lowercase

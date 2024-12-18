@@ -1,0 +1,28 @@
+es
+The original prompt didn’ t give the AI any examples of what you think
+good  names look like. Therefore, the response is approximate to an average
+of the internet, and you can do better than that. Researchers would call a
+prompt with no examples zero-shot , and it’ s always a pleasant surprise
+when AI can even do a task zero shot: it’ s a sign of a powerful model. If
+you’re providing zero examples, you’re asking for a lot without giving
+much in return. Even providing one example ( one-shot ) helps considerably ,
+and it’ s the norm among researchers to test how models perform with
+multiple examples ( few-shot ). One such piece of research is the famous
+GPT-3 paper “Language Models are Few-Shot Learners” , the results ofwhich are illustrated in Figure 1-8 , showing adding one example along with
+a prompt can improve accuracy in some tasks from 10% to near 50%!
+Figure 1-8. Number of examples in context
+When briefing a colleague or training a junior employee on a new task, it’ s
+only natural that you’d include examples of times that task had previously
+been done well. Working with AI is the same, and the strength of a prompt
+often comes down to the examples used. Providing examples can
+sometimes be easier than trying to explain exactly what it is about those
+examples you like, so this technique is most ef fective when you are not a
+domain expert in the subject area of the task you are attempting to
+complete. The amount of text you can fit in a prompt is limited (at the time
+of writing around 6,000 characters on Midjourney and approximately32,000 characters for the free version of ChatGPT), so a lot of the work of
+prompt engineering involves selecting and inserting diverse and instructive
+examples.
+There’ s a trade-of f between reliability and creativity: go past three to five
+examples and your results will become more reliable, while sacrificing
+creativity . The more examples you provide, and the lesser the diversity
+between them, the more constrained the response wil

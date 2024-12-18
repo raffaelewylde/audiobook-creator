@@ -1,0 +1,48 @@
+es displayed in order:
+Edward, thank you for taking the poll.
+Jen, thank you for taking the poll.
+Phil, thank you for taking the poll.
+Sarah, thank you for taking the poll.
+Looping Through All Values in a Dictionary
+If you are primarily interested in the values that a dictionary contains, you
+can use the values()  method to return a sequence of values without any
+keys. For example, say we simply want a list of all languages chosen in our
+programming language poll, without the name of the person who chose
+each language:
+favorite_languages = {
+    'jen': 'python',
+    'sarah': 'c',
+    'edward': 'rust',
+    'phil': 'python',
+    }print("The following languages have been mentioned:")
+for language in favorite_languages.values():
+    print(language.title())
+The for  statement here pulls each value from the dictionary and assigns it
+to the variable language . When these values are printed, we get a list of
+all chosen languages:
+The following languages have been mentioned:
+Python
+C
+Rust
+Python
+This approach pulls all the values from the dictionary without checking for
+repeats. This might work fine with a small number of values, but in a poll
+with a lar ge number of respondents, it would result in a very repetitive list.
+To see each language chosen without repetition, we can use a set. A set is a
+collection in which each item must be unique:
+favorite_languages = {
+    --snip--
+    }
+print("The following languages have been mentioned:")for language in set(favorite_languages.values()):
+    print(language.title())
+When you wrap set()  around a collection of values that contains
+duplicate items, Python identifies the unique items in the collection and
+builds a set from those items. Here we use set()  to pull out the unique
+languages in favorite_languages.values() .
+The result is a nonrepetitive list of languages that have been mentioned by
+people taking the poll:
+The following languages have been mentioned:
+Python
+C
+Rust
+As you continue learning about Python, you’ll often find 

@@ -1,0 +1,39 @@
+up to August 2020 and therefore is unaware of any new words or
+new cultural associations that formed after that cutof f date. This can cause a
+problem for use cases that need more recent context or niche domain
+knowledge not available in the training data, which may necessitate training
+a custom model.
+In some instances it might make sense to train your own embedding model.
+For instance, you might do this if the text used has a domain-specific
+vocabulary where specific words have a meaning separate from the
+generally accepted meaning of the word. One example might be tracing thelanguage used by toxic groups on social media like Q-Anon, who evolve
+the language they use in posts to bypass moderation actions.
+Training your own embeddings can be done with tools like word2vec, a
+method to represent words in a vector space, enabling you to capture the
+semantic meanings of words. More advanced models may be used, like
+GloV e (Global Vectors for Word Representation), which is used by spaCy
+for its embeddings, which are trained on the Common Crawl dataset, an
+open source snapshot of the web. The library Gensim of fers a simple
+process for training your own custom embeddings using the open source
+algorithm  word2vec.
+Input:
+from gensim.models  import Word2Vec
+# Sample data: list of sentences, where each sentence
+# a list of words.
+# In a real-world scenario, you'd load and preprocess
+# own corpus.
+sentences  = [
+    ["the", "cake", "is", "a", "lie"],
+    ["if", "you", "hear", "a", "turret" , "sing", "you
+    "probably" , "too", "close"],
+    ["why", "search" , "for", "the", "end", "of", "a",
+    "rainbow" , "when", "the", "cake", "is", "a", "lie
+    # ...    ["there's" , "no", "cake", "in", "space," , "just",
+    "wheatley" ],
+    ["completing" , "tests", "for", "cake", "is", "the
+    "sweetest" , "lie"],
+    ["I", "swapped" , "the", "cake", "recipe" , "with",
+    "neurotoxin" , "formula," , "hope", "that's" , "fine
+] + [
+    ["the", "cake", "is", "a", "lie"],
+    ["the", "ca

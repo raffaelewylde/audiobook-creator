@@ -1,0 +1,42 @@
+s the prep_high_score()  method:
+scoreboard.py
+    def prep_high_score(self):
+        """Turn the high score into a rendered image.
+❶         high_score = round(self.stats.high_score, -1)
+        high_score_str = f"{high_score:,}"
+❷         self.high_score_image = self.font.render(high
+                self.text_color, self.settings.bg_col
+        # Center the high score at the top of the scr
+        self.high_score_rect = self.high_score_image.
+❸         self.high_score_rect.centerx = self.screen_re
+❹         self.high_score_rect.top = self.score_rect.to
+We round the high score to the nearest 10 and format it with commas ❶. We
+then generate an image from the high score ❷, center the high score rect
+horizontally ❸, and set its top  attribute to match the top of the score
+image ❹.
+The show_score()  method now draws the current score at the top right
+and the high score at the top center of the screen:
+scoreboard.py    def show_score(self):
+        """Draw score to the screen."""
+        self.screen.blit(self.score_image, self.score
+        self.screen.blit(self.high_score_image, self.
+To check for high scores, we’ll write a new method,
+check_high_score() , in Scoreboard :
+scoreboard.py
+    def check_high_score(self):
+        """Check to see if there's a new high score.
+        if self.stats.score > self.stats.high_score:
+            self.stats.high_score = self.stats.score
+            self.prep_high_score()
+The method check_high_score()  checks the current score against the
+high score. If the current score is greater , we update the value of
+high_score  and call prep_high_score()  to update the high score’ s
+image.
+We need to call check_high_score()  each time an alien is hit after
+updating the score in _check_bullet_alien_collisions() :alien_invasion.py
+    def _check_bullet_alien_collisions(self):
+        --snip--
+        if collisions:
+            for aliens in collisions.values():
+                self.stats.score += self.settings.ali
+            self.sb.prep_score(

@@ -1,0 +1,41 @@
+r project. Here’ s an example of an interactive shell
+session:
+(ll_env)learning_log$ python manage.py shell
+❶ >>> from learning_logs.models import Topic
+>>> Topic.objects.all()
+<QuerySet [<Topic: Chess>, <Topic: Rock Climbing>]>
+The command python manage.py shell , run in an active virtual
+environment, launches a Python interpreter that you can use to explore the
+data stored in your project’ s database. Here, we import the model Topic
+from the learning_logs.models  module ❶. We then use the method
+Topic.objects.all()  to get all instances of the model Topic ; the
+list that’ s returned is called a queryset .
+We can loop over a queryset just as we’d loop over a list. Here’ s how you
+can see the ID that’ s been assigned to each topic object:
+>>> topics = Topic.objects.all()
+>>> for topic in topics:
+...     print(topic.id, topic)
+...1 Chess
+2 Rock Climbing
+We assign the queryset to topics  and then print each topic’ s id attribute
+and the string representation of each topic. We can see that Chess  has an
+ID of 1 and Rock Climbing  has an ID of 2.
+If you know the ID of a particular object, you can use the method
+Topic.objects.get()  to retrieve that object and examine any attribute
+the object has. Let’ s look at the text  and date_added  values for
+Chess :
+>>> t = Topic.objects.get(id=1)
+>>> t.text
+'Chess'
+>>> t.date_added
+datetime.datetime(2022, 5, 20, 3, 33, 36, 928759,
+    tzinfo=datetime.timezone.utc)
+We can also look at the entries related to a certain topic. Earlier , we defined
+the topic  attribute for the Entry  model. This was a ForeignKey , a
+connection between each entry and a topic. Django can use this connection
+to get every entry related to a certain topic, like this:❶ >>> t.entry_set.all()
+<QuerySet [<Entry: The opening is the first part of t
+In the opening phase of the game, it's important t...
+To get data through a foreign key relationship, you use the lowercase name
+of the related model followed by an underscore and the word set  ❶. For
+example, say you

@@ -1,0 +1,34 @@
+atform.sh  and click the Free Trial
+button. Platform.sh has a free tier that, as of this writing, does not require a
+credit card. The trial period allows you to deploy an app with minimal
+resources, which lets you test your project in a live deployment before
+committing to a paid hosting plan.
+NOTE
+The specific limits of trial plans tend to change periodically , as
+hosting platforms fight spam and abuse of r esour ces. Y ou can see
+the curr ent limits of the fr ee trial at https://platform.sh/fr ee-trial .Installing the Platform.sh CLI
+To deploy and manage a project on Platform.sh, you’ll need the tools
+available in the Command Line Interface (CLI). To install the latest version
+of the CLI, visit https://docs.platform.sh/development/cli.html  and follow
+the instructions for your operating system.
+On most systems, you can install the CLI by running the following
+command in a terminal:
+$ curl -fsS https://platform.sh/cli/installer | php
+After this command has finished running, you will need to open a new
+terminal window before you can use the CLI.NOTE
+This command will pr obably not work in a standar d terminal on
+Windows. Y ou can use W indows Subsystem for Linux (WSL) or a Git
+Bash terminal. If you need to install PHP , you can use the XAMPP
+installer fr om https://apachefriends.or g. If you have any difficulty
+installing the Platform.sh CLI, see the mor e detailed installation
+instructions in Appendix E .
+Installing platformshconfig
+You’ll also need to install one additional package, platformshconfig .
+This package helps detect whether the project is running on your local
+system or on a Platform.sh server . In an active virtual environment, issue
+the following command:
+(ll_env)learning_log$ pip install platformshconfig
+We’ll use this package to modify the project’ s settings when it’ s running on
+the live server .Creating a r equir ements.txt File
+The remote server needs to know which packages Learning Log depends
+on, so we’ll use pip to generate a file listing the

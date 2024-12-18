@@ -1,0 +1,42 @@
+)
+            self.sb.check_high_score()
+        --snip--
+We call check_high_score()  when the collisions  dictionary is
+present, and we do so after updating the score for all the aliens that have
+been hit.
+The first time you play Alien Invasion , your score will be the high score, so
+it will be displayed as the current score and the high score. But when you
+start a second game, your high score should appear in the middle and your
+current score should appear at the right, as shown in Figure 14-4 .Figure 14-4 : The high scor e is shown at the top center of the scr een.
+Displaying the Level
+To display the player ’s level in the game, we first need an attribute in
+GameStats  representing the current level. To reset the level at the start of
+each new game, initialize it in reset_stats() :
+game_stats.py
+    def reset_stats(self):
+        """Initialize statistics that can change duri
+        self.ships_left = self.settings.ship_limit        self.score = 0
+        self.level = 1
+To have Scoreboard  display the current level, we call a new method,
+prep_level() , from __init__() :
+scoreboard.py
+    def __init__(self, ai_game):
+        --snip--
+        self.prep_high_score()
+        self.prep_level()
+Here’ s prep_level() :
+scoreboard.py
+    def prep_level(self):
+        """Turn the level into a rendered image."""
+        level_str = str(self.stats.level)
+❶         self.level_image = self.font.render(level_str
+                self.text_color, self.settings.bg_col
+        # Position the level below the score.
+        self.level_rect = self.level_image.get_rect()❷         self.level_rect.right = self.score_rect.right
+❸         self.level_rect.top = self.score_rect.bottom 
+The prep_level()  method creates an image from the value stored in
+stats.level  ❶ and sets the image’ s right  attribute to match the
+score’ s right  attribute ❷. It then sets the top  attribute 10 pixels beneath
+the bottom of the score image to leave space between the score and the
+level ❸.
+We also need to upd

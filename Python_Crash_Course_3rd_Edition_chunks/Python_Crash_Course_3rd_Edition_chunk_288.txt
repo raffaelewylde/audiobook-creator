@@ -1,0 +1,37 @@
+ msg):
+        """Initialize button attributes."""
+        self.screen = ai_game.screen
+        self.screen_rect = self.screen.get_rect()
+        # Set the dimensions and properties of the bu
+❷         self.width, self.height = 200, 50
+        self.button_color = (0, 135, 0)
+        self.text_color = (255, 255, 255)
+❸         self.font = pygame.font.SysFont(None, 48)
+        # Build the button's rect object and center i
+❹         self.rect = pygame.Rect(0, 0, self.width, sel
+        self.rect.center = self.screen_rect.center
+        # The button message needs to be prepped only
+❺         self._prep_msg(msg)
+First, we import the pygame.font  module, which lets Pygame render
+text to the screen. The __init__()  method takes the parameters self ,
+the ai_game  object, and msg , which contains the button’ s text ❶. We set
+the button dimensions ❷, set button_color  to color the button’ s rect
+object dark green, and set text_color  to render the text in white.
+Next, we prepare a font  attribute for rendering text ❸. The None
+argument tells Pygame to use the default font, and 48 specifies the size ofthe text. To center the button on the screen, we create a rect  for the
+button ❹ and set its center  attribute to match that of the screen.
+Pygame works with text by rendering the string you want to display as an
+image. Finally , we call _prep_msg()  to handle this rendering ❺.
+Here’ s the code for _prep_msg() :
+button.py
+    def _prep_msg(self, msg):
+        """Turn msg into a rendered image and center 
+❶         self.msg_image = self.font.render(msg, True, 
+                self.button_color)
+❷         self.msg_image_rect = self.msg_image.get_rect
+        self.msg_image_rect.center = self.rect.center
+The _prep_msg()  method needs a self  parameter and the text to be
+rendered as an image ( msg ). The call to font.render()  turns the text
+stored in msg  into an image, which we then store in self.msg_image
+❶. The font.render()  method also takes a Boolean value to turn
+antialiasing

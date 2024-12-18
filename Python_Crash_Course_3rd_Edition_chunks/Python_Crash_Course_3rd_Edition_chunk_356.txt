@@ -1,0 +1,45 @@
+mber of
+dictionaries, each of which contains data about an individual Python
+repository . We assign this list of dictionaries to repo_dicts  ❷. We then
+print the length of repo_dicts  to see how many repositories we have
+information for .
+To look closer at the information returned about each repository , we pull out
+the first item from repo_dicts  and assign it to repo_dict  ❸. We then
+print the number of keys in the dictionary to see how much information we
+have ❹. Finally , we print all the dictionary’ s keys to see what kind of
+information is included ❺.
+The results give us a clearer picture of the actual data:
+Status code: 200
+❶ Total repositories: 248
+❷ Complete results: True
+Repositories returned: 30❸ Keys: 78
+allow_forking
+archive_url
+archived
+--snip--
+url
+visiblity
+watchers
+watchers_count
+At the time of this writing, there are only 248  Python repositories with
+over 10,000 stars ❶. We can see that GitHub was able to fully process the
+API call ❷. In this response, GitHub returned information about the first
+30 repositories that match the conditions of our query . If we want more
+repositories, we can request additional pages of data.
+GitHub’ s API returns a lot of information about each repository: there are
+78 keys in repo_dict  ❸. When you look through these keys, you’ll get
+a sense of the kind of information you can extract about a project. (The only
+way to know what information is available through an API is to read the
+documentation or to examine the information through code, as we’re doing
+here.)
+Let’s pull out the values for some of the keys in repo_dict :python_r epos.py
+--snip--
+# Examine the first repository.
+repo_dict = repo_dicts[0]
+print("\nSelected information about first repository:
+❶ print(f"Name: {repo_dict['name']}")
+❷ print(f"Owner: {repo_dict['owner']['login']}")
+❸ print(f"Stars: {repo_dict['stargazers_count']}")
+print(f"Repository: {repo_dict['html_url']}")
+❹ print(f"Created: {repo_dict['created_at']}")
+❺ print(f"Updated: {repo_dict['updat

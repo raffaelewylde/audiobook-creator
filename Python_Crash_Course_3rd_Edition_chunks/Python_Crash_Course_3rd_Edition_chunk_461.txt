@@ -1,0 +1,32 @@
+ like
+interactive debuggers and code introspection. An IDE examines your code
+as you enter it and tries to learn about the project you’re building. For
+example, when you start typing the name of a function, an IDE might show
+you all the ar guments that function accepts. This behavior can be very
+helpful when everything works and you understand what you’re seeing. But
+it can also be overwhelming as a beginner and dif ficult to troubleshoot
+when you aren’ t sure why your code isn’ t working in the IDE.
+These days, the lines have blurred between text editors and IDEs. Most
+popular editors have some features that used to be exclusive to IDEs.Likewise, most IDEs can be configured to run in a lighter mode that’ s less
+distracting as you work, but lets you use the more advanced features when
+you need them.
+If you already have an editor or IDE installed that you like, and if it’ s
+already configured to work with a recent version of Python that’ s installed
+on your system, then I encourage you to stick with what you already know .
+Exploring dif ferent editors can be fun, but it’ s also a way to avoid the work
+of learning a new language.
+If you don’ t already have an editor or IDE installed, I recommend VS Code
+for a number of reasons:
+It’s free, and it’ s released under an open source license.
+It can be installed on all major operating systems.
+It’s beginner -friendly but also powerful enough that many professional
+programmers use it as their main editor .
+It finds the versions of Python you have installed, and it typically does
+not require any configuration to run your first programs.
+It has an integrated terminal, so your output appears in the same window
+as your code.
+A Python extension is available that makes the editor highly ef ficient for
+writing and maintaining Python code.
+It’s highly customizable, so you can tune it to match the way you work
+with code.In this appendix, you’ll learn how to start configuring VS Code so that it
+works well for you. You’ll also learn so

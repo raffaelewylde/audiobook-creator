@@ -1,0 +1,159 @@
+<= (less than or equal to), 75
+ 
+[] (list), 34
+ % (modulo), 116
+ 
++= (multiline strings), 115
+ 
+* (multiplication), 26
+ 
+\n (newline), 22
+ 
+>>>  (Python prompt), 4
+ 
+- (subtraction), 26
+ 
+\t (tab), 22
+ 
+_ (underscore)
+ 
+in file and folder names, 10
+ 
+in numbers, 28
+ 
+in variable names, 17 
+A
+ 
+aliases, 151–152, 178–179
+ 
+alice.py , 195–197
+ 
+Alien Invasion . See also  Pygame
+ 
+aliens, 256–274
+ 
+building fleet, 259–262
+ 
+checking edges, 265
+ 
+collisions, with bullets, 267
+ 
+collisions, with ship, 270–273
+ 
+controlling fleet direction, 264–266
+ creating an alien, 256–258
+ 
+dropping fleet, 265–266
+ 
+reaching bottom of screen, 273–274
+ 
+rebuilding fleet, 268–269
+ 
+bullets, 247–253, 266–270
+ 
+collisions, with aliens, 267
+ 
+deleting old, 250–251
+ 
+firing, 249–250
+ 
+larger, 268
+ 
+limiting number of, 251–252
+ 
+settings, 247 
+speeding up, 269
+ 
+classes
+ 
+Alien , 257
+ 
+AlienInvasion , 229
+ 
+Bullet , 247–248
+ 
+Button , 278–279
+ 
+GameStats , 271
+ 
+Scoreboard , 286–287
+ 
+Settings , 232
+ 
+Ship , 234–235
+ ending the game, 274–275
+ 
+initializing dynamic settings, 283–285
+ 
+levels
+ 
+modifying speed settings, 283–285
+ 
+resetting the speed, 285
+ 
+displaying, 294–296
+ 
+moving fleet, 263–266
+ 
+planning, 228
+ 
+Play button, 278–283
+ 
+Button  class, 278–279
+ 
+deactivating, 282 
+drawing, 279–280
+ 
+hiding mouse cursor , 282–283
+ 
+resetting game, 281–282
+ 
+starting game, 281
+ 
+reviewing the project, 256
+ 
+scoring, 286–298
+ 
+all hits, 290
+ 
+high score, 292–294
+ 
+increasing point values, 290–291
+ 
+level, 294–296
+ number of ships, 296–299
+ 
+resetting, 289–290
+ 
+rounding and formatting, 291–292
+ 
+score attribute, 286
+ 
+updating, 289
+ 
+settings, storing, 232–233
+ 
+ship, 233–244
+ 
+adjusting speed, 242–243
+ 
+continuous movement, 239–242
+ 
+finding an image, 233–234
+ 
+limiting range, 243–244 
+amusement_park.py , 80–82
+ 
+and  keyword, 75
+ 
+antialiasing, 279
+ 
+API. See application programming interface
+ 
+apostr ophe.py , 24–25
+ 
+append()  method, 37–38
+ 
+application programming interface (API), 355
+ 
+AP

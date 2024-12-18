@@ -1,0 +1,41 @@
+: 'albert',
+        'last': 'einstein',
+        'location': 'princeton',
+        },
+    'mcurie': {
+        'first': 'marie',
+        'last': 'curie',
+        'location': 'paris',
+        },    }
+❶ for username, user_info in users.items():
+❷     print(f"\nUsername: {username}")
+❸     full_name = f"{user_info['first']} {user_info['la
+    location = user_info['location']
+❹     print(f"\tFull name: {full_name.title()}")
+    print(f"\tLocation: {location.title()}")
+We first define a dictionary called users  with two keys: one each for the
+usernames 'aeinstein'  and 'mcurie' . The value associated with
+each key is a dictionary that includes each user ’s first name, last name, and
+location. Then, we loop through the users  dictionary ❶. Python assigns
+each key to the variable username , and the dictionary associated with
+each username is assigned to the variable user_info . Once inside the
+main dictionary loop, we print the username ❷.
+Then, we start accessing the inner dictionary ❸. The variable user_info ,
+which contains the dictionary of user information, has three keys:
+'first' , 'last' , and 'location' . We use each key to generate a
+neatly formatted full name and location for each person, and then print a
+summary of what we know about each user ❹:Username: aeinstein
+    Full name: Albert Einstein
+    Location: Princeton
+Username: mcurie
+    Full name: Marie Curie
+    Location: Paris
+Notice that the structure of each user ’s dictionary is identical. Although not
+required by Python, this structure makes nested dictionaries easier to work
+with. If each user ’s dictionary had dif ferent keys, the code inside the for
+loop would be more complicated.TRY IT YOURSELF
+6-7. People:  Start with the program you wrote for Exercise 6-1 ( page 98 ). Make two new
+dictionaries representing dif ferent people, and store all three dictionaries in a list called
+people . Loop through your list of people. As you loop through the list, print everything you
+know about each person.
+6-8. Pets:

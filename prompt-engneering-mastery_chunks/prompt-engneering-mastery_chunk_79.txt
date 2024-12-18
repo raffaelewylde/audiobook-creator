@@ -1,0 +1,50 @@
+and text
+preprocessing.
+Splitting by tokens using a tokenizer
+Utilizing a tokenizer is a crucial step in many natural language
+processing tasks, as it enables the process of splitting text into
+individual tokens. Tokenizers divide text into smaller units, such as
+words, phrases, or symbols, which can then be analyzed and
+processed by AI models more ef fectively . You’ll shortly be using a
+package called tiktoken , which is a bytes-pair encoding tokenizer
+(BPE) for chunking.
+Table 3-1  provides a high-level overview of the dif ferent chunking
+strategies; it’ s worth considering what matters to you most whenperforming chunking.
+Are you more interested in preserving semantic context, or would naively
+splitting by length suf fice?Table 3-1. Six chunking strategies highlighting their advantages and disadvantages
+Splitting strategy Advantages Disadvantages
+Splitting by
+sentencePreserves context,
+suitable for various tasksMay not be ef ficient for
+very long content
+Splitting by
+paragraphHandles longer content,
+focuses on cohesive unitsLess granularity , may
+miss subtle connections
+Splitting by topic Identifies main themes,
+better for classificationRequires topic
+identification, may
+miss fine details
+Splitting by
+complexityGroups similar
+complexity levels,
+adaptiveRequires complexity
+measurement, not
+suitable for all tasks
+Splitting by length Manages very long
+content, ef ficient
+processingLoss of context, may
+require more
+preprocessing steps
+Using a tokenizer:
+Splitting by tokensAccurate token counts,
+which helps in avoiding
+LLM prompt token limitsRequires tokenization,
+may increase
+computational
+complexityBy choosing the appropriate chunking strategy for your specific use case,
+you can optimize the performance and accuracy of AI language models.
+Sentence Detection Using SpaCy
+Sentence detection , also known as sentence boundary disambiguation, is the
+process used in NLP  that involves identifying the start and end of sentences
+within a given text. It can be particularly u

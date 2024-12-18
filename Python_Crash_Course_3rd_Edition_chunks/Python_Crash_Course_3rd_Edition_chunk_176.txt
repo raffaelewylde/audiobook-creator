@@ -1,0 +1,40 @@
+ access attributes directly like this, but other times
+you’ll want to write a method that updates the value for you.Modifying an Attribute’ s Value Through a Method
+It can be helpful to have methods that update certain attributes for you.
+Instead of accessing the attribute directly , you pass the new value to a
+method that handles the updating internally .
+Here’ s an example showing a method called update_odometer() :
+class Car:
+    --snip--
+    def update_odometer(self, mileage):
+        """Set the odometer reading to the given valu
+        self.odometer_reading = mileage
+my_new_car = Car('audi', 'a4', 2024)
+print(my_new_car.get_descriptive_name())
+❶ my_new_car.update_odometer(23)
+my_new_car.read_odometer()
+The only modification to Car  is the addition of update_odometer() .
+This method takes in a mileage value and assigns it to
+self.odometer_reading . Using the my_new_car  instance, we call
+update_odometer()  with 23 as an ar gument ❶. This sets the
+odometer reading to 23, and read_odometer()  prints the reading:2024 Audi A4
+This car has 23 miles on it.
+We can extend the method update_odometer()  to do additional work
+every time the odometer reading is modified. Let’ s add a little logic to make
+sure no one tries to roll back the odometer reading:
+class Car:
+    --snip--
+    def update_odometer(self, mileage):
+        """
+        Set the odometer reading to the given value.
+        Reject the change if it attempts to roll the 
+        """
+❶         if mileage >= self.odometer_reading:
+            self.odometer_reading = mileage
+        else:
+❷             print("You can't roll back an odometer!")
+Now update_odometer()  checks that the new reading makes sense
+before modifying the attribute. If the value provided for mileage  is
+greater than or equal to the existing mileage, self.odometer_reading ,
+you can update the odometer reading to the new mileage ❶. If the newmileage is less than the existing mileage, you’ll get a warning that you can’ t
+roll back an odometer 

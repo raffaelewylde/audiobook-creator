@@ -1,0 +1,33 @@
+rint(musician)
+The function build_person()  takes in a first and last name, and puts
+these values into a dictionary ❶. The value of first_name  is stored with
+the key 'first' , and the value of last_name  is stored with the key
+'last' . Then, the entire dictionary representing the person is returned ❷.The return value is printed ❸ with the original two pieces of textual
+information now stored in a dictionary:
+{'first': 'jimi', 'last': 'hendrix'}
+This function takes in simple textual information and puts it into a more
+meaningful data structure that lets you work with the information beyond
+just printing it. The strings 'jimi'  and 'hendrix'  are now labeled as a
+first name and last name. You can easily extend this function to accept
+optional values like a middle name, an age, an occupation, or any other
+information you want to store about a person. For example, the following
+change allows you to store a person’ s age as well:
+def build_person(first_name, last_name, age=None):
+    """Return a dictionary of information about a per
+    person = {'first': first_name, 'last': last_name}
+    if age:
+        person['age'] = age
+    return person
+musician = build_person('jimi', 'hendrix', age=27)
+print(musician)
+We add a new optional parameter age  to the function definition and assign
+the parameter the special value None , which is used when a variable hasno specific value assigned to it. You can think of None  as a placeholder
+value. In conditional tests, None  evaluates to False . If the function call
+includes a value for age , that value is stored in the dictionary . This
+function always stores a person’ s name, but it can also be modified to store
+any other information you want about a person.
+Using a Function with a while Loop
+You can use functions with all the Python structures you’ve learned about
+so far . For example, let’ s use the get_formatted_name()  function with
+a while  loop to greet users more formally . Here’ s a first attempt at
+greeting people using thei

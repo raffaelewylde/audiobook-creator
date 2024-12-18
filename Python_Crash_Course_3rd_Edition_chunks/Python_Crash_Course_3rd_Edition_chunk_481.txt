@@ -1,0 +1,43 @@
+atus
+fatal: Not a git repository (or any of the parent dir
+❹ git_practice$ git init
+Initialized empty Git repository in git_practice/.git
+❺ git_practice$ git status
+On branch main
+No commits yet
+Untracked files:
+  (use "git add <file>..." to include in what will be
+      .gitignore
+      hello_git.py
+nothing added to commit but untracked files present (❻ git_practice$ git add .
+git_practice$ git commit -m "Starting over."
+[main (root-commit) 14ed9db] Starting over.
+ 2 files changed, 5 insertions(+)
+ create mode 100644 .gitignore
+ create mode 100644 hello_git.py
+❼ git_practice$ git status
+On branch main
+nothing to commit, working tree clean
+git_practice$
+We first check the status and see that we have a clean working directory ❶.
+Then we use the command rm -rf .git/  to delete the .git directory
+(del .git  on Windows) ❷. When we check the status after deleting the
+.git folder , we’re told that this is not a Git repository ❸. All the information
+Git uses to track a repository is stored in the .git folder , so removing it
+deletes the entire repository .
+We’re then free to use git init  to start a fresh repository ❹. Checking
+the status shows that we’re back at the initial stage, awaiting the first
+commit ❺. We add the files and make the first commit ❻. Checking the
+status now shows us that we’re on the new main  branch with nothing to
+commit ❼.
+Using version control takes a bit of practice, but once you start using it,
+you’ll never want to work without it again.E
+TROUBLES HOOTING DEPLOYMENTS
+Deploying an app is tremendously satisfying when it works,
+especially if you’ve never done it before. However , there are
+many obstacles that can arise in the deployment process, and
+unfortunately , some of these issues can be dif ficult to
+identify and address. This appendix will help you understand
+modern approaches to deployment and give you specific
+ways to troubleshoot the deployment process when things aren’ t working.
+If the additional information in this appendix isn’ t enou

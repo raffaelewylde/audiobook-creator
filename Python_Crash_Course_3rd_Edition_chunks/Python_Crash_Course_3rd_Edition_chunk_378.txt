@@ -1,0 +1,36 @@
+rough the Topic  model.
+Setting Up a Superuser
+Django allows you to create a superuser , a user who has all privileges
+available on the site. A user ’s privileges  control the actions they can take.
+The most restrictive privilege settings allow a user to only read public
+information on the site. Registered users typically have the privilege of
+reading their own private data and some selected information available only
+to members. To effectively administer a project, the site owner usually
+needs access to all information stored on the site. A good administrator is
+careful with their users’  sensitive information, because users put a lot of
+trust into the apps they access.
+To create a superuser in Django, enter the following command and respond
+to the prompts:
+(ll_env)learning_log$ python manage.py createsuperuse
+❶ Username (leave blank to use 'eric'): ll_admin
+❷ Email address:
+❸ Password:Password (again):
+Superuser created successfully.
+(ll_env)learning_log$
+When you issue the command createsuperuser , Django prompts you
+to enter a username for the superuser ❶. Here I’m using ll_admin , but
+you can enter any username you want. You can enter an email address or
+just leave this field blank ❷. You’ll need to enter your password twice ❸.
+NOTE
+Some sensitive information can be hidden fr om a site’ s
+administrators. For example, Django doesn’ t stor e the passwor d you
+enter; instead, it stor es a string derived fr om the passwor d, called a
+hash . Each time you enter your passwor d, Django hashes your entry
+and compar es it to the stor ed hash. If the two hashes match, you’r e
+authenticated. By r equiring hashes to match, Django ensur es that if
+an attacker gains access to a site’ s database, they’ll be able to r ead
+the stor ed hashes but not the passwor ds. When a site is set up
+properly , it’s almost impossible to get the original passwor ds from
+the hashes.Registering a Model with the Admin Site
+Django includes some models in the admin site automatically , such as
+Use

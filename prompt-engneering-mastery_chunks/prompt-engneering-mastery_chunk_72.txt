@@ -1,0 +1,51 @@
+content to new formats or styles while preserving the core message
+and tone.
+The process of text style unbundling involves identifying the desir ed textual
+featur es or creating a meta prompt (a prompt to create prompts) to extract
+these features and then using the extracted features to guide the generation
+of new content.Identifying the Desired Textual Features
+To successfully unbundle a text style, you must first identify the specific
+features you want to extract from the input document. Common textual
+features to consider include:
+Tone of voice
+The overall mood or attitude conveyed by the text, such as formal,
+casual, humorous, or authoritative
+Length
+The desired word count or general length of the content
+Vocabulary and phrasing
+The choice of words and expressions, including industry-specific
+jargon, colloquialisms, and complexity
+Additionally , you can even create a meta prompt that will dynamically
+show you these.
+Input:
+Analyze the following text and identify core features
+further documents to imitate the same style, consiste
+as the document below.Provide all of the features as a style writing guide 
+for future documents.
+Analyze the following text:
+Artificial intelligence is rapidly transforming the w
+opening up new possibilities and revolutionizing indu
+health care to entertainment, AI is making our lives 
+convenient in countless ways. However, with great pow
+responsibility. We must ensure that AI technologies a
+deployed ethically and responsibly to protect our pri
+values.
+Output:
+Style Writing Guide:
+Tone of Voice
+- Maintain an informative and optimistic tone through
+- Emphasize the positive impact of the subject matter
+any potential concerns or responsibilities.
+Length:
+...
+Vocabulary:...
+Structure:
+...
+Content:
+- Focus on the transformative nature and positive imp
+matter.
+- Highlight specific industries or areas where the su
+made a difference.
+- Acknowledge any associated responsibilities or pote
+emphasizing the need for ethical and responsible prac
+Stre

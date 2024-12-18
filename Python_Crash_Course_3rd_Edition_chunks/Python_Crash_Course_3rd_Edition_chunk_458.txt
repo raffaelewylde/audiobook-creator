@@ -1,0 +1,33 @@
+
+If you choose to install the command line developer tools at this point,
+macOS will install Apple’ s version of Python along with the developer
+tools. The only issue with this is that Apple’ s version of Python is usually
+somewhat behind the latest of ficial version of Python. However , you can
+still download and run the of ficial installer from https://python.or g, andpython3  will then point to the newer version. Don’ t worry about having
+the developer tools installed; there are some useful tools in there, including
+the Git version control system discussed in Appendix D .
+Python 2 on Older  Versions of macOS
+On older versions of macOS, before Monterey (macOS 12), an outdated
+version of Python 2 was installed by default. On these systems, the
+command python  points to the outdated system interpreter . If you’re
+using a version of macOS with Python 2 installed, make sure you use the
+python3  command, and you’ll always be using the version of Python you
+installed.
+Python on Linux
+Python is included by default on almost every Linux system. However , if
+the default version on your system is earlier than Python 3.9, you should
+install the latest version. You can also install the latest version if you want
+the most recent features, like Python’ s improved error messages. The
+following instructions should work for most apt-based systems.
+Using the Default Python Installation
+If you want to use the version of Python that python3  points to, make
+sure you have these three additional packages installed:$ sudo apt install python3-dev python3-pip python3-ve
+These packages include tools that are useful for developers and tools that let
+you install third-party packages, like the ones used in the projects section of
+this book.
+Installing the Latest Version of Python
+We’ll use a package called deadsnakes , which makes it easy to install
+multiple versions of Python. Enter the following commands:
+$ sudo add-apt-repository ppa:deadsnakes/ppa
+$ sudo apt update
+$ sudo apt install pyth

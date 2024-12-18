@@ -1,0 +1,38 @@
+al other than a dog, you could use a function call like
+this:
+describe_pet(pet_name='harry', animal_type='hamster')
+Because an explicit ar gument for animal_type  is provided, Python will
+ignore the parameter ’s default value.NOTE
+When you use default values, any parameter with a default value
+needs to be listed after all the parameters that don’ t have default
+values. This allows Python to continue interpr eting positional
+arguments corr ectly.
+Equivalent Function Calls
+Because positional ar guments, keyword ar guments, and default values can
+all be used together , you’ll often have several equivalent ways to call a
+function. Consider the following definition for describe_pet()  with
+one default value provided:
+def describe_pet(pet_name, animal_type='dog'):
+With this definition, an ar gument always needs to be provided for
+pet_name , and this value can be provided using the positional or keyword
+format. If the animal being described is not a dog, an ar gument for
+animal_type  must be included in the call, and this ar gument can also be
+specified using the positional or keyword format.All of the following calls would work for this function:
+# A dog named Willie.
+describe_pet('willie')
+describe_pet(pet_name='willie')
+# A hamster named Harry.
+describe_pet('harry', 'hamster')
+describe_pet(pet_name='harry', animal_type='hamster')
+describe_pet(animal_type='hamster', pet_name='harry')
+Each of these function calls would have the same output as the previous
+examples.
+It doesn’ t really matter which calling style you use. As long as your
+function calls produce the output you want, just use the style you find
+easiest to understand.
+Avoiding Argument Err ors
+When you start to use functions, don’ t be surprised if you encounter errors
+about unmatched ar guments. Unmatched ar guments occur when you
+provide fewer or more ar guments than a function needs to do its work. For
+example, here’ s what happens if we try to call describe_pet()  with no
+arguments:def describe_pet(animal_ty

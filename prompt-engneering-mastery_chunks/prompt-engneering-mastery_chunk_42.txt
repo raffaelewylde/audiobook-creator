@@ -1,0 +1,31 @@
+ LLMs recognize and generate words or phrases, even
+if they weren’ t common in the training data, making the models more
+adaptable and versatile.
+Understanding the workings of LLMs requires a grasp of the underlying
+mathematical principles that power these systems. Although thecomputations can be complex, we can simplify the core elements to provide
+an intuitive understanding of how these models operate. Particularly within
+a business context, the accuracy and reliability of LLMs are paramount.
+A significant part of achieving this reliability lies in the pretraining and
+fine-tuning phases of LLM development. Initially , models are trained on
+vast datasets during the pretraining phase, acquiring a broad understanding
+of language. Subsequently , in the fine-tuning phase, models are adapted for
+specific tasks, honing their capabilities to provide accurate and reliable
+outputs for specialized applications.
+Vector Representations: The Numerical Essence of
+Language
+In the realm of NLP , words aren’ t just alphabetic symbols. They can be
+tokenized and then represented in a numerical form, known as vectors .
+These vectors are multi-dimensional arrays of numbers that capture the
+semantic and syntactic relations:
+w→v=[v1,v2,...,vn]
+Creating word vectors, also known as word embeddings , relies on intricate
+patterns within language. During an intensive training phase, models are
+designed to identify and learn these patterns, ensuring that words with
+similar meanings are mapped close to one another in a high-dimensional
+space ( Figure 2-1 ).Figure 2-1. Semantic proximity of word vectors within a word embedding space
+The beauty of this approach is its ability to capture nuanced relationships
+between words and calculate their distance. When we examine word
+embeddings, it becomes evident that words with similar or related meanings
+like virtue  and moral  or walked  and walking  are situated near each other .
+This spatial closeness in the embedding space becomes a powerful tool in
+v

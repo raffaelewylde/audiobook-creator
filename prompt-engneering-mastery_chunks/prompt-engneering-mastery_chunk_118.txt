@@ -1,0 +1,39 @@
+BusinessName (name='DataWiz' , rating_score =8.5)
+BusinessName (name='InsightIQ' ,rating_score =9.2), BusinessName (name='AnalytiQ' , rati
+BusinessName (name='SciData' , rating_score =8.1),
+BusinessName (name='InfoMax' , rating_score =9.5)]
+After you’ve loaded the necessary libraries, you’ll set up a ChatOpenAI
+model. Then create SystemMessagePromptTemplate  from your
+template and form a ChatPromptTemplate  with it. You’ll use the
+Pydantic models BusinessName  and BusinessNames  to structure your
+desired output, a list of unique business names. You’ll create a Pydantic
+parser for parsing these models and format the prompt using user -inputted
+variables by calling the invoke  function. Feeding this customized prompt
+to your model, you’re enabling it to produce creative, unique business
+names by using the parser .
+It’s possible to use output parsers inside of LCEL  by using this syntax:
+chain = prompt | model | output_parser
+Let’s add the output parser directly to the chain.
+Input:
+parser = PydanticOutputParser (pydantic_object =Busines
+chain = chat_prompt  | model | parserresult = chain.invoke(
+    {
+        "principles" : principles ,
+        "industry" : "Data Science" ,
+        "format_instructions" : parser.get_format_inst
+    }
+)
+print(result)
+Output:
+names=[BusinessName(name='DataTech', rating_score=9.5
+The chain is now responsible for prompt formatting, LLM calling, and
+parsing the LLM’ s response into a Pydantic  object.
+SPECIFY FORMAT
+The preceding prompts use Pydantic models and output parsers, allowing you explicitly tell an LLM
+your desired response format.
+It’s worth knowing that by asking an LLM to provide structured JSON
+output, you can create a flexible and generalizable API from the LLM’ s
+response. There are limitations to this, such as the size of the JSON createdand the reliability of your prompts, but it still is a promising area for LLM
+applications.
+WARNING
+You should take care of edge cases as well as adding error handling statements, since LL

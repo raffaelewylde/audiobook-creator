@@ -1,0 +1,32 @@
+he top of the page, then enter your email
+address to get an invitation.
+Once you’re in the Python Developers workspace, you’ll see a list of
+channels. Click Channels  and then choose the topics that interest you. You
+might want to start with the #help  and #django  channels.D
+USING GIT FOR VERSION CONTROL
+Version control software allows you to take snapshots of a
+project whenever it’ s in a working state. When you make
+changes to a project—for example, when you implement a
+new feature—you can go back to a previous working state if
+the project’ s current state isn’ t functioning well.
+Using version control software gives you the freedom to work on
+improvements and make mistakes without worrying about ruining your
+project. This is especially critical in lar ge projects, but can also be helpful in
+smaller projects, even when you’re working on programs contained in a
+single file.
+In this appendix, you’ll learn to install Git and use it for version control in
+the programs you’re working on now . Git is the most popular version
+control software in use today . Many of its advanced tools help teams
+collaborate on lar ge projects, but its most basic features also work well for
+solo developers. Git implements version control by tracking the changes
+made to every file in a project; if you make a mistake, you can just return to
+a previously saved state.Installing Git
+Git runs on all operating systems, but there are dif ferent approaches to
+installing it on each system. The following sections provide specific
+instructions for each operating system.
+Git is included on some systems by default, and is often bundled with other
+packages that you might have already installed. Before trying to install Git,
+see if it’ s already on your system. Open a new terminal window and issue
+the command git --version . If you see output listing a specific
+version number , Git is installed on your system. If you see a message
+prompting you to install or update Git, follow the onscreen instructions.

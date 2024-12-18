@@ -1,0 +1,42 @@
+ the hierarchical structure below:
+Article Title: What are the benefits of digital marke
+* Introduction
+    a. Explanation of digital marketing
+    b. Importance of digital marketing in today's bus
+* Increased Brand Awareness
+    a. Definition of brand awareness
+    b. How digital marketing helps in increasing bran
+Output:
+Article Title: What are the benefits of data engineer
+* Introduction
+    a. Explanation of data engineering
+    b. Importance of data engineering in today’s data
+...(10 sections later)...
+* Conclusion    a. Importance of data engineering in the modern b
+    b. Future of data engineering and its impact on t
+To generate an ef fective article outline in the preceding output, you’ve
+included two key phrases:
+Hierar chical
+To suggest that the article outline needs to produce a nested structure.
+Incredibly detailed
+To guide the language model towards producing a lar ger output.
+Other words that you could include that have the same ef fect would
+be very long  or by specifying a lar ge number of subheadings, include
+at least 10 top-level headings .
+NOTE
+Asking a language model for a fixed number of items doesn’ t guarantee the language model will
+produce the same length. For example, if you ask for 10 headings, you might receive only 8.
+Therefore, your code should either validate that 10 headings exist or be flexible to handle varying
+lengths from the LLM.
+So you’ve successfully produced a hierarchical article outline, but how
+could you parse the string into structured data?Let’s explore Example 3-1  using Python, where you’ve previously made a
+successful API call against OpenAI’ s GPT -4. Two regular expressions are
+used to extract the headings and subheadings from openai_result . The
+re module in Python is used for working with regular expressions.
+Example 3-1. Parsing a hierar chical list
+import re
+# openai_result = generate_article_outline(prompt)
+# Commented out to focus on a fake LLM response, see 
+openai_result  = '''
+* Introduction
+    a. Explanat

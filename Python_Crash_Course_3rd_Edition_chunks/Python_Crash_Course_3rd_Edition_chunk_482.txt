@@ -1,0 +1,32 @@
+gh to help you get
+through the deployment process successfully , see the online resources at htt
+ps://ehmatthes.github.io/pcc_3e ; the updates there will almost certainly help
+you carry out a successful deployment.
+Understanding Deployments
+When you’re trying to troubleshoot a particular deployment attempt, it’ s
+helpful to have a clear understanding of how a typical deployment works.
+Deployment  refers to the process of taking a project that works on your
+local system, and copying that project to a remote server in a way that
+allows it to respond to requests from any user on the internet. The remote
+environment dif fers from a typical local system in a number of importantways: it’ s probably not the same operating system (OS) as the one you’re
+using, and it’ s most likely one of many virtual servers on a single physical
+server .
+When you deploy a project, or push  it to the remote server , the following
+steps need to be taken:
+Create a virtual server on a physical machine at a datacenter .
+Establish a connection between the local system and the remote server .
+Copy the project’ s code to the remote server .
+Identify all of the project’ s dependencies and install them on the remote
+server .
+Set up a database and run any existing migrations.
+Copy static files (CSS, JavaScript files, and media files) to a place where
+they can be served ef ficiently .
+Start a server to handle incoming requests.
+Start routing incoming requests to the project, once it’ s ready to handle
+requests.
+When you consider all that goes into a deployment, it’ s no wonder
+deployments often fail. Fortunately , once you gain an understanding of
+what should be happening, you’ll stand a better chance of identifying what
+went wrong. If you can identify what went wrong, you might be able to
+identify a fix that will make the next deployment attempt successful.You can develop locally on one kind of OS and push to a server running a
+different OS. It’ s important to know what kind of system you’re pushing t

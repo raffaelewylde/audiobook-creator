@@ -1,0 +1,43 @@
+the resulting
+graph.Figure 15-2 : The chart is much easier to r ead now .
+Corr ecting the Plot
+Now that we can read the chart better , we can see that the data is not plotted
+correctly . Notice at the end of the graph that the square of 4.0 is shown as
+25! Let’ s fix that.
+When you give plot()  a single sequence of numbers, it assumes the first
+data point corresponds to an x-value of 0, but our first point corresponds to
+an x-value of 1. We can override the default behavior by giving plot()
+both the input and output values used to calculate the squares:
+mpl_squar es.pyimport matplotlib.pyplot as plt
+input_values = [1, 2, 3, 4, 5]
+squares = [1, 4, 9, 16, 25]
+fig, ax = plt.subplots()
+ax.plot(input_values, squares, linewidth=3)
+# Set chart title and label axes.
+--snip--
+Now plot()  doesn’ t have to make any assumptions about how the output
+numbers were generated. The resulting plot, shown in Figure 15-3 , is
+correct.Figure 15-3 : The data is now plotted corr ectly.
+You can specify a number of ar guments when calling plot()  and use a
+number of methods to customize your plots after generating them. We’ll
+continue to explore these approaches to customization as we work with
+more interesting datasets throughout this chapter .
+Using Built-in Styles
+Matplotlib has a number of predefined styles available. These styles contain
+a variety of default settings for background colors, gridlines, line widths,
+fonts, font sizes, and more. They can make your visualizations appealing
+without requiring much customization. To see the full list of available
+styles, run the following lines in a terminal session:>>> import matplotlib.pyplot as plt
+>>> plt.style.available
+['Solarize_Light2', '_classic_test_patch', '_mpl-gall
+--snip--
+To use any of these styles, add one line of code before calling
+subplots() :
+mpl_squar es.py
+import matplotlib.pyplot as plt
+input_values = [1, 2, 3, 4, 5]
+squares = [1, 4, 9, 16, 25]
+plt.style.use('seaborn-v0_8')
+fig, ax = plt.subplots()
+--snip--
+This code gene

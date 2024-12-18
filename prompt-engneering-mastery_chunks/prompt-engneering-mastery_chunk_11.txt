@@ -1,0 +1,29 @@
+ way to define which names are
+good or bad, so you have to manually review each response. If you
+can institute a rating system or other form of measurement, you canoptimize the prompt to get better results and identify how many
+times it fails.
+No task division
+You’re asking a lot of a single prompt here: there are lots of factors
+that go into product naming, and this important task is being naively
+outsourced to the AI all in one go, with no task specialization or
+visibility into how it’ s handling this task for you.
+Addressing these problems is the basis for the core principles we use
+throughout this book. There are many different ways to ask an AI model to
+do the same task, and even slight changes can make a big dif ference. LLMs
+work by continuously predicting the next token (approximately three-
+fourths of a word), starting from what was in your prompt. Each new token
+is selected based on its probability of appearing next, with an element of
+randomness (controlled by the temperatur e parameter). As demonstrated in
+Figure 1-1 , the word shoes  had a lower probability of coming after the start
+of the name AnyFit  (0.88%), where a more predictable response would be
+Athletic  (72.35%).Figure 1-1. How the response breaks down into tokens
+LLMs are trained on essentially the entire text of the internet, and are then
+further fine-tuned to give helpful responses. Average prompts will return
+average responses, leading some to be underwhelmed when their results
+don’t live up to the hype. What you put in your prompt changes the
+probability of every word generated, so it matters a great deal to the results
+you’ll get. These models have seen the best and worst of what humans have
+produced and are capable of emulating almost anything if you know the
+right way to ask. OpenAI char ges based on the number of tokens used  in theprompt and the response, so prompt engineers need to make these tokens
+count by optimizing prompts for cost, quality , and reliability .
+Here’ s the same e

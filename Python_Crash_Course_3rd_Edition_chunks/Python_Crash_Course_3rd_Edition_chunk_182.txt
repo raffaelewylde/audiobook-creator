@@ -1,0 +1,39 @@
+d fill_gas_tank()  in Car  and run this
+code instead. When you use inheritance, you can make your child classes
+retain what you need and override anything you don’ t need from the parent
+class.
+Instances as Attributes
+When modeling something from the real world in code, you may find that
+you’re adding more and more detail to a class. You’ll find that you have a
+growing list of attributes and methods and that your files are becoming
+lengthy . In these situations, you might recognize that part of one class can
+be written as a separate class. You can break your lar ge class into smaller
+classes that work together; this approach is called composition .For example, if we continue adding detail to the ElectricCar  class, we
+might notice that we’re adding many attributes and methods specific to the
+car’s battery . When we see this happening, we can stop and move those
+attributes and methods to a separate class called Battery . Then we can
+use a Battery  instance as an attribute in the ElectricCar  class:
+class Car:
+    --snip--
+class Battery:
+    """A simple attempt to model a battery for an ele
+❶     def __init__(self, battery_size=40):
+        """Initialize the battery's attributes."""
+        self.battery_size = battery_size
+❷     def describe_battery(self):
+        """Print a statement describing the battery s
+        print(f"This car has a {self.battery_size}-kW
+class ElectricCar(Car):
+    """Represent aspects of a car, specific to electr
+    def __init__(self, make, model, year):
+        """
+        Initialize attributes of the parent class.        Then initialize attributes specific to an ele
+        """
+        super().__init__(make, model, year)
+❸         self.battery = Battery()
+my_leaf = ElectricCar('nissan', 'leaf', 2024)
+print(my_leaf.get_descriptive_name())
+my_leaf.battery.describe_battery()
+We define a new class called Battery  that doesn’ t inherit from any other
+class. The __init__()  method ❶ has one parameter , battery_size ,
+in addition to self . This i

@@ -1,0 +1,39 @@
+ and allows you to test for one specific condition.
+However , sometimes it’ s important to check all conditions of interest. In
+this case, you should use a series of simple if statements with no elif
+or else  blocks. This technique makes sense when more than one
+condition could be True , and you want to act on every condition that is
+True .
+Let’s reconsider the pizzeria example. If someone requests a two-topping
+pizza, you’ll need to be sure to include both toppings on their pizza:
+toppings.py
+requested_toppings = ['mushrooms', 'extra cheese']
+if 'mushrooms' in requested_toppings:
+    print("Adding mushrooms.")
+❶ if 'pepperoni' in requested_toppings:
+    print("Adding pepperoni.")
+if 'extra cheese' in requested_toppings:
+    print("Adding extra cheese.")print("\nFinished making your pizza!")
+We start with a list containing the requested toppings. The first if
+statement checks to see whether the person requested mushrooms on their
+pizza. If so, a message is printed confirming that topping. The test for
+pepperoni ❶ is another simple if statement, not an elif  or else
+statement, so this test is run regardless of whether the previous test passed
+or not. The last if statement checks whether extra cheese was requested,
+regardless of the results from the first two tests. These three independent
+tests are executed every time this program is run.
+Because every condition in this example is evaluated, both mushrooms and
+extra cheese are added to the pizza:
+Adding mushrooms.
+Adding extra cheese.
+Finished making your pizza!
+This code would not work properly if we used an if-elif -else  block,
+because the code would stop running after only one test passes. Here’ s what
+that would look like:requested_toppings = ['mushrooms', 'extra cheese']
+if 'mushrooms' in requested_toppings:
+    print("Adding mushrooms.")
+elif 'pepperoni' in requested_toppings:
+    print("Adding pepperoni.")
+elif 'extra cheese' in requested_toppings:
+    print("Adding extra cheese.")
+print("\nFinished making yo

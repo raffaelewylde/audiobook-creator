@@ -1,0 +1,35 @@
+l be to match your
+examples. If you change all of the examples to animal names in the
+previous prompt, you’ll have a strong ef fect on the response, which will
+reliably return only names including animals.
+Input:
+Brainstorm a list of product names for a shoe that fi
+foot size.
+Return the results as a comma-separated list, in this
+Product description: A shoe that fits any foot size
+Product names: [list of 3 product names]
+## Examples:
+Product description: A home milkshake maker.
+Product names: Fast Panda, Healthy Bear, Compact Koal
+Product description: A watch that can tell accurate t
+space.Product names: AstroLamb, Space Bear, Eagle Orbit
+Product description: A refrigerator that dispenses be
+Product names: BearFridge, Cool Cat, PenguinBox
+Output:
+Product description: A shoe that fits any foot size
+Product names: FlexiFox, ChameleonStep, PandaPaws
+Of course this runs the risk of missing out on returning a much better name
+that doesn’ t fit the limited space left for the AI to play in. Lack of diversity
+and variation in examples is also a problem in handling edge cases, or
+uncommon scenarios. Including one to three examples is easy and almost
+always has a positive ef fect, but above that number it becomes essential to
+experiment with the number of examples you include, as well as the
+similarity between them. There is some evidence ( Hsieh et al., 2023 ) that
+direction works better than providing examples, and it typically isn’ t
+straightforward to collect good examples, so it’ s usually prudent to attempt
+the principle of Give Direction first.
+In the image generation space, providing examples usually comes in the
+form of providing a base image in the prompt, called img2img  in the open
+source Stable Dif fusion  community . Depending on the image generationmodel being used, these images can be used as a starting point for the
+model to generate from, which greatly af fects the results. You can keep
+everything about the prompt the same but swap out the provided base imag

@@ -1,0 +1,45 @@
+ valid JSON.
+There are several points that are worth adding to your prompts to improve
+JSON parsing:
+You must follow the following principles:
+* Only return valid JSON* Never include backtick symbols such as: `
+* The response will be parsed with json.loads(), ther
+Now let’ s examine how you can parse a JSON output with Python :
+import json
+# openai_json_result = generate_article_outline(promp
+openai_json_result  = """
+{
+    "Introduction": [
+        "a. Overview of coding and programming langua
+        "b. Importance of coding in today's technolog
+    "Conclusion": [
+        "a. Recap of the benefits of learning code",
+        "b. The ongoing importance of coding skills i
+}
+"""
+parsed_json_payload  = json.loads(openai_json_result )
+print(parsed_json_payload )
+'''{'Introduction': ['a. Overview of coding and progr
+"b. Importance of coding in today's technology-driven
+'Conclusion': ['a. Recap of the benefits of learning 
+'b. The ongoing importance of coding skills in the moWell done, you’ve successfully parsed some JSON.
+As showcased, structuring data from an LLM response is streamlined when
+requesting  the response in valid JSON format. Compared to the previously
+demonstrated regular expression parsing, this method is less cumbersome
+and more straightforward.
+So what could go wrong?
+The language model accidentally adds extra text to the response such as
+json output:  and your application logic only handles for valid
+JSON.
+The JSON produced isn’ t valid and fails upon parsing (either due to the
+size or simply for not escaping certain characters).
+Later on you will examine strategies to gracefully handle for such edge
+cases.
+YAML
+.yml files are a structured data format that of fer dif ferent benefits over .json :
+No need to escape characters
+YAML ’s indentation pattern eliminates the need for braces, brackets,
+and commas to denote structure. This can lead to cleaner and lesserror -prone files, as there’ s less risk of mismatched or misplaced
+punctuation.
+Readability
+YAM

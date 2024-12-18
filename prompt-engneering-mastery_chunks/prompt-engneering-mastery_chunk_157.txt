@@ -1,0 +1,39 @@
+inted to the console for you to see.
+This script takes a collection of scenes, consolidates the text, chunks it up,
+summarizes it, and then prints the summary:
+from langchain.text_splitter  import CharacterTextSpli
+from langchain.chains.summarize  import load_summarize
+import pandas as pd
+df = pd.DataFrame (generated_scenes )
+all_character_script_text  = "\n".join(df.character_sc
+text_splitter  = CharacterTextSplitter .from_tiktoken_e
+    chunk_size =1500, chunk_overlap =200
+)
+docs = text_splitter .create_documents ([all_character_
+chain = load_summarize_chain (llm=model, chain_type ="msummary = chain.invoke(docs)
+print(summary['output_text' ])
+Output:
+Aurora and Magnus agree to retrieve a hidden artifact
+ancient library to find a book that will guide them t
+It’s worth noting that even though you’ve used a map_reduce  chain,
+there are four core chains for working with Document  objects within
+LangChain.
+Stuff
+The document insertion chain, also referred to as the stuff chain (drawing
+from the concept of stuffing  or filling ), is the simplest approach among
+various document chaining strategies. Figure 4-5  illustrates the process of
+integrating multiple documents into a single LLM request.
+Figure 4-5. Stuff documents chainRefine
+The refine documents chain ( Figure 4-6 ) creates an LLM response through
+a cyclical process that iteratively updates its output . During each loop, it
+combines the current output (derived from the LLM) with the current
+document. Another LLM request is made to update the curr ent output . This
+process continues until all documents have been processed.
+Figure 4-6. Refine documents chain
+Map Reduce
+The map reduce documents chain in Figure 4-7  starts with an LLM chain to
+each separate document (a process known as the Map step), interpreting the
+resulting output as a newly generated document.
+Subsequently , all these newly created documents are introduced to a distinct
+combine documents chain to formulate a singular output (a process referred
+to

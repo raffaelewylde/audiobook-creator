@@ -1,0 +1,29 @@
+arious NLP  tasks, enabling models to understand context, semantics, and
+the intricate web of relationships that form language.
+Transformer Architecture: Orchestrating
+Contextual Relationships
+Before we go deep into the mechanics of transformer architectures, let’ s
+build a foundational understanding. In simple terms, when we have a
+sentence, say , The cat sat on the mat , each word in this sentence getsconverted into its numerical vector representation. So, cat might become a
+series of numbers, as does sat, on, and mat.
+As you’ll explore in detail later in this chapter , the transformer architecture
+takes these word vectors and understands their relationships—both in
+structure (syntax) and meaning (semantics). There are many types of
+transformers; Figure 2-2  showcases both BER T and GPT’ s architecture.
+Additionally , a transformer doesn’ t just see words in isolation; it looks at
+cat and knows it’ s related to sat and mat in a specific way in this sentence.Figure 2-2. BER T uses an encoder for input data, while GPT  has a decoder for outputWhen the transformer processes these vectors, it uses mathematical
+operations to understand the relationships between the words, thereby
+producing new vectors with rich, contextual information:
+v′
+i=Transformer(v1,v2,...,vm)
+One of the remarkable features of transformers is their ability to
+comprehend the nuanced contextual meanings of words. The self-attention
+mechanism in transformers lets each word in a sentence look at all other
+words to understand its context better . Think of it like each word casting
+votes on the importance of other words for its meaning. By considering the
+entire sentence, transformers can more accurately determine the role and
+meaning of each word, making their interpr etations mor e contextually rich.
+Probabilistic Text Generation: The Decision
+Mechanism
+After the transformer understands the context of the given text, it moves on
+to generating new text, guided by the concept of likelihood or probabili

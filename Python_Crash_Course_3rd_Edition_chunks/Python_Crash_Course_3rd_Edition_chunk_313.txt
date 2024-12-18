@@ -1,0 +1,40 @@
+ each number . When these lists are passed to
+scatter() , Matplotlib reads one value from each list as it plots each
+point. The points to be plotted are (1, 1), (2, 4), (3, 9), (4, 16), and (5, 25); F
+igure 15-6  shows the result.Figure 15-6 : A scatter plot with multiple points
+Calculating Data Automatically
+Writing lists by hand can be inef ficient, especially when we have many
+points. Rather than writing out each value, let’ s use a loop to do the
+calculations for us.
+Here’ s how this would look with 1,000 points:
+scatter_squar es.py
+import matplotlib.pyplot as plt
+❶ x_values = range(1, 1001)y_values = [x**2 for x in x_values]
+plt.style.use('seaborn-v0_8')
+fig, ax = plt.subplots()
+❷ ax.scatter(x_values, y_values, s=10)
+# Set chart title and label axes.
+--snip--
+# Set the range for each axis.
+❸ ax.axis([0, 1100, 0, 1_100_000])
+plt.show()
+We start with a range of x-values containing the numbers 1 through 1,000
+❶. Next, a list comprehension generates the y-values by looping through the
+x-values (for x in x_values ), squaring each number ( x**2 ), and
+assigning the results to y_values . We then pass the input and output lists
+to scatter()  ❷. Because this is a lar ge dataset, we use a smaller point
+size.
+Before showing the plot, we use the axis()  method to specify the range
+of each axis ❸. The axis()  method requires four values: the minimum
+and maximum values for the x-axis and the y-axis. Here, we run the x-axis
+from 0 to 1,100 and the y-axis from 0 to 1,100,000. Figure 15-7  shows the
+result.Figure 15-7 : Python can plot 1,000 points as easily as it plots 5 points.
+Customizing Tick Labels
+When the numbers on an axis get lar ge enough, Matplotlib defaults to
+scientific notation for tick labels. This is usually a good thing, because
+larger numbers in plain notation take up a lot of unnecessary space on a
+visualization.
+Almost every element of a chart is customizable, so you can tell Matplotlib
+to keep using plain notation if you prefer:
+--snip--
+# Set the range for

@@ -1,0 +1,49 @@
+ 21) and 18 to
+see if age  is greater than or equal to 18. This test evaluates to True .
+How do you use the int()  function in an actual program? Consider a
+program that determines whether people are tall enough to ride a roller
+coaster:
+roller coaster .py
+height = input("How tall are you, in inches? ")
+height = int(height)
+if height >= 48:
+    print("\nYou're tall enough to ride!")
+else:
+    print("\nYou'll be able to ride when you're a litThe program can compare height  to 48 because height =
+int(height)  converts the input value to a numerical representation
+before the comparison is made. If the number entered is greater than or
+equal to 48, we tell the user that they’re tall enough:
+How tall are you, in inches? 71
+You're tall enough to ride!
+When you use numerical input to do calculations and comparisons, be sure
+to convert the input value to a numerical representation first.
+The Modulo Operator
+A useful tool for working with numerical information is the modulo
+operator (%), which divides one number by another number and returns
+the remainder:
+>>> 4 % 3
+1
+>>> 5 % 3
+2
+>>> 6 % 3
+0>>> 7 % 3
+1
+The modulo operator doesn’ t tell you how many times one number fits into
+another; it only tells you what the remainder is.
+When one number is divisible by another number , the remainder is 0, so the
+modulo operator always returns 0. You can use this fact to determine if a
+number is even or odd:
+even_or_odd.py
+number = input("Enter a number, and I'll tell you if 
+number = int(number)
+if number % 2 == 0:
+    print(f"\nThe number {number} is even.")
+else:
+    print(f"\nThe number {number} is odd.")
+Even numbers are always divisible by two, so if the modulo of a number
+and two is zero (here, if number % 2 == 0 ) the number is even.
+Otherwise, it’ s odd.Enter a number, and I'll tell you if it's even or odd
+The number 42 is even.
+TRY IT YOURSELF
+7-1. Rental Car:  Write a program that asks the user what kind of rental car they would like.
+Print a message about that car , such as “Le

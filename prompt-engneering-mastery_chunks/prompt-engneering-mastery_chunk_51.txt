@@ -1,0 +1,30 @@
+nAI
+share, suggesting that some degree of control and restriction can actually
+serve to mitigate the dangerous applications of these powerful tools.
+Leveraging Quantization and LoRA
+One of the game-changing aspects of these open source models is the
+potential for quantization  and the use of LoRA  (low-rank approximations).
+These techniques allow developers to fit the models into smaller hardware
+footprints. Quantization helps to reduce the numerical precision of the
+model’ s parameters, thereby shrinking the overall size of the model without
+a significant loss in performance. Meanwhile, LoRA  assists in optimizing
+the network’ s architecture, making it more ef ficient to run on consumer -
+grade hardware.
+Such optimizations make fine-tuning these LLMs increasingly feasible on
+consumer hardware. This is a critical development because it allows for
+greater experimentation and adaptability . No longer confined to high-
+powered data centers, individual developers, small businesses, and start-ups
+can now work on these models in more resource-constrained environments.Mistral
+Mistral 7B, a brainchild of French start-up Mistral AI, emer ges as a
+powerhouse in the generative AI domain, with its 7.3 billion parameters
+making a significant impact. This model is not just about size; it’ s about
+efficiency and capability , promising a bright future for open source lar ge
+language models and their applicability across a myriad of use cases. The
+key to its ef ficiency is the implementation of sliding window attention, a
+technique released under a permissive Apache open source license. Many
+AI engineers have fine-tuned on top of this model as a base, including the
+impressive Zephr 7b beta  model. There is also Mixtral 8x7b , a mixture of
+experts model (similar to the architecture of GPT -4), which achieves results
+similar to GPT -3.5-turbo.
+For a more detailed and up-to-date comparison of open source models and
+their performance metrics, visit the Chatbot Arena Leaderboard  hosted 

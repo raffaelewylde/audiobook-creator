@@ -1,0 +1,42 @@
+ browser such as Nautilus and click the options tab
+(indicated by three lines). Select the Show Hidden Files  checkbox.
+The .platform.app.yaml Configuration File
+The first configuration file is the longest, because it controls the overall
+deployment process. We’ll show it in parts; you can either enter it by hand
+in your text editor or download a copy from the online resources at https://e
+hmatthes.github.io/pcc_3e .
+Here’ s the first part of .platform.app.yaml , which should be saved in the
+same directory as manage.py :
+.platform.app.yaml
+❶ name: "ll_project"
+type: "python:3.10"
+❷ relationships:
+    database: "db:postgresql"
+# The configuration of the app when it's exposed to t
+❸ web:
+    upstream:
+        socket_family: unix
+    commands:
+❹         start: "gunicorn -w 4 -b unix:$SOCKET ll_proj❺     locations:
+        "/":
+            passthru: true
+        "/static":
+            root: "static"
+            expires: 1h
+            allow: true
+# The size of the persistent disk of the application 
+❻ disk: 512
+When you save this file, make sure you include the dot at the beginning of
+the filename. If you omit the dot, Platform.sh won’ t find the file and your
+project will not be deployed.
+You don’ t need to understand everything in .platform.app.yaml  at this point;
+I’ll highlight the most important parts of the configuration. The file starts
+off by specifying the name  of the project, which we’re calling
+'ll_project'  to be consistent with the name we used when starting the
+project ❶. We also need to specify the version of Python we’re using (3.10
+at the time of this writing). You can find a list of supported versions at http
+s://docs.platform.sh/languages/python.html .
+Next is a section labeled relationships  that defines other services the
+project needs ❷. Here the only relationship is to a Postgres database. After
+that is the web  section ❸. The commands:start  section tellsPlatform.sh what process to use to serve incoming requests. Here we’re
+specifying that gunic

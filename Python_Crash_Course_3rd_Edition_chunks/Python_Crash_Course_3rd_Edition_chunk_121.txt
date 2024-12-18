@@ -1,0 +1,34 @@
+begin with a dictionary that holds information about a pizza that has
+been ordered. One key in the dictionary is 'crust' , and the associated
+value is the string 'thick' . The next key , 'toppings' , has a list as its
+value that stores all requested toppings. We summarize the order before
+building the pizza ❶. When you need to break up a long line in a print()
+call, choose an appropriate point at which to break the line being printed,
+and end the line with a quotation mark. Indent the next line, add an opening
+quotation mark, and continue the string. Python will automatically combine
+all of the strings it finds inside the parentheses. To print the toppings, we
+write a for  loop ❷. To access the list of toppings, we use the key
+'toppings' , and Python grabs the list of toppings from the dictionary .The following output summarizes the pizza that we plan to build:
+You ordered a thick-crust pizza with the following to
+    mushrooms
+    extra cheese
+You can nest a list inside a dictionary anytime you want more than one
+value to be associated with a single key in a dictionary . In the earlier
+example of favorite programming languages, if we were to store each
+person’ s responses in a list, people could choose more than one favorite
+language. When we loop through the dictionary , the value associated with
+each person would be a list of languages rather than a single language.
+Inside the dictionary’ s for  loop, we use another for  loop to run through
+the list of languages associated with each person:
+favorite_languages.py
+favorite_languages = {
+    'jen': ['python', 'rust'],
+    'sarah': ['c'],
+    'edward': ['rust', 'go'],
+    'phil': ['python', 'haskell'],
+    }
+❶ for name, languages in favorite_languages.items():    print(f"\n{name.title()}'s favorite languages are
+❷     for language in languages:
+        print(f"\t{language.title()}")
+The value associated with each name in favorite_languages  is now a
+list. Note that some people have one favorite language and others ha

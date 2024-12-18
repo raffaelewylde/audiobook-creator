@@ -1,0 +1,39 @@
+n this case).
+By applying this pattern you can easily extract all of the main headings into
+a list without the asterisk.subheading_pattern = r'\s+[a-z]\. (.+)
+The subheading pattern  will match all of the subheadings within the
+openai_result  string:
+\s+  matches one or more whitespace characters (spaces, tabs, and so
+on). The + means one or mor e occurrences of the preceding element
+(the \s, in this case).
+[a-z]  matches a single lowercase letter from a to z.
+\. matches a period character . The backslash is used to escape the
+period, as it has a special meaning in regular expressions (matches any
+character except a newline).
+A space character will match after the period.
+(.+)  matches one or more characters, and the parentheses create a
+capturing group. The . is a wildcard that matches any character except
+a newline, and the + is a quantifier that means one or mor e occurrences
+of the preceding element (the dot, in this case).
+Additionally the re.findall()  function is used to find all non-
+overlapping matches of the patterns in the input string and return them as a
+list. The extracted headings and subheadings are then printed.
+So now you’re able to extract headings and subheadings from hierarchical
+article outlines; however , you can further refine the regular expressions so
+that each heading is associated with corresponding subheadings .In Example 3-2 , the regex has been slightly modified so that each
+subheading is attached directly with its appropriate subheading.
+Example 3-2. Parsing a hierar chical list into a Python dictionary
+import re
+openai_result  = """
+* Introduction
+  a. Explanation of data engineering
+  b. Importance of data engineering in today’s data-d
+* Efficient Data Management
+    a. Definition of data management
+    b. How data engineering helps in efficient data m
+    c. Why data engineering is important for data man
+* Conclusion
+    a. Importance of data engineering in the modern b
+    b. Future of data engineering and its impact on t
+"""
+sect

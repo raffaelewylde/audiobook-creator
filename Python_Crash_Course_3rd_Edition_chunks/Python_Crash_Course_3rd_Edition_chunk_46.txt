@@ -1,0 +1,59 @@
+file browsers do.
+Numbers
+Numbers are used quite often in programming to keep score in games,
+represent data in visualizations, store information in web applications, and
+so on. Python treats numbers in several dif ferent ways, depending on how
+they’re being used. Let’ s first look at how Python manages integers,
+because they’re the simplest to work with.
+Integers
+You can add ( +), subtract ( -), multiply ( *), and divide ( /) integers in
+Python.
+>>> 2 + 3
+5
+>>> 3 - 2
+1
+>>> 2 * 3
+6>>> 3 / 2
+1.5
+In a terminal session, Python simply returns the result of the operation.
+Python uses two multiplication symbols to represent exponents:
+>>> 3 ** 2
+9
+>>> 3 ** 3
+27
+>>> 10 ** 6
+1000000
+Python supports the order of operations too, so you can use multiple
+operations in one expression. You can also use parentheses to modify the
+order of operations so Python can evaluate your expression in the order you
+specify . For example:
+>>> 2 + 3*4
+14
+>>> (2 + 3) * 4
+20
+The spacing in these examples has no ef fect on how Python evaluates the
+expressions; it simply helps you more quickly spot the operations that havepriority when you’re reading through the code.
+Floats
+Python calls any number with a decimal point a float. This term is used in
+most programming languages, and it refers to the fact that a decimal point
+can appear at any position in a number . Every programming language must
+be carefully designed to properly manage decimal numbers so numbers
+behave appropriately , no matter where the decimal point appears.
+For the most part, you can use floats without worrying about how they
+behave. Simply enter the numbers you want to use, and Python will most
+likely do what you expect:
+>>> 0.1 + 0.1
+0.2
+>>> 0.2 + 0.2
+0.4
+>>> 2 * 0.1
+0.2
+>>> 2 * 0.2
+0.4
+However , be aware that you can sometimes get an arbitrary number of
+decimal places in your answer:>>> 0.2 + 0.1
+0.30000000000000004
+>>> 3 * 0.1
+0.30000000000000004
+This happens in all languages and is of little concern. Python tries to find a
+wa

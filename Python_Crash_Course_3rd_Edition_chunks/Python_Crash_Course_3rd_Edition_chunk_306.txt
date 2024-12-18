@@ -1,0 +1,42 @@
+ screen so the ships
+appear in the upper -left corner of the screen ❹. Then we add each new ship
+to the group ships  ❺.Now we need to draw the ships to the screen:
+scoreboard.py
+    def show_score(self):
+        """Draw scores, level, and ships to the scree
+        self.screen.blit(self.score_image, self.score
+        self.screen.blit(self.high_score_image, self.
+        self.screen.blit(self.level_image, self.level
+        self.ships.draw(self.screen)
+To display the ships on the screen, we call draw()  on the group, and
+Pygame draws each ship.
+To show the player how many ships they have to start with, we call
+prep_ships()  when a new game starts. We do this in
+_check_play_button()  in AlienInvasion :
+alien_invasion.py
+    def _check_play_button(self, mouse_pos):
+        --snip--
+        if button_clicked and not self.game_active:
+            --snip--
+            self.sb.prep_level()            self.sb.prep_ships()
+            --snip--
+We also call prep_ships()  when a ship is hit, to update the display of
+ship images when the player loses a ship:
+alien_invasion.py
+    def _ship_hit(self):
+        """Respond to ship being hit by alien."""
+        if self.stats.ships_left > 0:
+            # Decrement ships_left, and update scoreb
+            self.stats.ships_left -= 1
+            self.sb.prep_ships()
+            --snip--
+We call prep_ships()  after decreasing the value of ships_left , so
+the correct number of remaining ships displays each time a ship is
+destroyed.
+Figure 14-6  shows the complete scoring system, with the remaining ships
+displayed at the top left of the screen.Figure 14-6 : The complete scoring system for Alien Invasion
+TRY IT YOURSELF
+14-5. All-T ime High Scor e: The high score is reset every time a player closes and restarts Alien
+Invasion . Fix this by writing the high score to a file before calling sys.exit()  and reading in
+the high score when initializing its value in GameStats .
+14-6. Refactoring:  Look for methods that are doing more than one t

@@ -1,0 +1,30 @@
+ty .
+In mathematical terms, the model calculates how likely each possible next
+word is to follow the current sequence of words and picks the one that is
+most likely:
+wnext=argmaxP(w|w1,w2,...,wm)By repeating this process, as shown in Figure 2-3 , the model generates a
+coherent and contextually relevant string of text as its output.
+Figure 2-3. How text is generated using transformer models such as GPT -4
+The mechanisms driving LLMs are rooted in vector mathematics, linear
+transformations, and probabilistic models. While the under -the-hood
+operations are computationally intensive, the core concepts are built on
+these mathematical principles, of fering a foundational understanding that
+bridges the gap between technical complexity and business applicability .Historical Underpinnings: The Rise of
+Transformer Architectures
+Language models like ChatGPT  (the GPT  stands for generative pr etrained
+transformer ) didn’ t magically emer ge. They’re the culmination of years of
+progress in the field of NLP , with particular acceleration since the late
+2010s. At the heart of this advancement is the introduction of transformer
+architectures, which were detailed in the groundbreaking paper “Attention
+Is All You Need”  by the Google Brain team.
+The real breakthrough of transformer architectures was the concept of
+attention . Traditional models processed text sequentially , which limited
+their understanding of language structure especially over long distances of
+text. Attention transformed this by allowing models to directly relate distant
+words to one another irrespective of their positions in the text. This was a
+groundbreaking proposition. It meant that words and their context didn’ t
+have to move through the entire model to af fect each other . This not only
+significantly improved the models’  text comprehension but also made them
+much more ef ficient.
+This attention mechanism played a vital role in expanding the models’
+capacity to detect long-range dependencies in text. This 

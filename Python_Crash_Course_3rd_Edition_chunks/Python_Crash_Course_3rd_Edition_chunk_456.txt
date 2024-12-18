@@ -1,0 +1,34 @@
+t. You made a Platform.sh account and
+installed some tools that help manage the deployment process. You used Git
+to commit the working project to a repository , and then pushed the
+repository to a remote server on Platform.sh. Finally , you learned to begin
+securing your app by setting DEBUG = False  on the live server . You also
+made custom error pages, so the inevitable errors that come up will look
+well-handled.
+Now that you’ve finished Learning Log, you can start building your own
+projects. Start simple, and make sure the project works before adding
+complexity . Enjoy your continued learning, and good luck with your
+projects!A
+INSTALLA TION AND
+TROUBLES HOOTING
+There are many versions of Python available and numerous
+ways to set it up on each operating system. If the approach
+in Chapter 1  didn’ t work, or if you want to install a dif ferent
+version of Python than the one currently installed, the
+instructions in this appendix can help.
+Python on Windows
+The instructions in Chapter 1  show you how to install Python using the
+official installer at https://python.or g. If you couldn’ t get Python to run after
+using the installer , the troubleshooting instructions in this section should
+help you get Python up and running.
+Using py Instead of python
+If you run a recent Python installer and then issue the command python
+in a terminal, you should see the Python prompt for a terminal session
+(>>> ). When Windows doesn’ t recognize the python  command, it will
+either open the Microsoft Store because it thinks Python isn’ t installed, oryou’ll get a message such as “Python was not found.” If the Microsoft Store
+opens, close it; it’ s better to use the of ficial Python installer from https://pyt
+hon.or g than the one that Microsoft maintains.
+The simplest solution, without making any changes to your system, is to try
+the py command. This is a Windows utility that finds the latest version of
+Python installed on your system and runs that interpreter . If this command
+works a

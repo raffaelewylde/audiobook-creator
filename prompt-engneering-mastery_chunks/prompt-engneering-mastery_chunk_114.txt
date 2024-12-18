@@ -1,0 +1,39 @@
+est way to learn coding 
+But why not simply use an f-string  for prompt templating? Using
+LangChain’ s prompt templates instead allows you to easily:
+Validate your prompt inputs
+Combine multiple prompts together with composition
+Define custom selectors that will inject k-shot examples into your
+prompt
+Save and load prompts from .yml and .json  files
+Create custom prompt templates that execute additional code or
+instructions when created
+LangChain Expression Language
+(LCEL)
+The | pipe operator is a key component of LangChain Expression
+Language (LCEL) that allows you to chain together dif ferent components or
+runnables  in a data processing pipeline.
+In LCEL, the | operator is similar to the Unix pipe operator . It takes the
+output of one component and feeds it as input to the next component in thechain. This allows you to easily connect and combine dif ferent components
+to create a complex chain of operations:
+chain = prompt | model
+The | operator is used to chain together the prompt and model
+components. The output of the prompt component is passed as input to the
+model component. This chaining mechanism allows you to build complex
+chains from basic components and enables the seamless flow of data
+between dif ferent stages of the processing pipeline.
+Additionally , the or der matters , so you could technically create this chain:
+bad_order_chain  = model | prompt
+But it would produce an error after using the invoke  function, because
+the values returned from model  are not compatible with the expected
+inputs for the prompt.
+Let’s create a business name generator using prompt templates that will
+return five to seven relevant business names:
+from langchain_openai.chat_models  import ChatOpenAI
+from langchain_core.prompts  import (SystemMessageProm
+ChatPromptTemplate )template  = """
+You are a creative consultant brainstorming names for
+You must follow the following principles:
+{principles}
+Please generate a numerical list of five catchy names
+{industry}  industry that

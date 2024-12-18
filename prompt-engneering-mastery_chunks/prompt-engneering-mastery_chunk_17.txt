@@ -1,0 +1,42 @@
+t Universals**: Emphasizing genuine comfo
+fit for all.
+Before finalizing any name, remember to check for tra
+to ensure there's no conflict with existing products 
+brands.
+Another fruitful strategy in our experience is to take the best advice out
+there for the task you want to accomplish and insert that context into the
+prompt. For example, you could take Brandwatch’ s 5 Golden Rules fornaming a product  or another trusted external resource you find, and insert
+that as context into the prompt. This will increase the length of the prompt
+significantly , which costs more money (when using the API as a developer),
+but may be worth the trade-of f if the quality of the response improves.
+Input:
+Can I have a list of product names for a pair of shoe
+can fit any foot size? Please follow the five rules b
+1. It should be readable and writable.
+If your product name is hard to pronounce, people won
+and if they can’t write it down (and spell it correct
+when they hear it, how do you expect them to Google i
+Keep it simple and don’t go with any wacky spellings 
+...
+5. It should evoke an emotion, feeling, or idea.
+Your product name should tie back into what your prod
+feeling you want people to have when experiencing you
+what idea are you trying to get across.
+It should be emotive and inspiring.Output:
+1. FlexFit Footwear
+2. OmniSize Sneakers
+3. AdaptStride Shoes
+...
+18. OmniComfort Kicks
+19. FlexSize Footwear
+20. Boundless Soles
+There are other myriad ways of providing direction. In the image generation
+example, direction was given by specifying that the business meeting is
+taking place around a glass-top table. If you change only that detail, you can
+get a completely dif ferent image, as detailed in Figure 1-5 .
+Input:
+https://s.mj.run/TKAsyhNiKmc stock photo of business 
+of four people gathered around a campfire outdoors in
+woods, Panasonic, DC-GH5
+Figure 1-5  shows the output.Figure 1-5. Stock photo of business meeting in the woods
+Role-playing is also important for image generati

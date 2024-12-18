@@ -1,0 +1,32 @@
+ , effectively making LLMs more
+accessible for a broader range of use cases.
+OpenAI wanted to gather more world feedback for fine-tuning, and so
+ChatGPT  was born. Unlike its general-purpose siblings, ChatGPT  was fine-
+tuned  to excel in conversational contexts, enabling a dialogue between
+humans and machines that felt natural and meaningful.
+Figure 2-4  shows the training process for ChatGPT , which involves three
+main steps:
+Collection of demonstration data
+In this step, human labelers provide examples of the desired model
+behavior on a distribution of prompts. The labelers are trained on the
+project and follow specific instructions to annotate the prompts
+accurately .
+Training a supervised policyThe demonstration data collected in the previous step is used to fine-
+tune a pretrained GPT -3 model using supervised learning. In
+supervised learning, models are trained on a labeled dataset where
+the correct answers are provided. This step helps the model to learn
+to follow the given instructions and produce outputs that align with
+the desired behavior .
+Collection of comparison data and r einfor cement learning
+In this step, a dataset of model outputs is collected, and human
+labelers rank the outputs based on their preference. A reward model
+is then trained to predict which outputs the labelers would prefer .
+Finally , reinforcement learning techniques, specifically the Proximal
+Policy Optimization (PPO) algorithm, are used to optimize the
+supervised policy to maximize the reward from the reward model.
+This training process allows the ChatGPT  model to align its behavior with
+human intent. The use of reinforcement learning with human feedback
+helped create a model that is more helpful, honest, and safe compared to the
+pretrained GPT -3 model.Figure 2-4. The fine-tuning process for ChatGPTAccording to a UBS study , by January 2023 ChatGPT  set a new benchmark,
+amassing 100 million active users and becoming the fastest-growing
+consumer application in internet history .
