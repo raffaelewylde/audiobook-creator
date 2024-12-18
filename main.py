@@ -66,21 +66,43 @@ def extract_text_from_pdf(pdf_path):
     return text
 
 
+
+
 async def chunk_text(text: str, chars_per_chunk: int = 2000) -> list[str]:
     """Split text into manageable chunks."""
-    # Find clause boundaries using regular expression
-    clause_boundaries = re.finditer(CLAUSE_BOUNDARIES, text)
-    boundaries_indices = [boundary.start() for boundary in clause_boundaries]
+    clauses = re.split(CLAUSE_BOUNDARIES, text)
+    clauses = [clause.strip() for clause in clauses if clause.strip()]  # Clean up empty or whitespace-only clauses
 
     chunks = []
-    start = 0
-    for boundary_index in boundaries_indices:
-        chunks.append(text[start:boundary_index + 1].strip())
-        start = boundary_index + 1
-    # Append the remaining part of the text
-    chunks.append(text[start:].strip())
+    current_chunk = ""
+
+    for clause in clauses:
+        # Add the clause if it fits within the current chunk
+        if len(current_chunk) + len(clause) + 1 <= chars_per_chunk:
+            current_chunk += (clause + " ")
+        else:
+            # Add the current chunk to the list and start a new chunk
+            chunks.append(current_chunk.strip())
+            current_chunk = clause + " "
+
+    # Add the last chunk if it has content
+    if current_chunk.strip():
+        chunks.append(current_chunk.strip())
 
     return chunks
+
+#    clause_boundaries = re.finditer(CLAUSE_BOUNDARIES, text)
+#    boundaries_indices = [boundary.start() for boundary in clause_boundaries]
+
+#     chunks = []
+#     start = 0
+#     for boundary_index in boundaries_indices:
+#         chunks.append(text[start:boundary_index + 1].strip())
+#         start = boundary_index + 1
+#     # Append the remaining part of the text
+#     chunks.append(text[start:].strip())
+# 
+#     return chunks
 
     #chunked_text = [text[i : i + chars_per_chunk] for i in range(0, len(text), chars_per_chunk)]
     #logger.debug("Chunked text type: %s, chunked text: %s", type(chunked_text), chunked_text)
