@@ -6,7 +6,6 @@ import sys
 import aiofiles
 import asyncio
 from pathlib import Path
-from deepgram.utils import verboselogs
 from pydub import AudioSegment
 from PyPDF2 import PdfReader
 
@@ -177,14 +176,14 @@ async def main_async(pdf_file):
         chunks = await chunk_text(text)
         audio_files = []
 
-        for i in range(0, len(chunks), 5):
+        for i in range(0, len(chunks), 3):
             batch = chunks[i:i+3]
             logger.info("Processing batch %d to %d", i + 1, i + len(batch))
             tasks = [
                 process_chunk(chunk, i + index, base_name, output_dir) for index, chunk in enumerate(batch)
             ]
             batch_audio_files = await asyncio.gather(*tasks)
-            audio_files.extend(batch_audio_files)
+            audio_files.extend(filter(None, batch_audio_files))
             if i + 3 < len(chunks):
                 logger.info("Waiting 60 seconds before processing next batch")
                 await asyncio.sleep(60)
