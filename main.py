@@ -16,7 +16,7 @@ from deepgram import (
     SpeakOptions,
 )
 
-CLAUSE_BOUNDARIES = r'\.|\?|!|;|, (and|but|or|nor|for|yet|so)'
+CLAUSE_BOUNDARIES = r'\.|\?|!|;|, (?:and|but|or|nor|for|yet|so)'
 
 
 def setup_logging():
@@ -71,7 +71,7 @@ def extract_text_from_pdf(pdf_path):
 async def chunk_text(text: str, chars_per_chunk: int = 2000) -> list[str]:
     """Split text into manageable chunks."""
     clauses = re.split(CLAUSE_BOUNDARIES, text)
-    clauses = [clause.strip() for clause in clauses if clause.strip()]  # Clean up empty or whitespace-only clauses
+    clauses = [clause.strip() for clause in clauses if clause and clause.strip()]  # Clean up empty or whitespace-only clauses
 
     chunks = []
     current_chunk = ""
