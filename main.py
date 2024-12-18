@@ -72,7 +72,7 @@ async def chunk_text(text: str, chars_per_chunk: int = 2000) -> list[str]:
 
 
 async def text_to_speech(
-    text: str, output_path: Path, retries: int = 5, base_delay: int = 30
+    text: str, output_path: Path, retries: int = 15, base_delay: int = 15
 ):
     """
     Convert text to speech using Deepgram, with exponential backoff for retries.
@@ -89,12 +89,12 @@ async def text_to_speech(
     logger.debug("DeepgramClientOptions: %s", config)
     deepgram = DeepgramClient(api_key="", config=config)
     options = SpeakOptions(
-        model="aura-angus-en",
+        model="aura-asteria-en",
     )
 
     for attempt in range(retries):
         try:
-            response = await deepgram.speak.asyncrest.v("1").save(output_path, {"text": text}, options)
+            response = await deepgram.speak.asyncrest.v("1").save(str(output_path), {"text": text}, options)
             logger.info("Text-to-speech conversion successful.")
             logger.info(response.to_json(indent=4))
             return
@@ -124,7 +124,7 @@ async def process_chunk(chunk_text, chunk_index, base_name, output_dir):
     
     async with aiofiles.open(chunk_file, "r", encoding="utf-8") as f:
         logger.debug("reading text from file: %s", chunk_file)
-        text_to_convert = await f.read(chunk_file)
+        text_to_convert = await f.read()
     await text_to_speech(text_to_convert, audio_file)
     return audio_file
 
@@ -171,19 +171,29 @@ async def main_async(pdf_file):
         output_dir.mkdir(exist_ok=True)
 
         chunks = await chunk_text(text)
-        tasks = [
-            process_chunk(chunk, i, base_name, output_dir) for i, chunk in enumerate(chunks)
-        ]
+        audio_files = []
+
+        for i in range(0, len(chunks), 5):
+            batch = chunks[i:i+3]
+            logger.info("Processing batch %d to %d", i + 1, i + len(batch))
+            tasks = [
+                process_chunk(chunk, i + index, base_name, output_dir) for index, chunk in enumerate(batch)
+            ]
+            batch_audio_files = await asyncio.gather(*tasks)
+            audio_files.extend(batch_audio_files)
+            if i + 3 < len(chunks):
+                logger.info("Waiting 60 seconds before processing next batch")
+                await asyncio.sleep(60)
     except Exception as e:
-        logger.error("An error occurred during processing: %s", e)
+        logger.error("An error occurred while processing chunks: %s", e)
+        sys.exit(1)
 
     try:
-        audio_files = await asyncio.gather(*tasks)
         merged_audio_file = output_dir / f"{base_name}_merged.mp3"
         await merge_audio_files(audio_files, merged_audio_file)
         print(f"Audio book created successfully: {merged_audio_file}")
     except Exception as e:
-        print(f"Error during processing: {e}")
+        logger.error("Error during processing merge:%s", e) 
     finally:
         cleanup(output_dir)
 
