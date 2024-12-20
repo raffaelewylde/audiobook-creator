@@ -74,7 +74,7 @@ def extract_text_from_pdf(pdf_path):
     return text
 
 
-async def chunk_text(text: str, chars_per_chunk: int = 2000) -> list[str]:
+async def chunk_text(text: str, chars_per_chunk: int) -> list[str]:
     """
     The `chunk_text` function splits a given text into chunks of specified length while preserving
     clause boundaries.
@@ -363,7 +363,15 @@ async def main_async(pdf_file, API):
         output_dir = pdf_path.parent / f"{base_name}_chunks"
         output_dir.mkdir(exist_ok=True)
 
-        chunks = await chunk_text(text)
+        logger.info("Now, we're going to chunk the text...")
+        if API == "dg":
+            chars_per_chunk = 2000
+        elif API == "op":
+            chars_per_chunk = 4096
+        else:
+            logger.error("It seems your choice of APIs to use for Text to Speech is misconfigured. It Should be either openai or deepgram and passed as a commandline option before the path to your pdf file.")
+            sys.exit(1)
+        chunks = await chunk_text(text, chars_per_chunk)
         audio_files = []
 
         for i in range(0, len(chunks), 3):
