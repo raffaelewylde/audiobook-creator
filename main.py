@@ -1,4 +1,3 @@
-from ast import Raise
 import logging
 import re
 from logging.handlers import RotatingFileHandler
@@ -139,11 +138,11 @@ async def openai_text_to_speech(text: str, output_path: Path, retries: int = 10,
     failures. If an error occurs during the initial attempt, the function will retry the operation up to
     the specified, defaults to 10
     :type retries: int (optional)
-    :param delay: The `delay` parameter in the `openai_text_to_speech` function represents the initial
+    :param base_delay: The `delay` parameter in the `openai_text_to_speech` function represents the initial
     time delay in seconds between retry attempts when an error occurs during the text-to-speech
     conversion process. This delay is doubled after each unsuccessful attempt to give the system some
     time before retrying, defaults to 2
-    :type delay: int (optional)
+    :type base_delay: int (optional)
     :return: The `openai_text_to_speech` function returns `None` if the text-to-speech conversion is
     successful and the audio file is saved to the specified `output_path`. If there are errors during
     the process and all retry attempts are exhausted, an exception will be raised.
@@ -193,7 +192,7 @@ async def deepgram_text_to_speech(text: str, output_path: Path, retries: int = 1
     :param base_delay: The `base_delay` parameter in the `deepgram_text_to_speech` function represents
     the initial delay time in seconds before the first retry attempt is made. This delay time is then
     exponentially increased with each subsequent retry attempt using the formula `base_delay *
-    (2**attempt) + random.uniform(, defaults to 15
+    (2**attempt) + random.uniform(), defaults to 15
     :type base_delay: int (optional)
     :return: The function `deepgram_text_to_speech` returns None explicitly. This is because there is no
     return value specified in the function. The function either successfully converts text to speech and
@@ -230,14 +229,14 @@ async def deepgram_text_to_speech(text: str, output_path: Path, retries: int = 1
     raise RuntimeError("Text-to-speech conversion failed after retries.")
 
 
-async def process_chunk(chunk_text, chunk_index, base_name, output_dir, API):
+async def process_chunk(chunk_text, chunk_index, base_name, output_dir, api):
     """
     This Python async function processes chunked text by writing it to a file and converting it to
     speech using either Deepgram or OpenAI APIs.
     
     :param chunk_text: The `chunk_text` parameter in the `process_chunk` function is the text content of
     a chunk that needs to be processed. This text will be written to a file and then converted to speech
-    using a specified API (either "dg" for Deepgram or "op" for OpenAI). The
+    using a specified API (either "dg" for Deepgram or "op" for OpenAI).
     :param chunk_index: The `chunk_index` parameter in the `process_chunk` function represents the index
     of the current chunk being processed. It is used to uniquely identify each chunk and is incremented
     for each new chunk processed
@@ -248,9 +247,9 @@ async def process_chunk(chunk_text, chunk_index, base_name, output_dir, API):
     :param output_dir: The `output_dir` parameter in the `process_chunk` function represents the
     directory where the output files will be saved. It is the directory path where the text and audio
     files for each chunk will be stored
-    :param API: The `API` parameter in the `process_chunk` function is used to specify which Text to
+    :param api: The `api` parameter in the `process_chunk` function is used to specify which Text to
     Speech API to use for converting the text chunk into an audio file. The function checks the value of
-    `API` to determine whether to use the Deepgram (`dg`) or OpenAI (`op`) Text
+    `api` to determine whether to use the Deepgram (`dg`) or OpenAI (`op`) Text
     :return: The function `process_chunk` is returning the path to the audio file that was generated for
     the chunk of text processed. If the audio file already exists for the chunk, it will log a message
     and return without processing the chunk further.
@@ -276,13 +275,12 @@ async def process_chunk(chunk_text, chunk_index, base_name, output_dir, API):
         async with aiofiles.open(chunk_file, "r", encoding="utf-8") as f:
             logger.debug("reading text from file: %s", chunk_file)
             text_to_convert = await f.read()
-        if API == "dg":
+        if api == "dg":
             await deepgram_text_to_speech(text_to_convert, audio_file)
-        elif API == "op":
+        elif api == "op":
             await openai_text_to_speech(text_to_convert, audio_file)
         else:
             logger.error("It seems your choice of APIs to use for Text to Speech is misconfigured. It Should be either openai or deepgram and passed as a commandline option before the path to your pdf file.")
-            Raise
         return audio_file
     else:
         logger.info("Files already exist for this chunk, continuing on.")
@@ -331,16 +329,16 @@ def cleanup(output_dir):
         logger.warning(f"Failed to delete directory {output_dir}: {e}")
 
 
-async def main_async(pdf_file, API):
+async def main_async(pdf_file, api):
     """
     The `main_async` function processes a PDF file by extracting text, chunking it, converting chunks to
-    audio files using an API, merging the audio files, and creating an audio book.
+    audio files using an API, merging the audio files, and creating an audiobook.
     
     :param pdf_file: The `pdf_file` parameter in the `main_async` function is expected to be a string
-    representing the path to a PDF file that you want to process and convert into an audio book. This
+    representing the path to a PDF file that you want to process and convert into an audiobook. This
     function uses various asynchronous operations to extract text from the PDF, chunk the text, process
     the chunks into audio
-    :param API: The `API` parameter in the `main_async` function seems to be used for processing chunks
+    :param api: The `api` parameter in the `main_async` function seems to be used for processing chunks
     of text into audio files. It is likely an API key or endpoint that is used for converting text to
     audio. This API could be a text-to-speech service or a similar tool that converts text data
     """
@@ -364,9 +362,9 @@ async def main_async(pdf_file, API):
         output_dir.mkdir(exist_ok=True)
 
         logger.info("Now, we're going to chunk the text...")
-        if API == "dg":
+        if api == "dg":
             chars_per_chunk = 2000
-        elif API == "op":
+        elif api == "op":
             chars_per_chunk = 4096
         else:
             logger.error("It seems your choice of APIs to use for Text to Speech is misconfigured. It Should be either openai or deepgram and passed as a commandline option before the path to your pdf file.")
@@ -378,7 +376,7 @@ async def main_async(pdf_file, API):
             batch = chunks[i : i + 3]
             logger.info("Processing batch %d to %d", i + 1, i + len(batch))
             tasks = [
-                process_chunk(chunk, i + index, base_name, output_dir, API)
+                process_chunk(chunk, i + index, base_name, output_dir, api)
                 for index, chunk in enumerate(batch)
             ]
             batch_audio_files = await asyncio.gather(*tasks)
@@ -405,10 +403,12 @@ if __name__ == "__main__":
         print("Usage: python script.py <choice of: deepgram or openai> <path_to_pdf>")
         sys.exit(1)
 # The code snippet is checking the value of the first command line argument (`sys.argv[1]`) and
-# setting the variable `API` to either "dg" if the argument is "deepgram" or "op" if the argument is
+# setting the variable `api` to either "dg" if the argument is "deepgram" or "op" if the argument is
 # "openai".
     if sys.argv[1] == "deepgram":
-        API = "dg"
+        api = "dg"
     elif sys.argv[1] == "openai":
-        API = "op"
-    asyncio.run(main_async(sys.argv[2], API))
+        api = "op"
+    else:
+        api = ""
+    asyncio.run(main_async(sys.argv[2], api))
