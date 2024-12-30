@@ -11,6 +11,10 @@ from pydub import AudioSegment
 from PyPDF2 import PdfReader
 from openai import AsyncOpenAI
 from aiohttp import ClientError
+from PIL import Image
+from pdf2image import convert_from_path
+import pytesseract
+from tqdm.asyncio import tqdm
 
 from deepgram import (
     DeepgramClient,
@@ -18,7 +22,9 @@ from deepgram import (
     SpeakOptions,
 )
 
-CLAUSE_BOUNDARIES = r"\.|\?|!|;|, (?:and|but|or|nor|for|yet|so)"
+#CLAUSE_BOUNDARIES = r"\.|\?|!|;|, (?:and|but|or|nor|for|yet|so)"
+CLAUSE_BOUNDARIES = r"(?<=[.?!;])\s+|(?<!\w)\n"
+
 AsyncOpenAI.api_key = os.getenv("OPENAI_API_KEY")
 
 
@@ -49,35 +55,70 @@ def setup_logging():
 
 logger = setup_logging()
 
+
+def preprocess_image(image):
+    image = image.convert("L")  # Convert to grayscale
+    image = image.point(lambda x: 0 if x < 128 else 255)  # Binarize
+    return image
+
 def extract_text_from_pdf(pdf_path):
     """
     The function `extract_text_from_pdf` reads a PDF file and extracts its text content.
-    
+
     :param pdf_path: The `pdf_path` parameter in the `extract_text_from_pdf` function is a string that
     represents the file path to the PDF file from which you want to extract text
     :return: The function `extract_text_from_pdf` returns the extracted text from the PDF file located
     at the `pdf_path` provided as input.
     """
     logger.info("Converting your pdf, %s, to plain text", pdf_path)
+    print("Converting your pdf, %s, to plain text", pdf_path)
     filetype = type(pdf_path)
     logger.debug("Type for pdf is %s", filetype)
-    with open(pdf_path, "rb") as file:
-        reader = PdfReader(file)
-        logger.debug(
-            "Opened pdf for reading as type: %s becoming type: %s",
-            type(file),
-            type(reader),
-        )
-        text = "".join(page.extract_text() for page in reader.pages)
-    logger.debug("Text extracted from pdf: %s", text)
-    return text
+    try:
+        with open(pdf_path, "rb") as file:
+            reader = PdfReader(file)
+            text = "".join(page.extract_text() for page in reader.pages if page.extract_text())
+            paragraphs = text.split('\n')
+            cleaned_text = '\n'.join(paragraph.strip() for paragraph in paragraphs if paragraph.strip())
+            logger.info("Text extracted from pdf using PyPDF2: %s", cleaned_text)
+            print(f"Text extracted from pdf using PyPDF2: {cleaned_text}")
+            return cleaned_text
+    except Exception as e:
+        logger.warning(f"PyPDF2 failed to extract text: {e}")
+
+    logger.info("Attempting to extract text using OCR")
+    print("Attempting to extract text using OCR")
+    images = convert_from_path(pdf_path)
+    ocr_text = ""
+    for image in images:
+        processed_image = preprocess_image(image)
+        ocr_text += pytesseract.image_to_string(processed_image)
+    return ocr_text.strip()
+
+async def pre_scan_output_dir(output_dir, base_name):
+    """
+    Pre-scans the output directory to identify already processed chunk indices based on existing files.
+
+    :param output_dir: Directory where chunk text and audio files are stored.
+    :param base_name: Base name of the chunk files.
+    :return: A set of indices representing already processed chunks.
+    """
+    processed_indices = set()
+    chunk_files = await asyncio.to_thread(
+        list, output_dir.glob(f"{base_name}_chunk_*.txt")
+    )
+    for file in chunk_files:
+        match = re.search(rf"{base_name}_chunk_(\d+)", file.stem)
+        if match:
+            processed_indices.add(int(match.group(1)))
+    return processed_indices
 
 
 async def chunk_text(text: str, chars_per_chunk: int) -> list[str]:
     """
     The `chunk_text` function splits a given text into chunks of specified length while preserving
     clause boundaries.
-    
+
     :param text: The `chunk_text` function you provided is designed to split a given text into chunks
     based on a specified number of characters per chunk. It first splits the text into clauses using a
     regular expression pattern `CLAUSE_BOUNDARIES`, then processes these clauses to create chunks of
@@ -120,11 +161,14 @@ async def chunk_text(text: str, chars_per_chunk: int) -> list[str]:
 
     return chunks
 
-async def openai_text_to_speech(text: str, output_path: Path, retries: int = 10, base_delay: int = 2):
+
+async def openai_text_to_speech(
+    text: str, output_path: Path, retries: int = 10, base_delay: int = 2
+):
     """
     This Python async function utilizes the OpenAI API to convert text to speech and save the output to
     a specified file path, with retry and error handling mechanisms in place.
-    
+
     :param text: The `text` parameter in the `openai_text_to_speech` function is a string that
     represents the text you want to convert to speech. This text will be used as input for the
     text-to-speech conversion process
@@ -161,8 +205,11 @@ async def openai_text_to_speech(text: str, output_path: Path, retries: int = 10,
                 await response.stream_to_file(output_path)
             return
         except (ClientError, Exception) as e:
-            if attempt < retries -1:
-                logger.info(f"Retrying after error: {e}. Attempt {attempt + 1} of {retries}")
+            if attempt < retries - 1:
+                logger.info(
+                    f"Retrying after error: {e}. Attempt {attempt + 1} of {retries}"
+                )
+                print(f"Retrying after error: {e}. Attempt {attempt + 1} of {retries}.")
                 delay = base_delay * (2**attempt) + random.uniform(0, 1)
                 await asyncio.sleep(delay)
             else:
@@ -170,12 +217,13 @@ async def openai_text_to_speech(text: str, output_path: Path, retries: int = 10,
                 raise
 
 
-async def deepgram_text_to_speech(text: str, output_path: Path, retries: int = 15, base_delay: int = 15
+async def deepgram_text_to_speech(
+    text: str, output_path: Path, retries: int = 15, base_delay: int = 15
 ):
     """
     The function `deepgram_text_to_speech` asynchronously converts text to speech using Deepgram API
     with retry mechanism and exponential backoff.
-    
+
     :param text: The `text` parameter in the `deepgram_text_to_speech` function is a string that
     represents the text you want to convert into speech. This text will be used as input for the
     text-to-speech conversion process
@@ -215,10 +263,13 @@ async def deepgram_text_to_speech(text: str, output_path: Path, retries: int = 1
                 str(output_path), {"text": text}, options
             )
             logger.info("Text-to-speech conversion successful.")
+            print("Text-to-speech conversion successful.")
             logger.info(response.to_json(indent=4))
+            print(response.to_json(indent=4))
             return
         except Exception as e:
             logger.error(f"Attempt {attempt + 1} failed: {e}")
+            print(f"Attempt {attempt + 1} failed: {e}")
             if attempt < retries - 1:
                 # Calculate exponential backoff with jitter
                 delay = base_delay * (2**attempt) + random.uniform(0, 1)
@@ -233,7 +284,7 @@ async def process_chunk(chunk_text, chunk_index, base_name, output_dir, api):
     """
     This Python async function processes chunked text by writing it to a file and converting it to
     speech using either Deepgram or OpenAI APIs.
-    
+
     :param chunk_text: The `chunk_text` parameter in the `process_chunk` function is the text content of
     a chunk that needs to be processed. This text will be written to a file and then converted to speech
     using a specified API (either "dg" for Deepgram or "op" for OpenAI).
@@ -254,7 +305,6 @@ async def process_chunk(chunk_text, chunk_index, base_name, output_dir, api):
     the chunk of text processed. If the audio file already exists for the chunk, it will log a message
     and return without processing the chunk further.
     """
-    logger.info("Processing your chunked text now...")
     chunk_file = output_dir / f"{base_name}_chunk_{chunk_index + 1}.txt"
     audio_file = output_dir / f"{base_name}_chunk_{chunk_index + 1}.mp3"
     logger.debug("Audio file: %s", audio_file)
@@ -277,13 +327,25 @@ async def process_chunk(chunk_text, chunk_index, base_name, output_dir, api):
             text_to_convert = await f.read()
         if api == "dg":
             await deepgram_text_to_speech(text_to_convert, audio_file)
+            return audio_file
         elif api == "op":
             await openai_text_to_speech(text_to_convert, audio_file)
+            return audio_file
         else:
-            logger.error("It seems your choice of APIs to use for Text to Speech is misconfigured. It Should be either openai or deepgram and passed as a commandline option before the path to your pdf file.")
+            logger.error(
+                "It seems your choice of APIs to use for Text to Speech is misconfigured. It Should be either openai or deepgram and passed as a commandline option before the path to your pdf file."
+            )
+            print(
+                "It seems your choice of APIs to use for Text to Speech is misconfigured. It Should be either openai or deepgram and passed as a commandline option before the path to your pdf file."
+            )
         return audio_file
     else:
-        logger.info("Files already exist for this chunk, continuing on.")
+        logger.info(
+            f"Files already exist for this chunk, continuing on. The chunk was: {chunk_text}"
+        )
+        print(
+            f"Files already exist for this chunk, continuing on. The chunk was: {chunk_text}"
+        )
         return
 
 
@@ -291,7 +353,7 @@ async def merge_audio_files(audio_files, output_path):
     """
     The function `merge_audio_files` merges multiple MP3 audio files into one main MP3 master file
     asynchronously.
-    
+
     :param audio_files: A list of file paths to the individual audio files that you want to merge into
     one main audio file
     :param output_path: The `output_path` parameter in the `merge_audio_files` function is the file path
@@ -299,10 +361,11 @@ async def merge_audio_files(audio_files, output_path):
     where the combined audio from the input `audio_files` will be exported to after merging
     """
     logger.info("Merging all mp3 chunks into one main mp3 master file: %s", output_path)
+    print(f"Merging all mp3 chunks into one main mp3 master file: {output_path}")
     combined = AudioSegment.empty()
     for file in audio_files:
         audio = await asyncio.to_thread(AudioSegment.from_mp3, file)
-        combined += audio
+        combined = combined.append(audio, crossfade=200)
     await asyncio.to_thread(combined.export, output_path, format="mp3")
 
 
@@ -310,7 +373,7 @@ def cleanup(output_dir):
     """
     The `cleanup` function deletes specific files with certain extensions and removes the directory if
     it is empty.
-    
+
     :param output_dir: output_dir is a directory path where files are stored. The cleanup function
     iterates through all files in the directory and deletes files with a ".txt" or ".mp3" extension that
     do not contain "merged" in their filename. If the directory becomes empty after deleting these
@@ -333,7 +396,7 @@ async def main_async(pdf_file, api):
     """
     The `main_async` function processes a PDF file by extracting text, chunking it, converting chunks to
     audio files using an API, merging the audio files, and creating an audiobook.
-    
+
     :param pdf_file: The `pdf_file` parameter in the `main_async` function is expected to be a string
     representing the path to a PDF file that you want to process and convert into an audiobook. This
     function uses various asynchronous operations to extract text from the PDF, chunk the text, process
@@ -352,40 +415,44 @@ async def main_async(pdf_file, api):
         print("The specified PDF file does not exist.")
         sys.exit(1)
     logger.info("Welcome to our Audio Book Creator")
+    print("Welcome to our Audio Book Creator")
     logger.info("==================================")
+    print("==================================")
 
     try:
-        text = extract_text_from_pdf(pdf_path)
-        logger.debug("We've extracted text from your PDF: %s", text, type(text))
         base_name = pdf_path.stem
         output_dir = pdf_path.parent / f"{base_name}_chunks"
         output_dir.mkdir(exist_ok=True)
 
-        logger.info("Now, we're going to chunk the text...")
-        if api == "dg":
-            chars_per_chunk = 2000
-        elif api == "op":
-            chars_per_chunk = 4096
-        else:
-            logger.error("It seems your choice of APIs to use for Text to Speech is misconfigured. It Should be either openai or deepgram and passed as a commandline option before the path to your pdf file.")
-            sys.exit(1)
-        chunks = await chunk_text(text, chars_per_chunk)
-        audio_files = []
+        logger.info("Pre-scanning for already processed chunks...")
+        print("Pre-scanning for already processed chunks...")
+        processed_indices = await pre_scan_output_dir(output_dir, base_name)
+        logger.info("Found %d already processed chunks.", len(processed_indices))
+        print(f"Found {len(processed_indices)} already processed chunks")
 
-        for i in range(0, len(chunks), 3):
-            batch = chunks[i : i + 3]
-            logger.info("Processing batch %d to %d", i + 1, i + len(batch))
-            tasks = [
-                process_chunk(chunk, i + index, base_name, output_dir, api)
-                for index, chunk in enumerate(batch)
-            ]
-            batch_audio_files = await asyncio.gather(*tasks)
-            audio_files.extend(filter(None, batch_audio_files))
-            if i + 3 < len(chunks):
-                logger.info("Waiting 60 seconds before processing next batch")
-                await asyncio.sleep(60)
+        text = extract_text_from_pdf(pdf_path)
+        logger.debug("We've extracted text from your PDF: %s", text, type(text))
+
+        logger.info("Now, we're going to chunk the text...")
+        print("Now, we're going to chunk the text...")
+
+        chars_per_chunk = 4096 if api == "op" else 2000
+        chunks = await chunk_text(text, chars_per_chunk)
+
+        audio_files = []
+        tasks = [
+            process_chunk(chunk, i, base_name, output_dir, api)
+            for i, chunk in enumerate(chunks)
+            if i + 1 not in processed_indices
+        ]
+
+        for task in tqdm(asyncio.as_completed(tasks), total=len(tasks), desc="Processing Chunks"):
+            result = await task
+            if result:
+                audio_files.append(result)
     except Exception as e:
         logger.error("An error occurred while processing chunks: %s", e)
+        print(f"An error occurred while processing chunks: {e}")
         sys.exit(1)
 
     try:
@@ -394,6 +461,7 @@ async def main_async(pdf_file, api):
         print(f"Audio book created successfully: {merged_audio_file}")
     except Exception as e:
         logger.error("Error during processing merge:%s", e)
+        print(f"Error during processing merge: {e}")
     finally:
         cleanup(output_dir)
 
@@ -402,9 +470,9 @@ if __name__ == "__main__":
     if len(sys.argv) != 3:
         print("Usage: python script.py <choice of: deepgram or openai> <path_to_pdf>")
         sys.exit(1)
-# The code snippet is checking the value of the first command line argument (`sys.argv[1]`) and
-# setting the variable `api` to either "dg" if the argument is "deepgram" or "op" if the argument is
-# "openai".
+    # The code snippet is checking the value of the first command line argument (`sys.argv[1]`) and
+    # setting the variable `api` to either "dg" if the argument is "deepgram" or "op" if the argument is
+    # "openai".
     if sys.argv[1] == "deepgram":
         api = "dg"
     elif sys.argv[1] == "openai":
