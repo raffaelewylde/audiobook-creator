@@ -418,9 +418,9 @@ async def main_async(pdf_file, api):
             batch = chunks[batch_start:batch_end]
 
             tasks = [
-                process_chunk(chunk, i, base_name, output_dir, api)
-                for i, chunk in enumerate(batch, start=batch_start)
-                if i + 1 not in processed_indices
+                process_chunk(chunk, batch_start + i, base_name, output_dir, api)
+                for i, chunk in enumerate(batch)
+                if batch_start + i + 1 not in processed_indices
             ]
             batch_audio_files = await asyncio.gather(*tasks)
             audio_files.extend(filter(None, batch_audio_files))
