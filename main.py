@@ -22,7 +22,7 @@ from deepgram import (
     SpeakOptions,
 )
 
-#CLAUSE_BOUNDARIES = r"\.|\?|!|;|, (?:and|but|or|nor|for|yet|so)"
+# CLAUSE_BOUNDARIES = r"\.|\?|!|;|, (?:and|but|or|nor|for|yet|so)"
 CLAUSE_BOUNDARIES = r"(?<=[.?!;])\s+|(?<!\w)\n"
 
 AsyncOpenAI.api_key = os.getenv("OPENAI_API_KEY")
@@ -61,39 +61,63 @@ def preprocess_image(image):
     image = image.point(lambda x: 0 if x < 128 else 255)  # Binarize
     return image
 
+
 def extract_text_from_pdf(pdf_path):
     """
-    The function `extract_text_from_pdf` reads a PDF file and extracts its text content.
-
-    :param pdf_path: The `pdf_path` parameter in the `extract_text_from_pdf` function is a string that
-    represents the file path to the PDF file from which you want to extract text
-    :return: The function `extract_text_from_pdf` returns the extracted text from the PDF file located
-    at the `pdf_path` provided as input.
+    Extracts text from a PDF file but skips unnecessary pages until reaching a meaningful section.
+    Ensures the START_HEADER appears early on a page and not inside a Table of Contents.
     """
     logger.info("Converting your pdf, %s, to plain text", pdf_path)
     print("Converting your pdf, %s, to plain text", pdf_path)
-    filetype = type(pdf_path)
-    logger.debug("Type for pdf is %s", filetype)
+
+    START_HEADERS = {"preface", "introduction", "chapter 1"}
+    text = []
+    start_extraction = False  # Flag to indicate when to start extracting
+
     try:
         with open(pdf_path, "rb") as file:
             reader = PdfReader(file)
-            text = "".join(page.extract_text() for page in reader.pages if page.extract_text())
-            paragraphs = text.split('\n')
-            cleaned_text = '\n'.join(paragraph.strip() for paragraph in paragraphs if paragraph.strip())
-            logger.info("Text extracted from pdf using PyPDF2: %s", cleaned_text)
-            print(f"Text extracted from pdf using PyPDF2: {cleaned_text}")
-            return cleaned_text
+            for page in reader.pages:
+                page_text = page.extract_text()
+                if page_text:
+                    # Normalize text for case-insensitive matching
+                    lower_text = page_text.lower().strip()
+                    words = lower_text.split()
+
+                    # Check if it's a Table of Contents page
+                    if "table of contents" in lower_text:
+                        continue  # Skip this page
+
+                    if not start_extraction:
+                        # Check if any START_HEADER is one of the first 5 words on the page
+                        if any(
+                            lower_text.startswith(header) or header in words[:5]
+                            for header in START_HEADERS
+                        ):
+                            start_extraction = True
+
+                    if start_extraction:
+                        text.append(page_text)
+
+            extracted_text = "\n".join(text)
+            logger.info(
+                "Extracted text from PDF: %s", extracted_text[:500]
+            )  # Log first 500 chars
+            print(f"Extracted text (first 500 chars): {extracted_text[:500]}")
+            return extracted_text
     except Exception as e:
         logger.warning(f"PyPDF2 failed to extract text: {e}")
 
-    logger.info("Attempting to extract text using OCR")
-    print("Attempting to extract text using OCR")
+    logger.info("Attempting OCR as fallback...")
+    print("Attempting OCR as fallback...")
     images = convert_from_path(pdf_path)
     ocr_text = ""
     for image in images:
         processed_image = preprocess_image(image)
         ocr_text += pytesseract.image_to_string(processed_image)
+
     return ocr_text.strip()
+
 
 async def pre_scan_output_dir(output_dir, base_name):
     """
@@ -446,7 +470,9 @@ async def main_async(pdf_file, api):
             if i + 1 not in processed_indices
         ]
 
-        for task in tqdm(asyncio.as_completed(tasks), total=len(tasks), desc="Processing Chunks"):
+        for task in tqdm(
+            asyncio.as_completed(tasks), total=len(tasks), desc="Processing Chunks"
+        ):
             result = await task
             if result:
                 audio_files.append(result)
