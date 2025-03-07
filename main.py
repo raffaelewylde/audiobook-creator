@@ -77,102 +77,72 @@ def extract_text_from_pdf(pdf_path):
     logger.info("Converting your pdf, %s, to plain text", pdf_path)
 
     START_HEADERS = {"preface", "introduction", "chapter 1"}
-    TOC_FOUND_LATER_CHAPTER = (
-        False  # Has a later chapter (e.g., "Chapter 3") been seen?
-    )
-    text = []
+    TOC_FOUND_LATER_CHAPTdef extract_text_from_pdf(pdf_path):
+    """
+    The function `extract_text_from_pdf` reads a PDF file and extracts its text content, skipping the
+    beginning pages until it encounters the keywords "preface", "introduction", or "chapter 1".
+
+    :param pdf_path: The `pdf_path` parameter in the `extract_text_from_pdf` function is a string that
+    represents the file path to the PDF file from which you want to extract text
+    :return: The function `extract_text_from_pdf` returns the extracted text from the PDF file located
+    at the `pdf_path` provided as input.
+    """
+    logger.info("Converting your pdf, %s, to plain text", pdf_path)
+    filetype = type(pdf_path)
+    logger.debug("Type for pdf is %s", filetype)
+    
+    keywords = ["preface", "introduction", "chapter 1"]
+    extracting = False
     in_toc = False
-    toc_page_count = 0
-    start_header_count = 0  # Count occurrences of START_HEADERS
+    toc_keyword = None
+    extracted_text = []
+    logger.debug("Ok we've set up our keyword and flags, now lets test extraction")
 
     try:
         with open(pdf_path, "rb") as file:
             reader = PdfReader(file)
-            for page_num, page in enumerate(reader.pages, start=1):
-                page_text = page.extract_text()
-                if page_text:
-                    lower_text = page_text.lower().strip()
-                    words = lower_text.split()
+            for page in reader.pages:
+                text = page.extract_text()
+                if not text:
+                    logger.warning("No text found on page %s", page.page_number)
+                    continue
 
-                    # Detect start of Table of Contents
-                    if "table of contents" in lower_text:
-                        in_toc = True
-                        toc_page_count = 0
-                        logger.debug(
-                            "Detected Table of Contents on page %d. Entering TOC mode.",
-                            page_num,
-                        )
-                        continue
+                # Check if we are in the table of contents
+                if "table of contents" in text.lower():
+                    in_toc = True
+                    logger.debug("Found table of contents, setting in_toc to True")
 
-                    # If in TOC mode, track skipped pages
-                    if in_toc:
-                        toc_page_count += 1
-
-                        # Check for a later chapter (e.g., "Chapter 3:")
-                        for word in words:
-                            if word.startswith("chapter"):
-                                try:
-                                    chapter_num = int(
-                                        word.replace("chapter", "").strip(":")
-                                    )
-                                    if chapter_num >= 3:
-                                        TOC_FOUND_LATER_CHAPTER = True
-                                        in_toc = False
-                                        logger.debug(
-                                            "Detected Chapter %d on page %d. Exiting TOC mode.",
-                                            chapter_num,
-                                            page_num,
-                                        )
-                                except ValueError:
-                                    continue  # Ignore non-numeric cases (e.g., "Chapter Summary")
-
-                        # Force exit TOC mode if too many pages have passed
-                        if toc_page_count >= 35:
-                            logger.warning(
-                                "Reached TOC page limit (35 pages). Forcing exit from TOC mode."
-                            )
-                            in_toc = False
-
+                # Check if any of the keywords are in the text
+                for keyword in keywords:
+                    if keyword in text.lower():
+                        logger.debug("Found keyword '%s' in text. Let's check if we're in the TOC or not.", keyword)
                         if in_toc:
-                            continue  # Skip this page
+                            toc_keyword = keyword
+                            in_toc = False
+                            logger.debug("Keyword '%s' found in TOC, setting toc_keyword to '%s'", keyword, toc_keyword)
+                        elif toc_keyword == keyword:
+                            extracting = True
+                            logger.debug("Keyword '%s' found again outside TOC, setting extracting to True", keyword)
+                            break
 
-                    # Check if this page contains a START_HEADER
-                    if any(
-                        lower_text.startswith(header) or header in words[:5]
-                        for header in START_HEADERS
-                    ):
-                        start_header_count += 1
-                        logger.debug(
-                            "Detected START_HEADER occurrence #%d on page %d: %s",
-                            start_header_count,
-                            page_num,
-                            words[:10],
-                        )
+                if extracting:
+                    extracted_text.append(text)
 
-                    # Start extraction only after encountering START_HEADER twice
-                    if start_header_count >= 2:
-                        text.append(page_text)
-
-            extracted_text = "\n".join(text)
-            logger.debug(
-                "Final extracted text length: %d characters", len(extracted_text)
-            )
-            if len(extracted_text) < 500:
-                logger.warning(
-                    "Extracted text is very short! Possible extraction issue."
-                )
-            return extracted_text
+            cleaned_text = '\n'.join(paragraph.strip() for paragraph in extracted_text if paragraph.strip())
+            logger.info("Text extracted from pdf using PyPDF2: %s", cleaned_text)
+            return cleaned_text
     except Exception as e:
         logger.warning(f"PyPDF2 failed to extract text: {e}")
 
-    logger.info("Attempting OCR as fallback...")
+    logger.info("Attempting to extract text using OCR")
+    print("Attempting to extract text using OCR")
     images = convert_from_path(pdf_path)
     ocr_text = ""
     for image in images:
         processed_image = preprocess_image(image)
         ocr_text += pytesseract.image_to_string(processed_image)
-
     return ocr_text.strip()
+
 
 
 async def pre_scan_output_dir(output_dir, base_name):
