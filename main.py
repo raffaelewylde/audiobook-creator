@@ -75,7 +75,6 @@ def extract_text_from_pdf(pdf_path):
     Only starts extracting text after encountering a valid START_HEADER **twice** to prevent TOC contamination.
     """
     logger.info("Converting your pdf, %s, to plain text", pdf_path)
-    print("Converting your pdf, %s, to plain text", pdf_path)
 
     START_HEADERS = {"preface", "introduction", "chapter 1"}
     TOC_FOUND_LATER_CHAPTER = (
@@ -99,7 +98,7 @@ def extract_text_from_pdf(pdf_path):
                     if "table of contents" in lower_text:
                         in_toc = True
                         toc_page_count = 0
-                        logger.info(
+                        logger.debug(
                             "Detected Table of Contents on page %d. Entering TOC mode.",
                             page_num,
                         )
@@ -119,7 +118,7 @@ def extract_text_from_pdf(pdf_path):
                                     if chapter_num >= 3:
                                         TOC_FOUND_LATER_CHAPTER = True
                                         in_toc = False
-                                        logger.info(
+                                        logger.debug(
                                             "Detected Chapter %d on page %d. Exiting TOC mode.",
                                             chapter_num,
                                             page_num,
@@ -143,7 +142,7 @@ def extract_text_from_pdf(pdf_path):
                         for header in START_HEADERS
                     ):
                         start_header_count += 1
-                        logger.info(
+                        logger.debug(
                             "Detected START_HEADER occurrence #%d on page %d: %s",
                             start_header_count,
                             page_num,
@@ -155,7 +154,7 @@ def extract_text_from_pdf(pdf_path):
                         text.append(page_text)
 
             extracted_text = "\n".join(text)
-            logger.info(
+            logger.debug(
                 "Final extracted text length: %d characters", len(extracted_text)
             )
             if len(extracted_text) < 500:
@@ -167,7 +166,6 @@ def extract_text_from_pdf(pdf_path):
         logger.warning(f"PyPDF2 failed to extract text: {e}")
 
     logger.info("Attempting OCR as fallback...")
-    print("Attempting OCR as fallback...")
     images = convert_from_path(pdf_path)
     ocr_text = ""
     for image in images:
