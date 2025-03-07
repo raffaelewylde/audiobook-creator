@@ -1,37 +1,40 @@
-import logging
-import re
-from logging.handlers import RotatingFileHandler
-import random
-import os
-import sys
-import aiofiles
 import asyncio
+import logging
+import os
+import random
+import re
+import sys
 from pathlib import Path
-from pydub import AudioSegment
-from PyPDF2 import PdfReader
-from openai import AsyncOpenAI
-from aiohttp import ClientError
-from PIL import Image
-from pdf2image import convert_from_path
-import pytesseract
-from tqdm.asyncio import tqdm
 
+import aiofiles
+import pymupdf
+import pytesseract
+from aiohttp import ClientError
 from deepgram import (
-    DeepgramClient,
     ClientOptionsFromEnv,
+    DeepgramClient,
     SpeakOptions,
 )
+from openai import AsyncOpenAI
+from pdf2image import convert_from_path
+from pydub import AudioSegment
+from tqdm.asyncio import tqdm
 
 # CLAUSE_BOUNDARIES = r"\.|\?|!|;|, (?:and|but|or|nor|for|yet|so)"
 CLAUSE_BOUNDARIES = r"(?<=[.?!;])\s+|(?<!\w)\n"
 
-AsyncOpenAI.api_key = os.getenv("OPENAI_API_KEY")
+api_key = os.getenv("OPENAI_API_KEY")
+if api_key:
+    AsyncOpenAI.api_key = api_key
+else:
+    raise ValueError("OPENAI_API_KEY environment variable is not set")
 
 
 def setup_logging():
     """
-    Configures logging to output messages to both the console and a rotating file.
-    Logs INFO messages to stdout and DEBUG+ messages to a file.
+        Configures logging to outp
+    ut messages to both the console and a rotating file.
+        Logs INFO messages to stdout and DEBUG+ messages to a file.
     """
     logger = logging.getLogger(__name__)
     logger.setLevel(logging.DEBUG)  # Set lowest level to capture all messages
@@ -43,7 +46,7 @@ def setup_logging():
     console_handler = logging.StreamHandler()
     console_handler.setLevel(logging.INFO)  # Logs basic messages to console
 
-    file_handler = RotatingFileHandler("app.log", maxBytes=10_000_000, backupCount=5)
+    file_handler = logging.FileHandler("app.log", "w", "utf-8")
     file_handler.setLevel(logging.DEBUG)  # Logs everything to file
 
     formatter = logging.Formatter(
@@ -69,15 +72,64 @@ def preprocess_image(image):
     return image
 
 
-def extract_text_from_pdf(pdf_path):
-    """
-    Extracts text from a PDF while ensuring that Table of Contents pages are fully skipped.
-    Only starts extracting text after encountering a valid START_HEADER **twice** to prevent TOC contamination.
-    """
-    logger.info("Converting your pdf, %s, to plain text", pdf_path)
+# Wew're copying a couple of functions my PyMuPDF to assist with the text_extraction function we'll define in a moment
+def page_layout(page, textout, GRID, fontsize, noformfeed, skip_empty, flags):
+    left = page.rect.width  # left most used coordinate
+    right = 0  # rightmost coordinate
+    rowheight = page.rect.height  # smallest row height in use
+    chars = []  # all chars here
+    rows = set()  # bottom coordinates of lines
+    if noformfeed:
+        eop = b"\n"
+    else:
+        eop = bytes([12])
 
-    START_HEADERS = {"preface", "introduction", "chapter 1"}
-    TOC_FOUND_LATER_CHAPTdef extract_text_from_pdf(pdf_path):
+
+def clean_text(text, header_pattern, footer_pattern):
+    """
+    Removes header and footer text from the given text.
+    """
+    if header_pattern:
+        text = text.replace(header_pattern, "")
+    if footer_pattern:
+        text = text.replace(footer_pattern, "")
+
+    return text.strip()
+
+
+def identify_headers_footers(doc):
+    """
+    Identify common header and footer patterns in the PDF document.
+    """
+    header_patterns = []
+    footer_patterns = []
+    num_pages = len(doc)
+
+    for page_num in range(min(10, num_pages)):  # Analyze the first 10 pages or less
+        page = doc[page_num]
+        text = page.get_text(sort=True)
+        lines = text.split("\n")
+
+        if len(lines) > 2:
+            header_patterns.append(lines[0])
+            footer_patterns.append(lines[-1])
+
+    # Identify common patterns
+    header_pattern = (
+        max(set(header_patterns), key=header_patterns.count)
+        if header_patterns
+        else None
+    )
+    footer_pattern = (
+        max(set(footer_patterns), key=footer_patterns.count)
+        if footer_patterns
+        else None
+    )
+
+    return header_pattern, footer_pattern
+
+
+def extract_text_from_pdf(pdf_path):
     """
     The function `extract_text_from_pdf` reads a PDF file and extracts its text content, skipping the
     beginning pages until it encounters the keywords "preface", "introduction", or "chapter 1".
@@ -90,7 +142,7 @@ def extract_text_from_pdf(pdf_path):
     logger.info("Converting your pdf, %s, to plain text", pdf_path)
     filetype = type(pdf_path)
     logger.debug("Type for pdf is %s", filetype)
-    
+
     keywords = ["preface", "introduction", "chapter 1"]
     extracting = False
     in_toc = False
@@ -99,40 +151,61 @@ def extract_text_from_pdf(pdf_path):
     logger.debug("Ok we've set up our keyword and flags, now lets test extraction")
 
     try:
-        with open(pdf_path, "rb") as file:
-            reader = PdfReader(file)
-            for page in reader.pages:
-                text = page.extract_text()
-                if not text:
-                    logger.warning("No text found on page %s", page.page_number)
-                    continue
+        doc = pymupdf.open(pdf_path)
+        header_pattern, footer_pattern = identify_headers_footers(doc)
+        logger.debug("Identified header pattern: %s", header_pattern)
+        logger.debug("Identified footer pattern: %s", footer_pattern)
 
-                # Check if we are in the table of contents
-                if "table of contents" in text.lower():
-                    in_toc = True
-                    logger.debug("Found table of contents, setting in_toc to True")
+        for page in doc:
+            text = page.get_text(sort=True)  # type: ignore
+            logger.debug("Text on page %s: %s", page.number, text)
+            logger.info("Looking for keywords in text on page: %s", page.number)
+            if not text:
+                logger.warning("No text found on page %s", page.number)
+                continue
 
-                # Check if any of the keywords are in the text
-                for keyword in keywords:
-                    if keyword in text.lower():
-                        logger.debug("Found keyword '%s' in text. Let's check if we're in the TOC or not.", keyword)
-                        if in_toc:
-                            toc_keyword = keyword
-                            in_toc = False
-                            logger.debug("Keyword '%s' found in TOC, setting toc_keyword to '%s'", keyword, toc_keyword)
-                        elif toc_keyword == keyword:
-                            extracting = True
-                            logger.debug("Keyword '%s' found again outside TOC, setting extracting to True", keyword)
-                            break
+            # Let's clean the text by removing header and footer text
+            text = clean_text(text, header_pattern, footer_pattern)
+            logger.debug("Removing any header and footer text from text")
 
-                if extracting:
-                    extracted_text.append(text)
+            # Check if we are in the table of contents
+            if "table of contents" or "contents" in text.lower():
+                in_toc = True
+                logger.debug("Found table of contents, setting in_toc to True")
 
-            cleaned_text = '\n'.join(paragraph.strip() for paragraph in extracted_text if paragraph.strip())
-            logger.info("Text extracted from pdf using PyPDF2: %s", cleaned_text)
-            return cleaned_text
+            # Check if any of the keywords are in the text
+            for keyword in keywords:
+                if keyword in text.lower():
+                    logger.debug(
+                        "Found keyword '%s' in text. Let's check if we're in the TOC or not.",
+                        keyword,
+                    )
+                    if in_toc:
+                        toc_keyword = keyword
+                        in_toc = False
+                        logger.debug(
+                            "Keyword '%s' found in TOC, setting toc_keyword to '%s'",
+                            keyword,
+                            toc_keyword,
+                        )
+                    elif toc_keyword == keyword:
+                        extracting = True
+                        logger.debug(
+                            "Keyword '%s' found again outside TOC, setting extracting to True",
+                            keyword,
+                        )
+                        break
+
+            if extracting or in_toc:
+                extracted_text.append(text)
+
+        cleaned_text = "\n".join(
+            paragraph.strip() for paragraph in extracted_text if paragraph.strip()
+        )
+        logger.info("Text extracted from pdf using PyMuPDF: %s", cleaned_text)
+        return cleaned_text
     except Exception as e:
-        logger.warning(f"PyPDF2 failed to extract text: {e}")
+        logger.warning(f"PyMuPDF failed to extract text: {e}")
 
     logger.info("Attempting to extract text using OCR")
     print("Attempting to extract text using OCR")
@@ -142,7 +215,6 @@ def extract_text_from_pdf(pdf_path):
         processed_image = preprocess_image(image)
         ocr_text += pytesseract.image_to_string(processed_image)
     return ocr_text.strip()
-
 
 
 async def pre_scan_output_dir(output_dir, base_name):
@@ -215,43 +287,17 @@ async def chunk_text(text: str, chars_per_chunk: int) -> list[str]:
 async def openai_text_to_speech(
     text: str, output_path: Path, retries: int = 10, base_delay: int = 2
 ):
-    """
-    This Python async function utilizes the OpenAI API to convert text to speech and save the output to
-    a specified file path, with retry and error handling mechanisms in place.
-
-    :param text: The `text` parameter in the `openai_text_to_speech` function is a string that
-    represents the text you want to convert to speech. This text will be used as input for the
-    text-to-speech conversion process
-    :type text: str
-    :param output_path: The `output_path` parameter in the `openai_text_to_speech` function is the path
-    where the generated audio file will be saved. It should be a `Path` object representing the location
-    where you want to save the audio file. You can provide the full path including the file name and
-    :type output_path: Path
-    :param retries: The `retries` parameter in the `openai_text_to_speech` function specifies the number
-    of times the function will attempt to perform the text-to-speech conversion in case of errors or
-    failures. If an error occurs during the initial attempt, the function will retry the operation up to
-    the specified, defaults to 10
-    :type retries: int (optional)
-    :param base_delay: The `delay` parameter in the `openai_text_to_speech` function represents the initial
-    time delay in seconds between retry attempts when an error occurs during the text-to-speech
-    conversion process. This delay is doubled after each unsuccessful attempt to give the system some
-    time before retrying, defaults to 2
-    :type base_delay: int (optional)
-    :return: The `openai_text_to_speech` function returns `None` if the text-to-speech conversion is
-    successful and the audio file is saved to the specified `output_path`. If there are errors during
-    the process and all retry attempts are exhausted, an exception will be raised.
-    """
     for attempt in range(retries):
         try:
-            client = AsyncOpenAI()
+            client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
             async with client.audio.speech.with_streaming_response.create(
                 model="tts-1",
                 voice="shimmer",
                 speed=1.2,
                 input=text,
             ) as response:
-                if response.status != 200:
-                    raise ClientError(f"Invalid Response: {response.status}")
+                if response.status_code != 200:
+                    raise ClientError(f"Invalid Response: {response.status_code}")
                 await response.stream_to_file(output_path)
             return
         except (ClientError, Exception) as e:
@@ -259,7 +305,7 @@ async def openai_text_to_speech(
                 logger.info(
                     f"Retrying after error: {e}. Attempt {attempt + 1} of {retries}"
                 )
-                delay = base_delay * (2**attempt) + random.uniform(0, 1)
+                delay = base_delay * (2 * attempt) + random.uniform(0, 1)
                 await asyncio.sleep(delay)
             else:
                 logger.error("Failed after %d attempts", retries)
