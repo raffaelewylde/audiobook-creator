@@ -30,26 +30,33 @@ AsyncOpenAI.api_key = os.getenv("OPENAI_API_KEY")
 
 def setup_logging():
     """
-    The `setup_logging` function configures logging to output messages to both the console and a
-    rotating file.
-    :return: A logger object with both a console handler and a file handler set up for logging.
+    Configures logging to output messages to both the console and a rotating file.
+    Logs INFO messages to stdout and DEBUG+ messages to a file.
     """
     logger = logging.getLogger(__name__)
+    logger.setLevel(logging.DEBUG)  # Set lowest level to capture all messages
+
+    # Prevent duplicate log entries
+    if logger.hasHandlers():
+        logger.handlers.clear()
 
     console_handler = logging.StreamHandler()
-    console_handler.setLevel(logging.INFO)
+    console_handler.setLevel(logging.INFO)  # Logs basic messages to console
 
-    file_handler = RotatingFileHandler("app.log", maxBytes=10000000, backupCount=5)
-    file_handler.setLevel(logging.DEBUG)
+    file_handler = RotatingFileHandler("app.log", maxBytes=10_000_000, backupCount=5)
+    file_handler.setLevel(logging.DEBUG)  # Logs everything to file
 
     formatter = logging.Formatter(
-        "%(asctime)s -  %(levelname)s - %(message)s - Line: %(lineno)d"
+        "%(asctime)s - %(levelname)s - %(message)s - Line: %(lineno)d"
     )
     console_handler.setFormatter(formatter)
     file_handler.setFormatter(formatter)
 
     logger.addHandler(console_handler)
     logger.addHandler(file_handler)
+
+    logger.propagate = False  # Prevent double logging
+
     return logger
 
 
@@ -64,46 +71,97 @@ def preprocess_image(image):
 
 def extract_text_from_pdf(pdf_path):
     """
-    Extracts text from a PDF file but skips unnecessary pages until reaching a meaningful section.
-    Ensures the START_HEADER appears early on a page and not inside a Table of Contents.
+    Extracts text from a PDF while ensuring that Table of Contents pages are fully skipped.
+    Only starts extracting text after encountering a valid START_HEADER **twice** to prevent TOC contamination.
     """
     logger.info("Converting your pdf, %s, to plain text", pdf_path)
     print("Converting your pdf, %s, to plain text", pdf_path)
 
     START_HEADERS = {"preface", "introduction", "chapter 1"}
+    TOC_FOUND_LATER_CHAPTER = (
+        False  # Has a later chapter (e.g., "Chapter 3") been seen?
+    )
     text = []
-    start_extraction = False  # Flag to indicate when to start extracting
+    in_toc = False
+    toc_page_count = 0
+    start_header_count = 0  # Count occurrences of START_HEADERS
 
     try:
         with open(pdf_path, "rb") as file:
             reader = PdfReader(file)
-            for page in reader.pages:
+            for page_num, page in enumerate(reader.pages, start=1):
                 page_text = page.extract_text()
                 if page_text:
-                    # Normalize text for case-insensitive matching
                     lower_text = page_text.lower().strip()
                     words = lower_text.split()
 
-                    # Check if it's a Table of Contents page
+                    # Detect start of Table of Contents
                     if "table of contents" in lower_text:
-                        continue  # Skip this page
+                        in_toc = True
+                        toc_page_count = 0
+                        logger.info(
+                            "Detected Table of Contents on page %d. Entering TOC mode.",
+                            page_num,
+                        )
+                        continue
 
-                    if not start_extraction:
-                        # Check if any START_HEADER is one of the first 5 words on the page
-                        if any(
-                            lower_text.startswith(header) or header in words[:5]
-                            for header in START_HEADERS
-                        ):
-                            start_extraction = True
+                    # If in TOC mode, track skipped pages
+                    if in_toc:
+                        toc_page_count += 1
 
-                    if start_extraction:
+                        # Check for a later chapter (e.g., "Chapter 3:")
+                        for word in words:
+                            if word.startswith("chapter"):
+                                try:
+                                    chapter_num = int(
+                                        word.replace("chapter", "").strip(":")
+                                    )
+                                    if chapter_num >= 3:
+                                        TOC_FOUND_LATER_CHAPTER = True
+                                        in_toc = False
+                                        logger.info(
+                                            "Detected Chapter %d on page %d. Exiting TOC mode.",
+                                            chapter_num,
+                                            page_num,
+                                        )
+                                except ValueError:
+                                    continue  # Ignore non-numeric cases (e.g., "Chapter Summary")
+
+                        # Force exit TOC mode if too many pages have passed
+                        if toc_page_count >= 35:
+                            logger.warning(
+                                "Reached TOC page limit (35 pages). Forcing exit from TOC mode."
+                            )
+                            in_toc = False
+
+                        if in_toc:
+                            continue  # Skip this page
+
+                    # Check if this page contains a START_HEADER
+                    if any(
+                        lower_text.startswith(header) or header in words[:5]
+                        for header in START_HEADERS
+                    ):
+                        start_header_count += 1
+                        logger.info(
+                            "Detected START_HEADER occurrence #%d on page %d: %s",
+                            start_header_count,
+                            page_num,
+                            words[:10],
+                        )
+
+                    # Start extraction only after encountering START_HEADER twice
+                    if start_header_count >= 2:
                         text.append(page_text)
 
             extracted_text = "\n".join(text)
             logger.info(
-                "Extracted text from PDF: %s", extracted_text[:500]
-            )  # Log first 500 chars
-            print(f"Extracted text (first 500 chars): {extracted_text[:500]}")
+                "Final extracted text length: %d characters", len(extracted_text)
+            )
+            if len(extracted_text) < 500:
+                logger.warning(
+                    "Extracted text is very short! Possible extraction issue."
+                )
             return extracted_text
     except Exception as e:
         logger.warning(f"PyPDF2 failed to extract text: {e}")
@@ -233,7 +291,6 @@ async def openai_text_to_speech(
                 logger.info(
                     f"Retrying after error: {e}. Attempt {attempt + 1} of {retries}"
                 )
-                print(f"Retrying after error: {e}. Attempt {attempt + 1} of {retries}.")
                 delay = base_delay * (2**attempt) + random.uniform(0, 1)
                 await asyncio.sleep(delay)
             else:
@@ -242,7 +299,7 @@ async def openai_text_to_speech(
 
 
 async def deepgram_text_to_speech(
-    text: str, output_path: Path, retries: int = 15, base_delay: int = 15
+    text: str, output_path: Path, retries: int = 15, base_delay: int = 60
 ):
     """
     The function `deepgram_text_to_speech` asynchronously converts text to speech using Deepgram API
@@ -287,16 +344,13 @@ async def deepgram_text_to_speech(
                 str(output_path), {"text": text}, options
             )
             logger.info("Text-to-speech conversion successful.")
-            print("Text-to-speech conversion successful.")
             logger.info(response.to_json(indent=4))
-            print(response.to_json(indent=4))
             return
         except Exception as e:
             logger.error(f"Attempt {attempt + 1} failed: {e}")
-            print(f"Attempt {attempt + 1} failed: {e}")
             if attempt < retries - 1:
                 # Calculate exponential backoff with jitter
-                delay = base_delay * (2**attempt) + random.uniform(0, 1)
+                delay = base_delay + (2**attempt) + random.uniform(0, 1)
                 logger.warning(f"Retrying in {delay:.2f} seconds...")
                 await asyncio.sleep(delay)
 
@@ -339,7 +393,9 @@ async def process_chunk(chunk_text, chunk_index, base_name, output_dir, api):
         base_name,
         output_dir,
     )
-
+    logger.info("Processing chunk %d: %s", chunk_index, chunk_text[:300])
+    if len(chunk_text.strip()) == 0:
+        logger.warning("Chunk %d is empty! Skipping conversion.", chunk_index)
     if not os.path.exists(chunk_file):
         async with aiofiles.open(chunk_file, "w", encoding="utf-8") as f:
             logger.debug("writing chunk text to file: %s", chunk_file)
@@ -359,15 +415,19 @@ async def process_chunk(chunk_text, chunk_index, base_name, output_dir, api):
             logger.error(
                 "It seems your choice of APIs to use for Text to Speech is misconfigured. It Should be either openai or deepgram and passed as a commandline option before the path to your pdf file."
             )
-            print(
-                "It seems your choice of APIs to use for Text to Speech is misconfigured. It Should be either openai or deepgram and passed as a commandline option before the path to your pdf file."
+        if os.path.exists(audio_file) and os.path.getsize(audio_file) > 1000:
+            logger.info(
+                "Chunk %d successfully converted to speech: %s", chunk_index, audio_file
+            )
+        else:
+            logger.error(
+                "Failed to generate valid audio for chunk %d! File size: %d bytes",
+                chunk_index,
+                os.path.getsize(audio_file) if os.path.exists(audio_file) else 0,
             )
         return audio_file
     else:
         logger.info(
-            f"Files already exist for this chunk, continuing on. The chunk was: {chunk_text}"
-        )
-        print(
             f"Files already exist for this chunk, continuing on. The chunk was: {chunk_text}"
         )
         return
@@ -385,9 +445,12 @@ async def merge_audio_files(audio_files, output_path):
     where the combined audio from the input `audio_files` will be exported to after merging
     """
     logger.info("Merging all mp3 chunks into one main mp3 master file: %s", output_path)
-    print(f"Merging all mp3 chunks into one main mp3 master file: {output_path}")
     combined = AudioSegment.empty()
     for file in audio_files:
+        if not os.path.exists(file):
+            logger.error("Missing audio file: %s", file)
+        else:
+            logger.info("Audio file %s size: %d bytes", file, os.path.getsize(file))
         audio = await asyncio.to_thread(AudioSegment.from_mp3, file)
         combined = combined.append(audio, crossfade=200)
     await asyncio.to_thread(combined.export, output_path, format="mp3")
@@ -436,12 +499,10 @@ async def main_async(pdf_file, api):
         type(pdf_path),
     )
     if not os.path.exists(pdf_path):
-        print("The specified PDF file does not exist.")
+        logger.error("The specified PDF file does not exist.")
         sys.exit(1)
     logger.info("Welcome to our Audio Book Creator")
-    print("Welcome to our Audio Book Creator")
     logger.info("==================================")
-    print("==================================")
 
     try:
         base_name = pdf_path.stem
@@ -449,20 +510,15 @@ async def main_async(pdf_file, api):
         output_dir.mkdir(exist_ok=True)
 
         logger.info("Pre-scanning for already processed chunks...")
-        print("Pre-scanning for already processed chunks...")
         processed_indices = await pre_scan_output_dir(output_dir, base_name)
         logger.info("Found %d already processed chunks.", len(processed_indices))
-        print(f"Found {len(processed_indices)} already processed chunks")
-
         text = extract_text_from_pdf(pdf_path)
-        logger.debug("We've extracted text from your PDF: %s", text, type(text))
-
+        logger.debug(
+            "We've extracted text from your PDF: %s (Type: %s)", text, type(text)
+        )
         logger.info("Now, we're going to chunk the text...")
-        print("Now, we're going to chunk the text...")
-
         chars_per_chunk = 4096 if api == "op" else 2000
         chunks = await chunk_text(text, chars_per_chunk)
-
         audio_files = []
         tasks = [
             process_chunk(chunk, i, base_name, output_dir, api)
@@ -476,18 +532,20 @@ async def main_async(pdf_file, api):
             result = await task
             if result:
                 audio_files.append(result)
+        logger.info("Total text chunks created: %d", len(chunks))
+        if len(chunks) == 0:
+            logger.error("No text chunks created! Text extraction or chunking failed.")
+            sys.exit(1)
     except Exception as e:
         logger.error("An error occurred while processing chunks: %s", e)
-        print(f"An error occurred while processing chunks: {e}")
         sys.exit(1)
 
     try:
         merged_audio_file = output_dir / f"{base_name}_merged.mp3"
         await merge_audio_files(audio_files, merged_audio_file)
-        print(f"Audio book created successfully: {merged_audio_file}")
+        logger.info(f"Audio book created successfully: {merged_audio_file}")
     except Exception as e:
         logger.error("Error during processing merge:%s", e)
-        print(f"Error during processing merge: {e}")
     finally:
         cleanup(output_dir)
 
