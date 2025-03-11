@@ -251,25 +251,6 @@ def extract_text_from_pdf(pdf_path):
     return ocr_text.strip()
 
 
-async def pre_scan_output_dir(output_dir, base_name):
-    """
-    Pre-scans the output directory to identify already processed chunk indices based on existing files.
-
-    :param output_dir: Directory where chunk text and audio files are stored.
-    :param base_name: Base name of the chunk files.
-    :return: A set of indices representing already processed chunks.
-    """
-    processed_indices = set()
-    chunk_files = await asyncio.to_thread(
-        list, output_dir.glob(f"{base_name}_chunk_*.txt")
-    )
-    for file in chunk_files:
-        match = re.search(rf"{base_name}_chunk_(\d+)", file.stem)
-        if match:
-            processed_indices.add(int(match.group(1)))
-    return processed_indices
-
-
 async def chunk_text(text: str, chars_per_chunk: int) -> list[str]:
     """
     Splits text into chunks while preserving sentence and clause boundaries.
@@ -429,9 +410,16 @@ async def deepgram_text_to_speech(
 
 async def process_chunk(chunk_text, chunk_index, base_name, output_dir, api):
     """
-    Process the given text chunk directly by converting it to speech without writing to a file.
+    Process the given text chunk by converting it to speech, skipping any existing audio files.
     """
     audio_file = output_dir / f"{base_name}_chunk_{chunk_index + 1}.mp3"
+
+    # Check if the MP3 file already exists and is valid
+    if audio_file.exists() and audio_file.stat().st_size > 1000:
+        logger.info(
+            "Skipping chunk %d, MP3 already exists: %s", chunk_index, audio_file
+        )
+        return audio_file
 
     logger.debug("Processing chunk %d: %s", chunk_index, chunk_text[:300])
 
@@ -439,29 +427,28 @@ async def process_chunk(chunk_text, chunk_index, base_name, output_dir, api):
         logger.warning("Chunk %d is empty! Skipping conversion.", chunk_index)
         return None
 
-    if not os.path.exists(audio_file):
-        if api == "dg":
-            await deepgram_text_to_speech(chunk_text, audio_file)
-        elif api == "op":
-            await openai_text_to_speech(chunk_text, audio_file)
-        else:
-            logger.error("Invalid API choice. Use 'deepgram' or 'openai'.")
-            return None
+    # Convert text directly to speech
+    if api == "dg":
+        await deepgram_text_to_speech(chunk_text, audio_file)
+    elif api == "op":
+        await openai_text_to_speech(chunk_text, audio_file)
+    else:
+        logger.error("Invalid API choice. Use 'deepgram' or 'openai'.")
+        return None
 
-        if os.path.exists(audio_file) and os.path.getsize(audio_file) > 1000:
-            logger.info(
-                "Chunk %d successfully converted to speech: %s", chunk_index, audio_file
-            )
-        else:
-            logger.error(
-                "Failed to generate valid audio for chunk %d! File size: %d bytes",
-                chunk_index,
-                os.path.getsize(audio_file) if os.path.exists(audio_file) else 0,
-            )
+    # Verify that MP3 file was created successfully
+    if audio_file.exists() and audio_file.stat().st_size > 1000:
+        logger.info(
+            "Chunk %d successfully converted to speech: %s", chunk_index, audio_file
+        )
         return audio_file
     else:
-        logger.debug("Audio file for this chunk already exists. Skipping conversion.")
-        return audio_file
+        logger.error(
+            "Chunk %d conversion failed! File may be incomplete or corrupt: %s",
+            chunk_index,
+            audio_file,
+        )
+        return None
 
 
 async def merge_audio_files(audio_files, output_path):
@@ -540,9 +527,6 @@ async def main_async(pdf_file, api):
         output_dir = pdf_path.parent / f"{base_name}_chunks"
         output_dir.mkdir(exist_ok=True)
 
-        logger.info("Pre-scanning for already processed chunks...")
-        processed_indices = await pre_scan_output_dir(output_dir, base_name)
-        logger.info("Found %d already processed chunks.", len(processed_indices))
         text = extract_text_from_pdf(pdf_path)
         logger.debug(
             "We've extracted text from your PDF: %s (Type: %s)", text, type(text)
