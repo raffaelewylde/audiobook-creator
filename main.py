@@ -429,60 +429,25 @@ async def deepgram_text_to_speech(
 
 async def process_chunk(chunk_text, chunk_index, base_name, output_dir, api):
     """
-    This Python async function processes chunked text by writing it to a file and converting it to
-    speech using either Deepgram or OpenAI APIs.
-
-    :param chunk_text: The `chunk_text` parameter in the `process_chunk` function is the text content of
-    a chunk that needs to be processed. This text will be written to a file and then converted to speech
-    using a specified API (either "dg" for Deepgram or "op" for OpenAI).
-    :param chunk_index: The `chunk_index` parameter in the `process_chunk` function represents the index
-    of the current chunk being processed. It is used to uniquely identify each chunk and is incremented
-    for each new chunk processed
-    :param base_name: The `base_name` parameter in the `process_chunk` function is a string that
-    represents the base name for the output files that will be generated during the processing of the
-    chunked text. It is used to construct the names of the chunk text file and the audio file for each
-    chunk
-    :param output_dir: The `output_dir` parameter in the `process_chunk` function represents the
-    directory where the output files will be saved. It is the directory path where the text and audio
-    files for each chunk will be stored
-    :param api: The `api` parameter in the `process_chunk` function is used to specify which Text to
-    Speech API to use for converting the text chunk into an audio file. The function checks the value of
-    `api` to determine whether to use the Deepgram (`dg`) or OpenAI (`op`) Text
-    :return: The function `process_chunk` is returning the path to the audio file that was generated for
-    the chunk of text processed. If the audio file already exists for the chunk, it will log a message
-    and return without processing the chunk further.
+    Process the given text chunk directly by converting it to speech without writing to a file.
     """
-    chunk_file = output_dir / f"{base_name}_chunk_{chunk_index + 1}.txt"
     audio_file = output_dir / f"{base_name}_chunk_{chunk_index + 1}.mp3"
-    logger.debug("Audio file: %s", audio_file)
-    logger.debug(
-        "parameters that were passed to process_chunk: %s, %s, %s, %s",
-        chunk_text,
-        chunk_index,
-        base_name,
-        output_dir,
-    )
+
     logger.debug("Processing chunk %d: %s", chunk_index, chunk_text[:300])
+
     if len(chunk_text.strip()) == 0:
         logger.warning("Chunk %d is empty! Skipping conversion.", chunk_index)
-    if not os.path.exists(chunk_file):
-        async with aiofiles.open(chunk_file, "w", encoding="utf-8") as f:
-            logger.debug("writing chunk text to file: %s", chunk_file)
-            await f.write(chunk_text)
+        return None
 
     if not os.path.exists(audio_file):
-        with open(chunk_file, "r", encoding="utf-8") as f:
-            text_to_convert = f.read()
         if api == "dg":
-            await deepgram_text_to_speech(text_to_convert, audio_file)
-            return audio_file
+            await deepgram_text_to_speech(chunk_text, audio_file)
         elif api == "op":
-            await openai_text_to_speech(text_to_convert, audio_file)
-            return audio_file
+            await openai_text_to_speech(chunk_text, audio_file)
         else:
-            logger.error(
-                "It seems your choice of APIs to use for Text to Speech is misconfigured. It Should be either openai or deepgram and passed as a commandline option before the path to your pdf file."
-            )
+            logger.error("Invalid API choice. Use 'deepgram' or 'openai'.")
+            return None
+
         if os.path.exists(audio_file) and os.path.getsize(audio_file) > 1000:
             logger.info(
                 "Chunk %d successfully converted to speech: %s", chunk_index, audio_file
@@ -495,10 +460,8 @@ async def process_chunk(chunk_text, chunk_index, base_name, output_dir, api):
             )
         return audio_file
     else:
-        logger.debug(
-            f"Files already exist for this chunk, continuing on. The chunk was: {chunk_text}"
-        )
-        return
+        logger.debug("Audio file for this chunk already exists. Skipping conversion.")
+        return audio_file
 
 
 async def merge_audio_files(audio_files, output_path):
