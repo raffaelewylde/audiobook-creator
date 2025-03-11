@@ -21,8 +21,24 @@ from pydub import AudioSegment
 from tqdm.asyncio import tqdm
 
 # CLAUSE_BOUNDARIES = r"\.|\?|!|;|, (?:and|but|or|nor|for|yet|so)"
-CLAUSE_BOUNDARIES = r"(?<=[.?!;])\s+|(?<!\w)\n"
-
+# CLAUSE_BOUNDARIES = r"(?<=[.?!;])\s+|(?<!\w)\n"
+CLAUSE_BOUNDARIES = r"""(?x)          # Enable verbose mode for clarity
+    (?<=        # Positive lookbehind
+        [.!?]   # After period, exclamation, or question mark
+    )
+    \s+         # Followed by whitespace
+    (?=[A-Z])   # Followed by capital letter (likely new sentence)
+    |           # OR
+    (?<=[:;])   # After colon or semicolon
+    \s+         # Followed by whitespace
+    |           # OR
+    ,\s+        # Comma followed by whitespace
+    (?=         # Followed by common conjunctions
+        (?:and|but|or|nor|for|yet|so)\s
+    )
+    |           # OR
+    \n{2,}      # Two or more newlines (paragraph breaks)
+"""
 api_key = os.getenv("OPENAI_API_KEY")
 if api_key:
     AsyncOpenAI.api_key = api_key
@@ -149,7 +165,7 @@ def extract_text_from_pdf(pdf_path):
     in_toc = False
     toc_keyword = None
     extracted_text = []
-    logger.debug("Ok we've set up our keyword and flags, now lets test extraction")
+    logger.info("Ok we've set up our keyword and flags, now lets test extraction")
     """
     try:
         doc = pymupdf.open(pdf_path)
@@ -221,7 +237,7 @@ def extract_text_from_pdf(pdf_path):
         cleaned_text = "\n".join(
             paragraph.strip() for paragraph in extracted_text if paragraph.strip()
         )
-        logger.info("Text extracted from pdf using PyMuPDF: %s", cleaned_text)
+        logger.debug("Text extracted from pdf using PyMuPDF: %s", cleaned_text)
         return cleaned_text
     except Exception as e:
         logger.warning(f"PyMuPDF failed to extract text: {e}")
@@ -257,48 +273,66 @@ async def pre_scan_output_dir(output_dir, base_name):
 
 async def chunk_text(text: str, chars_per_chunk: int) -> list[str]:
     """
-    The `chunk_text` function splits a given text into chunks of specified length while preserving
-    clause boundaries.
+    Splits text into chunks while preserving sentence and clause boundaries.
 
-    :param text: The `chunk_text` function you provided is designed to split a given text into chunks
-    based on a specified number of characters per chunk. It first splits the text into clauses using a
-    regular expression pattern `CLAUSE_BOUNDARIES`, then processes these clauses to create chunks of
-    text that do not exceed the
-    :type text: str
-    :param chars_per_chunk: The `chars_per_chunk` parameter specifies the maximum number of characters
-    allowed in each chunk of text when splitting the input text into chunks. This parameter helps
-    control the size of each chunk to ensure that they are within a manageable length for processing or
-    displaying purposes, defaults to 2000
-    :type chars_per_chunk: int (optional)
-    :return: The function `chunk_text` returns a list of strings, where each string represents a chunk
-    of text that has been split based on the specified number of characters per chunk.
+    :param text: Input text to be chunked
+    :param chars_per_chunk: Target size for each chunk
+    :return: List of text chunks
     """
-    clauses = re.split(CLAUSE_BOUNDARIES, text)
-    clauses = [
-        clause.strip() for clause in clauses if clause and clause.strip()
-    ]  # Clean up empty or whitespace-only clauses
+    # Split into clauses using the improved CLAUSE_BOUNDARIES pattern
+    clauses = [c.strip() for c in re.split(CLAUSE_BOUNDARIES, text) if c and c.strip()]
 
     chunks = []
-    current_chunk = ""
+    current_chunk = []
+    current_length = 0
 
     for clause in clauses:
-        # Check if the clause itself is too long
-        while len(clause) > chars_per_chunk:
-            # Add as much of the clause as possible to a new chunk
-            chunks.append(clause[:chars_per_chunk])
-            clause = clause[chars_per_chunk:]  # Trim the part that's been added
+        clause_length = len(clause)
 
-        # Add the clause if it fits within the current chunk
-        if len(current_chunk) + len(clause) + 1 <= chars_per_chunk:
-            current_chunk += clause + " "
+        # Handle clauses that are longer than chars_per_chunk
+        if clause_length > chars_per_chunk:
+            # If we have content in current_chunk, add it first
+            if current_chunk:
+                chunks.append(" ".join(current_chunk).strip())
+                current_chunk = []
+                current_length = 0
+
+            # Split long clause at the last sentence boundary possible
+            sentence_boundaries = r"(?<=[.!?])\s+"
+            sentences = [
+                s.strip() for s in re.split(sentence_boundaries, clause) if s.strip()
+            ]
+
+            for sentence in sentences:
+                if len(sentence) > chars_per_chunk:
+                    # If a single sentence is too long, split it into smaller parts
+                    while sentence:
+                        split_point = sentence.rfind(" ", 0, chars_per_chunk)
+                        if split_point == -1:
+                            split_point = chars_per_chunk
+                        chunks.append(sentence[:split_point].strip())
+                        sentence = sentence[split_point:].strip()
+                else:
+                    chunks.append(sentence)
+            continue
+
+        # Check if adding this clause would exceed the chunk size
+        if current_length + clause_length + 1 > chars_per_chunk:
+            # Save current chunk and start a new one
+            chunks.append(" ".join(current_chunk).strip())
+            current_chunk = [clause]
+            current_length = clause_length
         else:
-            # Add the current chunk to the list and start a new chunk
-            chunks.append(current_chunk.strip())
-            current_chunk = clause + " "
+            # Add clause to current chunk
+            current_chunk.append(clause)
+            current_length += clause_length + 1  # +1 for space
 
-    # Add the last chunk if it has content
-    if current_chunk.strip():
-        chunks.append(current_chunk.strip())
+    # Add the final chunk if there's anything left
+    if current_chunk:
+        chunks.append(" ".join(current_chunk).strip())
+
+    # Remove any empty chunks and ensure proper spacing
+    chunks = [chunk.strip() for chunk in chunks if chunk.strip()]
 
     return chunks
 
@@ -377,7 +411,7 @@ async def deepgram_text_to_speech(
                 str(output_path), {"text": text}, options
             )
             logger.info("Text-to-speech conversion successful.")
-            logger.info(response.to_json(indent=4))
+            logger.debug(response.to_json(indent=4))
             return
         except Exception as e:
             logger.error(f"Attempt {attempt + 1} failed: {e}")
@@ -426,7 +460,7 @@ async def process_chunk(chunk_text, chunk_index, base_name, output_dir, api):
         base_name,
         output_dir,
     )
-    logger.info("Processing chunk %d: %s", chunk_index, chunk_text[:300])
+    logger.debug("Processing chunk %d: %s", chunk_index, chunk_text[:300])
     if len(chunk_text.strip()) == 0:
         logger.warning("Chunk %d is empty! Skipping conversion.", chunk_index)
     if not os.path.exists(chunk_file):
@@ -460,7 +494,7 @@ async def process_chunk(chunk_text, chunk_index, base_name, output_dir, api):
             )
         return audio_file
     else:
-        logger.info(
+        logger.debug(
             f"Files already exist for this chunk, continuing on. The chunk was: {chunk_text}"
         )
         return
