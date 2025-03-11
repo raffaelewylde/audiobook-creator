@@ -145,11 +145,12 @@ def extract_text_from_pdf(pdf_path):
 
     keywords = ["preface", "introduction", "chapter 1"]
     extracting = False
+    toc_passed = False
     in_toc = False
     toc_keyword = None
     extracted_text = []
     logger.debug("Ok we've set up our keyword and flags, now lets test extraction")
-
+    """
     try:
         doc = pymupdf.open(pdf_path)
         header_pattern, footer_pattern = identify_headers_footers(doc)
@@ -197,6 +198,24 @@ def extract_text_from_pdf(pdf_path):
                         break
 
             if extracting or in_toc:
+                extracted_text.append(text)
+            """
+    # Let's try a new approach to extract text from the pdf
+    # We'll use the PyMuPDF library to extract text from the pdf
+    try:
+        doc = pymupdf.open(pdf_path)
+        for page in doc:
+            text = page.get_text(sort=True)  # type: ignore
+            if text:
+                lines = text.split("\n")
+                for line in lines[0:5]:
+                    if "content" in line.lower().strip():
+                        toc_passed = True
+                        continue
+                    if toc_passed and "one" in line.lower().strip():
+                        extracting = True
+                        break
+            if extracting:
                 extracted_text.append(text)
 
         cleaned_text = "\n".join(
