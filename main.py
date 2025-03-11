@@ -243,7 +243,6 @@ def extract_text_from_pdf(pdf_path):
         logger.warning(f"PyMuPDF failed to extract text: {e}")
 
     logger.info("Attempting to extract text using OCR")
-    print("Attempting to extract text using OCR")
     images = convert_from_path(pdf_path)
     ocr_text = ""
     for image in images:
@@ -288,6 +287,7 @@ async def chunk_text(text: str, chars_per_chunk: int) -> list[str]:
 
     for clause in clauses:
         clause_length = len(clause)
+        logger.debug("Chunking text by clauses, currently on clause: %s", clause)
 
         # Handle clauses that are longer than chars_per_chunk
         if clause_length > chars_per_chunk:
@@ -358,7 +358,9 @@ async def openai_text_to_speech(
                 logger.info(
                     f"Retrying after error: {e}. Attempt {attempt + 1} of {retries}"
                 )
-                delay = base_delay * (2 * attempt) + random.uniform(0, 1)
+                delay = min(
+                    base_delay * (2**attempt) + random.uniform(0, 1), 300
+                )  # Max 5 minutes
                 await asyncio.sleep(delay)
             else:
                 logger.error("Failed after %d attempts", retries)
@@ -399,7 +401,7 @@ async def deepgram_text_to_speech(
     #        verbose=verboselogs.SPAM,
     # )
     config = ClientOptionsFromEnv()
-    logger.debug("DeepgramClientOptions: %s", config)
+    logger.debug("Running text-to-speech with deepgram for text: %s", text)
     deepgram = DeepgramClient(api_key="", config=config)
     options = SpeakOptions(
         model="aura-asteria-en",
@@ -469,9 +471,8 @@ async def process_chunk(chunk_text, chunk_index, base_name, output_dir, api):
             await f.write(chunk_text)
 
     if not os.path.exists(audio_file):
-        async with aiofiles.open(chunk_file, "r", encoding="utf-8") as f:
-            logger.debug("reading text from file: %s", chunk_file)
-            text_to_convert = await f.read()
+        with open(chunk_file, "r", encoding="utf-8") as f:
+            text_to_convert = f.read()
         if api == "dg":
             await deepgram_text_to_speech(text_to_convert, audio_file)
             return audio_file
@@ -630,4 +631,8 @@ if __name__ == "__main__":
         api = "op"
     else:
         api = ""
+try:
     asyncio.run(main_async(sys.argv[2], api))
+except Exception as e:
+    logger.error(f"Critical error: {e}")
+    sys.exit(1)
