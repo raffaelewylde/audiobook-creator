@@ -462,41 +462,28 @@ async def process_chunk(chunk_text, chunk_index, base_name, output_dir, api):
         return None
 
 
-async def merge_audio_files(audio_files, output_path, crossfade_ms=100):
-    """Merge valid audio files into a single MP3."""
-    valid_files = []
-    logger.debug("Now we'll merge all our mp3 files into one main audiobook file.")
+async def merge_audio_files(audio_files, output_path, crossfade_ms=50):
+    """Merge valid audio files into a single MP3 without excessive memory usage."""
+    logger.debug("Merging MP3 files into a single audiobook file.")
 
-    # Filter out empty or corrupt files
-    for file in audio_files:
-        try:
-            logger.debug(
-                "Validating the mp3 exists AND has content, testing file: %s", file
-            )
-            segment = AudioSegment.from_file(file, format="mp3")
-            if len(segment) > 0:  # Ensure it's not empty
-                valid_files.append(segment)
-                logger.debug("the mp3 file %s was valid", file)
-            else:
-                logger.warning("Skipping empty MP3 file: %s", file)
-        except Exception as e:
-            logger.error("Error loading MP3 file %s: %s", file, e)
-
-    if not valid_files:
-        logger.error("No valid audio files to merge!")
+    # Open the first file as the base
+    try:
+        merged_audio = AudioSegment.from_file(audio_files[0], format="mp3")
+    except Exception as e:
+        logger.error("Error loading first audio file: %s", e)
         return
 
-    # Merge with crossfade
-    logger.debug("Now merging mp3 files with crossfade.")
-    merged_audio = valid_files[0]
-    logger.debug("Our list of valid files is: %s", valid_files)
-    logger.debug("Our initial file to add the other mp3 files to is %s", valid_files[0])
-    for segment in valid_files[1:]:
-        logger.debug("Now adding the next file to the merged audio: %s", segment)
-        merged_audio = merged_audio.append(segment, crossfade=crossfade_ms)
+    # Append files one by one to minimize memory usage
+    for file in audio_files[1:]:
+        try:
+            segment = AudioSegment.from_file(file, format="mp3")
+            merged_audio = merged_audio.append(segment, crossfade=crossfade_ms)
+        except Exception as e:
+            logger.error("Skipping file %s due to error: %s", file, e)
 
+    # Export the final merged file
     merged_audio.export(output_path, format="mp3")
-    logger.info("Successfully merged %d files into %s", len(valid_files), output_path)
+    logger.info("Successfully merged %d files into %s", len(audio_files), output_path)
 
 
 def cleanup(output_dir):
