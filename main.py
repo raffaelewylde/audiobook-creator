@@ -6,7 +6,6 @@ import re
 import sys
 from pathlib import Path
 
-import aiofiles
 import pymupdf
 import pytesseract
 from aiohttp import ClientError
@@ -222,7 +221,7 @@ def extract_text_from_pdf(pdf_path):
     try:
         doc = pymupdf.open(pdf_path)
         for page in doc:
-            text = page.get_text(sort=True)  # type: ignore
+            text = page.get_text(sort=True)
             if text:
                 lines = text.split("\n")
                 for line in lines[0:5]:
@@ -357,6 +356,10 @@ async def openai_text_to_speech(
                 logger.error("Failed after %d attempts", retries)
                 raise
 
+async def process_with_limit(sem, chunk_text, chunk_index, base_name, output_dir, api):
+    """Wrapper function to process a chunk with a concurrency limit."""
+    async with sem:
+        return await process_chunk(chunk_text, chunk_index, base_name, output_dir, api)
 
 async def deepgram_text_to_speech(
     text: str, output_path: Path, retries: int = 15, base_delay: int = 60
@@ -461,27 +464,40 @@ async def process_chunk(chunk_text, chunk_index, base_name, output_dir, api):
         return None
 
 
-async def merge_audio_files(audio_files, output_path):
-    """
-    The function `merge_audio_files` merges multiple MP3 audio files into one main MP3 master file
-    asynchronously.
+async def merge_audio_files(audio_files, output_path, crossfade_ms=100):
+    """Merge valid audio files into a single MP3."""
+    valid_files = []
+    logger.debug("Now we'll merge all our mp3 files into one main audiobook file.")
 
-    :param audio_files: A list of file paths to the individual audio files that you want to merge into
-    one main audio file
-    :param output_path: The `output_path` parameter in the `merge_audio_files` function is the file path
-    where the merged audio files will be saved as a single main mp3 master file. This is the location
-    where the combined audio from the input `audio_files` will be exported to after merging
-    """
-    logger.info("Merging all mp3 chunks into one main mp3 master file: %s", output_path)
-    combined = AudioSegment.empty()
+    # Filter out empty or corrupt files
     for file in audio_files:
-        if not os.path.exists(file):
-            logger.error("Missing audio file: %s", file)
-        else:
-            logger.info("Audio file %s size: %d bytes", file, os.path.getsize(file))
-        audio = await asyncio.to_thread(AudioSegment.from_mp3, file)
-        combined = combined.append(audio, crossfade=200)
-    await asyncio.to_thread(combined.export, output_path, format="mp3")
+        try:
+            logger.debug("Validating the mp3 exists AND has content, testing file: %s", file)
+            segment = AudioSegment.from_file(file, format="mp3")
+            if len(segment) > 0:  # Ensure it's not empty
+                valid_files.append(segment)
+                logger.debug("the mp3 file %s was valid", file)
+            else:
+                logger.warning("Skipping empty MP3 file: %s", file)
+        except Exception as e:
+            logger.error("Error loading MP3 file %s: %s", file, e)
+
+    if not valid_files:
+        logger.error("No valid audio files to merge!")
+        return
+
+    # Merge with crossfade
+    logger.debug("Now merging mp3 files with crossfade.")
+    merged_audio = valid_files[0]
+    logger.debug("Our list of valid files is: %s", valid_files)
+    logger.debug("Our initial file to add the other mp3 files to is %s", valid_files[0])
+    for segment in valid_files[1:]:
+        logger.debug("Now adding the next file to the merged audio: %s", segment)
+        merged_audio = merged_audio.append(segment, crossfade=crossfade_ms)
+
+    merged_audio.export(output_path, format="mp3")
+    logger.info("Successfully merged %d files into %s", len(valid_files), output_path)
+
 
 
 def cleanup(output_dir):
@@ -507,7 +523,7 @@ def cleanup(output_dir):
         logger.warning(f"Failed to delete directory {output_dir}: {e}")
 
 
-async def main_async(pdf_file, api):
+async def main(pdf_file, api):
     """
     The `main_async` function processes a PDF file by extracting text, chunking it, converting chunks to
     audio files using an API, merging the audio files, and creating an audiobook.
@@ -521,6 +537,8 @@ async def main_async(pdf_file, api):
     audio. This API could be a text-to-speech service or a similar tool that converts text data
     """
     pdf_path = Path(pdf_file)
+    max_concurrent_tasks = 3  # Limit to 3 concurrent API calls
+    sem = asyncio.Semaphore(max_concurrent_tasks)
     logger.debug(
         "Running main function with parameter of: %s which is of type: %s",
         pdf_path,
@@ -546,7 +564,7 @@ async def main_async(pdf_file, api):
         chunks = await chunk_text(text, chars_per_chunk)
         audio_files = []
         tasks = [
-            process_chunk(chunk, i, base_name, output_dir, api)
+            process_with_limit(sem, chunk, i, base_name, output_dir, api)
             for i, chunk in enumerate(chunks)
             if not (output_dir / f"{base_name}_chunk_{i + 1}.mp3").exists()
         ]
@@ -567,12 +585,18 @@ async def main_async(pdf_file, api):
         logger.error("An error occurred while processing chunks: %s", e)
         sys.exit(1)
 
+
     try:
         merged_audio_file = output_dir / f"{base_name}_merged.mp3"
-        await merge_audio_files(audio_files, merged_audio_file)
+        # Collect all chunk files in order
+        all_audio_files = sorted(
+            [f for f in output_dir.glob(f"{base_name}_chunk_*.mp3")],
+            key=lambda x: int(x.stem.split('_')[-1])
+        )
+        await merge_audio_files(all_audio_files, merged_audio_file)
         logger.info(f"Audio book created successfully: {merged_audio_file}")
     except Exception as e:
-        logger.error("Error during processing merge:%s", e)
+        logger.error("Error during processing merge: %s", e)
     finally:
         cleanup(output_dir)
 
@@ -591,7 +615,7 @@ if __name__ == "__main__":
     else:
         api = ""
 try:
-    asyncio.run(main_async(sys.argv[2], api))
+    asyncio.run(main(sys.argv[2], api))
 except Exception as e:
     logger.error(f"Critical error: {e}")
     sys.exit(1)
