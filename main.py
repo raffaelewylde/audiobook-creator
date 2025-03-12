@@ -47,8 +47,8 @@ else:
 
 def setup_logging():
     """
-        Configures logging to output messages to both the console and a rotating file.
-        Logs INFO messages to stdout and DEBUG+ messages to a file.
+    Configures logging to output messages to both the console and a rotating file.
+    Logs INFO messages to stdout and DEBUG+ messages to a file.
     """
     logger = logging.getLogger(__name__)
     logger.setLevel(logging.DEBUG)  # Set lowest level to capture all messages
@@ -86,7 +86,7 @@ def preprocess_image(image):
     return image
 
 
-# Wew're copying a couple of functions from PyMuPDF to assist with the 
+# Wew're copying a couple of functions from PyMuPDF to assist with the
 # text_extraction function we'll define in a moment
 def page_layout(page, textout, GRID, fontsize, noformfeed, skip_empty, flags):
     left = page.rect.width  # left most used coordinate
@@ -153,7 +153,6 @@ def extract_text_from_pdf(pdf_path):
     represents the file path to the PDF file from which you want to extract text
     :return: The function `extract_text_from_pdf` returns the extracted text from the PDF file located
     at the `pdf_path` provided as input.
-    """
     """
     logger.info("Converting your pdf, %s, to plain text", pdf_path)
     filetype = type(pdf_path)
@@ -239,17 +238,14 @@ def extract_text_from_pdf(pdf_path):
         )
         logger.debug("Text extracted from pdf using PyMuPDF: %s", cleaned_text)
         return cleaned_text
-        """
+    except Exception as e:
+        logger.error("Error trying to extract text from pdf %s", e)
     # Trying out a new version using pymupdf's get_toc
     keywords = ["chapter 1", "chapter one", "1", "Intro", "Introduction"]
-    extracting = False
-    doc = pymupdf.open(pdf_path)
-    toc = doc.get_toc()
-    for i in toc:
-
-
-    except Exception as e:
-        logger.warning(f"PyMuPDF failed to extract text: {e}")
+    # extracting = False
+    # doc = pymupdf.open(pdf_path)
+    # toc = doc.get_toc()
+    # for i in toc:
 
     logger.info("Attempting to extract text using OCR")
     images = convert_from_path(pdf_path)
@@ -356,10 +352,12 @@ async def openai_text_to_speech(
                 logger.error("Failed after %d attempts", retries)
                 raise
 
+
 async def process_with_limit(sem, chunk_text, chunk_index, base_name, output_dir, api):
     """Wrapper function to process a chunk with a concurrency limit."""
     async with sem:
         return await process_chunk(chunk_text, chunk_index, base_name, output_dir, api)
+
 
 async def deepgram_text_to_speech(
     text: str, output_path: Path, retries: int = 15, base_delay: int = 60
@@ -472,7 +470,9 @@ async def merge_audio_files(audio_files, output_path, crossfade_ms=100):
     # Filter out empty or corrupt files
     for file in audio_files:
         try:
-            logger.debug("Validating the mp3 exists AND has content, testing file: %s", file)
+            logger.debug(
+                "Validating the mp3 exists AND has content, testing file: %s", file
+            )
             segment = AudioSegment.from_file(file, format="mp3")
             if len(segment) > 0:  # Ensure it's not empty
                 valid_files.append(segment)
@@ -497,7 +497,6 @@ async def merge_audio_files(audio_files, output_path, crossfade_ms=100):
 
     merged_audio.export(output_path, format="mp3")
     logger.info("Successfully merged %d files into %s", len(valid_files), output_path)
-
 
 
 def cleanup(output_dir):
@@ -585,13 +584,12 @@ async def main(pdf_file, api):
         logger.error("An error occurred while processing chunks: %s", e)
         sys.exit(1)
 
-
     try:
         merged_audio_file = output_dir / f"{base_name}_merged.mp3"
         # Collect all chunk files in order
         all_audio_files = sorted(
             [f for f in output_dir.glob(f"{base_name}_chunk_*.mp3")],
-            key=lambda x: int(x.stem.split('_')[-1])
+            key=lambda x: int(x.stem.split("_")[-1]),
         )
         await merge_audio_files(all_audio_files, merged_audio_file)
         logger.info(f"Audio book created successfully: {merged_audio_file}")
