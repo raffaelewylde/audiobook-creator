@@ -21,8 +21,24 @@ from pydub import AudioSegment
 from tqdm.asyncio import tqdm
 
 # CLAUSE_BOUNDARIES = r"\.|\?|!|;|, (?:and|but|or|nor|for|yet|so)"
-CLAUSE_BOUNDARIES = r"(?<=[.?!;])\s+|(?<!\w)\n"
-
+# CLAUSE_BOUNDARIES = r"(?<=[.?!;])\s+|(?<!\w)\n"
+CLAUSE_BOUNDARIES = r"""(?x)          # Enable verbose mode for clarity
+    (?<=        # Positive lookbehind
+        [.!?]   # After period, exclamation, or question mark
+    )
+    \s+         # Followed by whitespace
+    (?=[A-Z])   # Followed by capital letter (likely new sentence)
+    |           # OR
+    (?<=[:;])   # After colon or semicolon
+    \s+         # Followed by whitespace
+    |           # OR
+    ,\s+        # Comma followed by whitespace
+    (?=         # Followed by common conjunctions
+        (?:and|but|or|nor|for|yet|so)\s
+    )
+    |           # OR
+    \n{2,}      # Two or more newlines (paragraph breaks)
+"""
 api_key = os.getenv("OPENAI_API_KEY")
 if api_key:
     AsyncOpenAI.api_key = api_key
@@ -146,11 +162,12 @@ def extract_text_from_pdf(pdf_path):
 
     keywords = ["preface", "introduction", "chapter 1"]
     extracting = False
+    toc_passed = False
     in_toc = False
     toc_keyword = None
     extracted_text = []
-    logger.debug("Ok we've set up our keyword and flags, now lets test extraction")
-
+    logger.info("Ok we've set up our keyword and flags, now lets test extraction")
+    """
     try:
         doc = pymupdf.open(pdf_path)
         header_pattern, footer_pattern = identify_headers_footers(doc)
@@ -199,11 +216,29 @@ def extract_text_from_pdf(pdf_path):
 
             if extracting or in_toc:
                 extracted_text.append(text)
+            """
+    # Let's try a new approach to extract text from the pdf
+    # We'll use the PyMuPDF library to extract text from the pdf
+    try:
+        doc = pymupdf.open(pdf_path)
+        for page in doc:
+            text = page.get_text(sort=True)  # type: ignore
+            if text:
+                lines = text.split("\n")
+                for line in lines[0:5]:
+                    if "content" in line.lower().strip():
+                        toc_passed = True
+                        continue
+                    if toc_passed and "one" in line.lower().strip():
+                        extracting = True
+                        break
+            if extracting:
+                extracted_text.append(text)
 
         cleaned_text = "\n".join(
             paragraph.strip() for paragraph in extracted_text if paragraph.strip()
         )
-        logger.info("Text extracted from pdf using PyMuPDF: %s", cleaned_text)
+        logger.debug("Text extracted from pdf using PyMuPDF: %s", cleaned_text)
         return cleaned_text
         """
     # Trying out a new version using pymupdf's get_toc
@@ -218,7 +253,6 @@ def extract_text_from_pdf(pdf_path):
         logger.warning(f"PyMuPDF failed to extract text: {e}")
 
     logger.info("Attempting to extract text using OCR")
-    print("Attempting to extract text using OCR")
     images = convert_from_path(pdf_path)
     ocr_text = ""
     for image in images:
@@ -227,69 +261,69 @@ def extract_text_from_pdf(pdf_path):
     return ocr_text.strip()
 
 
-async def pre_scan_output_dir(output_dir, base_name):
-    """
-    Pre-scans the output directory to identify already processed chunk indices based on existing files.
-
-    :param output_dir: Directory where chunk text and audio files are stored.
-    :param base_name: Base name of the chunk files.
-    :return: A set of indices representing already processed chunks.
-    """
-    processed_indices = set()
-    chunk_files = await asyncio.to_thread(
-        list, output_dir.glob(f"{base_name}_chunk_*.txt")
-    )
-    for file in chunk_files:
-        match = re.search(rf"{base_name}_chunk_(\d+)", file.stem)
-        if match:
-            processed_indices.add(int(match.group(1)))
-    return processed_indices
-
-
 async def chunk_text(text: str, chars_per_chunk: int) -> list[str]:
     """
-    The `chunk_text` function splits a given text into chunks of specified length while preserving
-    clause boundaries.
+    Splits text into chunks while preserving sentence and clause boundaries.
 
-    :param text: The `chunk_text` function you provided is designed to split a given text into chunks
-    based on a specified number of characters per chunk. It first splits the text into clauses using a
-    regular expression pattern `CLAUSE_BOUNDARIES`, then processes these clauses to create chunks of
-    text that do not exceed the
-    :type text: str
-    :param chars_per_chunk: The `chars_per_chunk` parameter specifies the maximum number of characters
-    allowed in each chunk of text when splitting the input text into chunks. This parameter helps
-    control the size of each chunk to ensure that they are within a manageable length for processing or
-    displaying purposes, defaults to 2000
-    :type chars_per_chunk: int (optional)
-    :return: The function `chunk_text` returns a list of strings, where each string represents a chunk
-    of text that has been split based on the specified number of characters per chunk.
+    :param text: Input text to be chunked
+    :param chars_per_chunk: Target size for each chunk
+    :return: List of text chunks
     """
-    clauses = re.split(CLAUSE_BOUNDARIES, text)
-    clauses = [
-        clause.strip() for clause in clauses if clause and clause.strip()
-    ]  # Clean up empty or whitespace-only clauses
+    # Split into clauses using the improved CLAUSE_BOUNDARIES pattern
+    clauses = [c.strip() for c in re.split(CLAUSE_BOUNDARIES, text) if c and c.strip()]
 
     chunks = []
-    current_chunk = ""
+    current_chunk = []
+    current_length = 0
 
     for clause in clauses:
-        # Check if the clause itself is too long
-        while len(clause) > chars_per_chunk:
-            # Add as much of the clause as possible to a new chunk
-            chunks.append(clause[:chars_per_chunk])
-            clause = clause[chars_per_chunk:]  # Trim the part that's been added
+        clause_length = len(clause)
+        logger.debug("Chunking text by clauses, currently on clause: %s", clause)
 
-        # Add the clause if it fits within the current chunk
-        if len(current_chunk) + len(clause) + 1 <= chars_per_chunk:
-            current_chunk += clause + " "
+        # Handle clauses that are longer than chars_per_chunk
+        if clause_length > chars_per_chunk:
+            # If we have content in current_chunk, add it first
+            if current_chunk:
+                chunks.append(" ".join(current_chunk).strip())
+                current_chunk = []
+                current_length = 0
+
+            # Split long clause at the last sentence boundary possible
+            sentence_boundaries = r"(?<=[.!?])\s+"
+            sentences = [
+                s.strip() for s in re.split(sentence_boundaries, clause) if s.strip()
+            ]
+
+            for sentence in sentences:
+                if len(sentence) > chars_per_chunk:
+                    # If a single sentence is too long, split it into smaller parts
+                    while sentence:
+                        split_point = sentence.rfind(" ", 0, chars_per_chunk)
+                        if split_point == -1:
+                            split_point = chars_per_chunk
+                        chunks.append(sentence[:split_point].strip())
+                        sentence = sentence[split_point:].strip()
+                else:
+                    chunks.append(sentence)
+            continue
+
+        # Check if adding this clause would exceed the chunk size
+        if current_length + clause_length + 1 > chars_per_chunk:
+            # Save current chunk and start a new one
+            chunks.append(" ".join(current_chunk).strip())
+            current_chunk = [clause]
+            current_length = clause_length
         else:
-            # Add the current chunk to the list and start a new chunk
-            chunks.append(current_chunk.strip())
-            current_chunk = clause + " "
+            # Add clause to current chunk
+            current_chunk.append(clause)
+            current_length += clause_length + 1  # +1 for space
 
-    # Add the last chunk if it has content
-    if current_chunk.strip():
-        chunks.append(current_chunk.strip())
+    # Add the final chunk if there's anything left
+    if current_chunk:
+        chunks.append(" ".join(current_chunk).strip())
+
+    # Remove any empty chunks and ensure proper spacing
+    chunks = [chunk.strip() for chunk in chunks if chunk.strip()]
 
     return chunks
 
@@ -315,7 +349,9 @@ async def openai_text_to_speech(
                 logger.info(
                     f"Retrying after error: {e}. Attempt {attempt + 1} of {retries}"
                 )
-                delay = base_delay * (2 * attempt) + random.uniform(0, 1)
+                delay = min(
+                    base_delay * (2**attempt) + random.uniform(0, 1), 300
+                )  # Max 5 minutes
                 await asyncio.sleep(delay)
             else:
                 logger.error("Failed after %d attempts", retries)
@@ -356,7 +392,7 @@ async def deepgram_text_to_speech(
     #        verbose=verboselogs.SPAM,
     # )
     config = ClientOptionsFromEnv()
-    logger.debug("DeepgramClientOptions: %s", config)
+    logger.debug("Running text-to-speech with deepgram for text: %s", text)
     deepgram = DeepgramClient(api_key="", config=config)
     options = SpeakOptions(
         model="aura-asteria-en",
@@ -368,7 +404,7 @@ async def deepgram_text_to_speech(
                 str(output_path), {"text": text}, options
             )
             logger.info("Text-to-speech conversion successful.")
-            logger.info(response.to_json(indent=4))
+            logger.debug(response.to_json(indent=4))
             return
         except Exception as e:
             logger.error(f"Attempt {attempt + 1} failed: {e}")
@@ -384,77 +420,45 @@ async def deepgram_text_to_speech(
 
 async def process_chunk(chunk_text, chunk_index, base_name, output_dir, api):
     """
-    This Python async function processes chunked text by writing it to a file and converting it to
-    speech using either Deepgram or OpenAI APIs.
-
-    :param chunk_text: The `chunk_text` parameter in the `process_chunk` function is the text content of
-    a chunk that needs to be processed. This text will be written to a file and then converted to speech
-    using a specified API (either "dg" for Deepgram or "op" for OpenAI).
-    :param chunk_index: The `chunk_index` parameter in the `process_chunk` function represents the index
-    of the current chunk being processed. It is used to uniquely identify each chunk and is incremented
-    for each new chunk processed
-    :param base_name: The `base_name` parameter in the `process_chunk` function is a string that
-    represents the base name for the output files that will be generated during the processing of the
-    chunked text. It is used to construct the names of the chunk text file and the audio file for each
-    chunk
-    :param output_dir: The `output_dir` parameter in the `process_chunk` function represents the
-    directory where the output files will be saved. It is the directory path where the text and audio
-    files for each chunk will be stored
-    :param api: The `api` parameter in the `process_chunk` function is used to specify which Text to
-    Speech API to use for converting the text chunk into an audio file. The function checks the value of
-    `api` to determine whether to use the Deepgram (`dg`) or OpenAI (`op`) Text
-    :return: The function `process_chunk` is returning the path to the audio file that was generated for
-    the chunk of text processed. If the audio file already exists for the chunk, it will log a message
-    and return without processing the chunk further.
+    Process the given text chunk by converting it to speech, skipping any existing audio files.
     """
-    chunk_file = output_dir / f"{base_name}_chunk_{chunk_index + 1}.txt"
     audio_file = output_dir / f"{base_name}_chunk_{chunk_index + 1}.mp3"
-    logger.debug("Audio file: %s", audio_file)
-    logger.debug(
-        "parameters that were passed to process_chunk: %s, %s, %s, %s",
-        chunk_text,
-        chunk_index,
-        base_name,
-        output_dir,
-    )
-    logger.info("Processing chunk %d: %s", chunk_index, chunk_text[:300])
+
+    # Check if the MP3 file already exists and is valid
+    if audio_file.exists() and audio_file.stat().st_size > 1000:
+        logger.info(
+            "Skipping chunk %d, MP3 already exists: %s", chunk_index, audio_file
+        )
+        return audio_file
+
+    logger.debug("Processing chunk %d: %s", chunk_index, chunk_text[:300])
+
     if len(chunk_text.strip()) == 0:
         logger.warning("Chunk %d is empty! Skipping conversion.", chunk_index)
-    if not os.path.exists(chunk_file):
-        async with aiofiles.open(chunk_file, "w", encoding="utf-8") as f:
-            logger.debug("writing chunk text to file: %s", chunk_file)
-            await f.write(chunk_text)
+        return None
 
-    if not os.path.exists(audio_file):
-        async with aiofiles.open(chunk_file, "r", encoding="utf-8") as f:
-            logger.debug("reading text from file: %s", chunk_file)
-            text_to_convert = await f.read()
-        if api == "dg":
-            await deepgram_text_to_speech(text_to_convert, audio_file)
-            return audio_file
-        elif api == "op":
-            await openai_text_to_speech(text_to_convert, audio_file)
-            return audio_file
-        else:
-            logger.error(
-                "It seems your choice of APIs to use for Text to Speech is misconfigured. It Should be either openai or deepgram and passed as a commandline option before the path to your pdf file."
-            )
-        if os.path.exists(audio_file) and os.path.getsize(audio_file) > 1000:
-            logger.info(
-                "Chunk %d successfully converted to speech: %s", chunk_index, audio_file
-            )
-        else:
-            logger.error(
-                "Failed to generate valid audio for chunk %d! File size: %d bytes",
-                chunk_index,
-                os.path.getsize(audio_file) if os.path.exists(audio_file) else 0,
-            )
+    # Convert text directly to speech
+    if api == "dg":
+        await deepgram_text_to_speech(chunk_text, audio_file)
+    elif api == "op":
+        await openai_text_to_speech(chunk_text, audio_file)
+    else:
+        logger.error("Invalid API choice. Use 'deepgram' or 'openai'.")
+        return None
+
+    # Verify that MP3 file was created successfully
+    if audio_file.exists() and audio_file.stat().st_size > 1000:
+        logger.info(
+            "Chunk %d successfully converted to speech: %s", chunk_index, audio_file
+        )
         return audio_file
     else:
-        logger.info(
-            f"Files already exist for this chunk, continuing on. The chunk was: {chunk_text}"
+        logger.error(
+            "Chunk %d conversion failed! File may be incomplete or corrupt: %s",
+            chunk_index,
+            audio_file,
         )
-        return
+        return None
 
 
 async def merge_audio_files(audio_files, output_path):
@@ -533,9 +537,6 @@ async def main_async(pdf_file, api):
         output_dir = pdf_path.parent / f"{base_name}_chunks"
         output_dir.mkdir(exist_ok=True)
 
-        logger.info("Pre-scanning for already processed chunks...")
-        processed_indices = await pre_scan_output_dir(output_dir, base_name)
-        logger.info("Found %d already processed chunks.", len(processed_indices))
         text = extract_text_from_pdf(pdf_path)
         logger.debug(
             "We've extracted text from your PDF: %s (Type: %s)", text, type(text)
@@ -547,15 +548,17 @@ async def main_async(pdf_file, api):
         tasks = [
             process_chunk(chunk, i, base_name, output_dir, api)
             for i, chunk in enumerate(chunks)
-            if i + 1 not in processed_indices
+            if not (output_dir / f"{base_name}_chunk_{i + 1}.mp3").exists()
         ]
 
-        for task in tqdm(
-            asyncio.as_completed(tasks), total=len(tasks), desc="Processing Chunks"
-        ):
-            result = await task
-            if result:
-                audio_files.append(result)
+        if tasks:
+            audio_files = []
+            for task in tqdm(
+                asyncio.as_completed(tasks), total=len(tasks), desc="Processing Chunks"
+            ):
+                result = await task
+                if result:
+                    audio_files.append(result)
         logger.info("Total text chunks created: %d", len(chunks))
         if len(chunks) == 0:
             logger.error("No text chunks created! Text extraction or chunking failed.")
@@ -587,4 +590,8 @@ if __name__ == "__main__":
         api = "op"
     else:
         api = ""
+try:
     asyncio.run(main_async(sys.argv[2], api))
+except Exception as e:
+    logger.error(f"Critical error: {e}")
+    sys.exit(1)
