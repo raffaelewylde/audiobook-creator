@@ -538,15 +538,17 @@ async def main_async(pdf_file, api):
         tasks = [
             process_chunk(chunk, i, base_name, output_dir, api)
             for i, chunk in enumerate(chunks)
-            if i + 1 not in processed_indices
+            if not (output_dir / f"{base_name}_chunk_{i + 1}.mp3").exists()
         ]
 
-        for task in tqdm(
-            asyncio.as_completed(tasks), total=len(tasks), desc="Processing Chunks"
-        ):
-            result = await task
-            if result:
-                audio_files.append(result)
+        if tasks:
+            audio_files = []
+            for task in tqdm(
+                asyncio.as_completed(tasks), total=len(tasks), desc="Processing Chunks"
+            ):
+                result = await task
+                if result:
+                    audio_files.append(result)
         logger.info("Total text chunks created: %d", len(chunks))
         if len(chunks) == 0:
             logger.error("No text chunks created! Text extraction or chunking failed.")
