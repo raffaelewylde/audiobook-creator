@@ -476,6 +476,7 @@ async def merge_audio_files(audio_files, output_path, crossfade_ms=50):
     # Append files one by one to minimize memory usage
     for file in audio_files[1:]:
         try:
+            logger.debug("Now merging file: %s", file)
             segment = AudioSegment.from_file(file, format="mp3")
             merged_audio = merged_audio.append(segment, crossfade=crossfade_ms)
         except Exception as e:
