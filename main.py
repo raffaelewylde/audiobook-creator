@@ -32,8 +32,7 @@ else:
 
 def setup_logging():
     """
-        Configures logging to outp
-    ut messages to both the console and a rotating file.
+        Configures logging to output messages to both the console and a rotating file.
         Logs INFO messages to stdout and DEBUG+ messages to a file.
     """
     logger = logging.getLogger(__name__)
@@ -72,7 +71,8 @@ def preprocess_image(image):
     return image
 
 
-# Wew're copying a couple of functions my PyMuPDF to assist with the text_extraction function we'll define in a moment
+# Wew're copying a couple of functions from PyMuPDF to assist with the 
+# text_extraction function we'll define in a moment
 def page_layout(page, textout, GRID, fontsize, noformfeed, skip_empty, flags):
     left = page.rect.width  # left most used coordinate
     right = 0  # rightmost coordinate
@@ -139,6 +139,7 @@ def extract_text_from_pdf(pdf_path):
     :return: The function `extract_text_from_pdf` returns the extracted text from the PDF file located
     at the `pdf_path` provided as input.
     """
+    """
     logger.info("Converting your pdf, %s, to plain text", pdf_path)
     filetype = type(pdf_path)
     logger.debug("Type for pdf is %s", filetype)
@@ -204,6 +205,15 @@ def extract_text_from_pdf(pdf_path):
         )
         logger.info("Text extracted from pdf using PyMuPDF: %s", cleaned_text)
         return cleaned_text
+        """
+    # Trying out a new version using pymupdf's get_toc
+    keywords = ["chapter 1", "chapter one", "1", "Intro", "Introduction"]
+    extracting = False
+    doc = pymupdf.open(pdf_path)
+    toc = doc.get_toc()
+    for i in toc:
+
+
     except Exception as e:
         logger.warning(f"PyMuPDF failed to extract text: {e}")
 
