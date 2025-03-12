@@ -339,7 +339,7 @@ async def openai_text_to_speech(
                     f"Retrying after error: {e}. Attempt {attempt + 1} of {retries}"
                 )
                 delay = min(
-                    base_delay * (2**attempt) + random.uniform(0, 1), 300
+                    base_delay + (2**attempt) + random.uniform(0, 1), 300
                 )  # Max 5 minutes
                 await asyncio.sleep(delay)
             else:
