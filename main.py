@@ -19,6 +19,24 @@ from pdf2image import convert_from_path
 from pydub import AudioSegment
 from tqdm.asyncio import tqdm
 
+from pdfminer.pdfdocument import PDFDocument
+from pdfminer.pdfinterp import PDFResourceManager
+from pdfminer.pdfinterp import PDFPageInterpreter
+from pdfminer.pdfpage import PDFPage
+from pdfminer.pdfparser import PDFParser
+from pdfminer.layout import LAParams
+from pdfminer.converter import PDFPageAggregator
+from pdfminer.layout import (
+    LTText,
+    LTTextLine,
+    LTTextBox,
+    LTTextGroup,
+    LTTextBoxHorizontal,
+    LTRect,
+)
+
+from difflib import SequenceMatcher
+
 # CLAUSE_BOUNDARIES = r"\.|\?|!|;|, (?:and|but|or|nor|for|yet|so)"
 # CLAUSE_BOUNDARIES = r"(?<=[.?!;])\s+|(?<!\w)\n"
 CLAUSE_BOUNDARIES = r"""(?x)          # Enable verbose mode for clarity
@@ -112,36 +130,177 @@ def clean_text(text, header_pattern, footer_pattern):
     return text.strip()
 
 
-def identify_headers_footers(doc):
-    """
-    Identify common header and footer patterns in the PDF document.
-    """
-    header_patterns = []
-    footer_patterns = []
-    num_pages = len(doc)
+def identify_headers_footers(pdf_path):
+    doc = pymupdf.open(pdf_path)
+    header_candidates = []
+    footer_candidates = []
+    for page in doc:
+        text_blocks = page.get_text("dict")["blocks"]
+        page_height = page.rect.height
 
-    for page_num in range(min(10, num_pages)):  # Analyze the first 10 pages or less
-        page = doc[page_num]
-        text = page.get_text(sort=True)
-        lines = text.split("\n")
+        for block in text_blocks:
+            bbox = block["bbox"]  # (x0, y0, x1, y1)
 
-        if len(lines) > 2:
-            header_patterns.append(lines[0])
-            footer_patterns.append(lines[-1])
+            # Safely extract text if "lines" and "spans" exist
+            text = ""
+            if "lines" in block and block["lines"]:
+                spans = block["lines"][0].get("spans", [])
+                if spans:
+                    text = spans[0].get("text", "")
+            # Identify potential headers (top 10% of the page)
+            if bbox[1] < page_height * 0.1:
+                header_candidates.append(text)
+            # Identify potential footers (bottom 10% of the page)
+            elif bbox[3] > page_height * 0.9:
+                footer_candidates.append(text)
 
-    # Identify common patterns
-    header_pattern = (
-        max(set(header_patterns), key=header_patterns.count)
-        if header_patterns
+    # Find most common header/footer across pages
+    header = (
+        max(set(header_candidates), key=header_candidates.count)
+        if header_candidates
         else None
     )
-    footer_pattern = (
-        max(set(footer_patterns), key=footer_patterns.count)
-        if footer_patterns
+    footer = (
+        max(set(footer_candidates), key=footer_candidates.count)
+        if footer_candidates
         else None
     )
+    return header, footer
 
-    return header_pattern, footer_pattern
+
+def similar(table, miner):
+    return SequenceMatcher(None, table, miner).ratio()
+
+
+headers_footers = []
+
+
+def get_HeadAndFoot_miner(path, writeToexcel=False):
+    # Open a PDF file.
+    sorted_footer_units = []
+    sorted_header_units = []
+    headers_footers = []
+    fp = open(path, "rb")
+    parser = PDFParser(fp)
+    device = PDFPageAggregator(
+        PDFResourceManager(),
+        laparams=LAParams(
+            line_overlap=0.5, line_margin=0.5, char_margin=0.5, detect_vertical=False
+        ),
+    )
+    interpreter = PDFPageInterpreter(PDFResourceManager(), device)
+    page_nr = 0
+    for page in PDFPage.create_pages(PDFDocument(parser)):
+        page_nr += 1
+        p_height = page.mediabox[3]
+        interpreter.process_page(page)
+        layout = device.get_result()
+        units = []
+        for element in layout:
+            if isinstance(element, LTTextBoxHorizontal):
+                paragraph = element.get_text()
+                if not paragraph.isspace():
+                    units.append(
+                        {
+                            "page": page_nr,
+                            "para": paragraph,
+                            "x0": element.bbox[0],
+                            "y0": element.bbox[1],
+                        }
+                    )
+            else:
+                pass
+        if not units:
+            continue
+        most_bottom_unit = sorted(units, key=lambda d: d["y0"], reverse=False)
+        footer_area_units = []
+        header_area_units = []
+        # there is the unit that has the largest y0 so it is at the tom, and i want to get [-1] since this list is sorted by the smallest y0 so smallest y0 is the first index and largest is the last index marked with [-1]
+        headers = [most_bottom_unit[-1]]
+        # theopposite of headers
+        footers = [most_bottom_unit[0]]
+        # check if there is any other unit close enough to be consider as the same line and if yes add it to its corresponding list (header,footer)
+        for el in most_bottom_unit:
+            smallest = most_bottom_unit[0]["y0"]
+            largest = most_bottom_unit[-1]["y0"]
+            if (el["y0"] - smallest) >= 0 and (int(el["y0"]) - int(smallest)) < 3:
+                if el["para"] != most_bottom_unit[0]["para"]:
+                    footers.append(el)
+                    continue
+                else:
+                    continue
+            if (largest - float(el["y0"])) >= 0 and (largest - float(el["y0"])) < 3:
+                if el["para"] != most_bottom_unit[-1]["para"]:
+                    headers.append(el)
+                    continue
+                else:
+                    continue
+            if int(el["y0"]) - p_height / 2 >= 0:
+                header_area_units.append(el)
+            if int(el["y0"]) - p_height / 2 < 0:
+                footer_area_units.append(el)
+        header_area_units = sorted(
+            header_area_units, key=lambda d: d["y0"], reverse=True
+        )
+        sorted_footer_units.append(footer_area_units)
+        sorted_header_units.append(header_area_units)
+        headers = sorted(headers, key=lambda d: d["x0"], reverse=False)
+        headers = (el["para"] for el in headers)
+        footers = sorted(footers, key=lambda d: d["x0"], reverse=False)
+        footers = (el["para"] for el in footers)
+        header = "!!??!!".join(headers)
+        footer = "!!??!!".join(footers)
+        headers_footers.append(
+            {
+                "page": page_nr,
+                "header": " ".join(header.split()),
+                "footer": " ".join(footer.split()),
+            }
+        )
+    footers = []
+    headers = []
+    counter_in_loop_hf = 0
+    while True:
+        units_with_same_index = []
+        i_break = False
+        for el in sorted_header_units:
+            try:
+                units_with_same_index.append(el[counter_in_loop_hf])
+            except Exception as e:
+                pass
+        for unitt in units_with_same_index:
+            similar_counter = 0
+            for rest in units_with_same_index:
+                if similar(unitt["para"], rest["para"]) > 0.8:
+                    similar_counter += 1
+            if similar_counter > (page_nr - 5):
+                a = " ".join(unitt["para"].split())
+                for el in headers_footers:
+                    if el["page"] == unitt["page"]:
+                        el["header"] = str(el["header"] + "!!??!!" + a)
+            else:
+                i_break = True
+        if i_break:
+            break
+        counter_in_loop_hf += 1
+    for el in headers_footers:
+        counter_f = 0
+        counter_h = 0
+        for rest in headers_footers:
+            if similar(el["footer"], rest["footer"]) > 0.7:
+                counter_f += 1
+        for rest in headers_footers:
+            if similar(el["header"], rest["header"]) > 0.7:
+                counter_h += 1
+        if counter_f >= len(headers_footers) - 3:
+            footers.append(
+                {"page": el["page"], "footers": el["footer"].split(sep="!!??!!")}
+            )
+        if counter_h >= len(headers_footers) - 3:
+            headers.append(
+                {"page": el["page"], "headers": el["header"].split(sep="!!??!!")}
+            )
+    return {"headers": headers, "footers": footers}
 
 
 def extract_text_from_pdf(pdf_path):
