@@ -4,8 +4,17 @@ from pathlib import Path
 
 pdf = Path("path_to_your_pdf.pdf")
 doc = fitz.open(pdf)
-toc = doc.get_toc()
+toc = doc.get_toc() # type: ignore
 
+start_keywords = [
+        r"\b(?:Chapter|Part)+\s+(?:[IVXLCDM]+|[0-9]+|(One)+)",
+        r"\bIntroduction\b",
+        r"\bPrologue\b",
+        "One",
+        "1",
+        r"\b\d+(\.\d+)+\s+\w+\b",
+    ]
+end_keywords = [r"\bGlossary\b", r"\bAppendix\b", r"\bIndex\b", r"\bReferences\b"]
 
 def find_first_match(toc, keywords):
     results = {}
