@@ -1,5 +1,4 @@
 import re
-
 import fitz
 
 pages = fitz.open("sample.pdf")
